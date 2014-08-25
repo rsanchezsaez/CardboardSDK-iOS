@@ -1,0 +1,444 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3532BDF319A7C5F0002C826A /* HeadTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 3532BDF219A7C5F0002C826A /* HeadTracker.m */; };
+		359039EA19A904EB00A785D0 /* So3Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 359039E919A904EB00A785D0 /* So3Util.m */; };
+		35B11E0F19A81D9300974B11 /* OrientationEKF.m in Sources */ = {isa = PBXBuildFile; fileRef = 35B11E0E19A81D9300974B11 /* OrientationEKF.m */; };
+		35B11E1219A81E3000974B11 /* Matrix3x3d.m in Sources */ = {isa = PBXBuildFile; fileRef = 35B11E1119A81E3000974B11 /* Matrix3x3d.m */; };
+		35B11E1519A8EC2300974B11 /* Vector3d.m in Sources */ = {isa = PBXBuildFile; fileRef = 35B11E1419A8EC2300974B11 /* Vector3d.m */; };
+		35B187F319AAAEE0005A9930 /* HeadTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = 35B187F219AAAEE0005A9930 /* HeadTransform.m */; };
+		35B187F619AAB7EC005A9930 /* ScreenParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 35B187F519AAB7EC005A9930 /* ScreenParams.m */; };
+		35B187F919AAEFAD005A9930 /* CardboardDeviceParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 35B187F819AAEFAD005A9930 /* CardboardDeviceParams.m */; };
+		35B187FC19AAF1D9005A9930 /* Distortion.m in Sources */ = {isa = PBXBuildFile; fileRef = 35B187FB19AAF1D9005A9930 /* Distortion.m */; };
+		35B187FF19AB6EA5005A9930 /* HeadMountedDisplay.m in Sources */ = {isa = PBXBuildFile; fileRef = 35B187FE19AB6EA5005A9930 /* HeadMountedDisplay.m */; };
+		35B1880219AB7322005A9930 /* FieldOfView.m in Sources */ = {isa = PBXBuildFile; fileRef = 35B1880119AB7322005A9930 /* FieldOfView.m */; };
+		35B1880519AB7A32005A9930 /* EyeParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 35B1880419AB7A32005A9930 /* EyeParams.m */; };
+		35B1880819AB7A52005A9930 /* EyeTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = 35B1880719AB7A52005A9930 /* EyeTransform.m */; };
+		35B1880B19AB7DA8005A9930 /* Viewport.m in Sources */ = {isa = PBXBuildFile; fileRef = 35B1880A19AB7DA8005A9930 /* Viewport.m */; };
+		35B1880F19AB897E005A9930 /* DistortionRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 35B1880E19AB897E005A9930 /* DistortionRenderer.m */; };
+		35B1881219ABB8C0005A9930 /* EyeViewport.m in Sources */ = {isa = PBXBuildFile; fileRef = 35B1881119ABB8C0005A9930 /* EyeViewport.m */; };
+		35B1881519ABB917005A9930 /* ProgramHolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 35B1881419ABB917005A9930 /* ProgramHolder.m */; };
+		35B1881819ABB95A005A9930 /* DistortionMesh.m in Sources */ = {isa = PBXBuildFile; fileRef = 35B1881719ABB95A005A9930 /* DistortionMesh.m */; };
+		35B1881B19ABBEF5005A9930 /* CardboardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 35B1881A19ABBEF5005A9930 /* CardboardView.m */; };
+		35BEB32319AA94AD000B65F9 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35BEB32219AA94AD000B65F9 /* GLKit.framework */; };
+		35BF2D6B19A46B790076E52E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 35BF2D6A19A46B790076E52E /* main.m */; };
+		35BF2D6E19A46B790076E52E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 35BF2D6D19A46B790076E52E /* AppDelegate.m */; };
+		35BF2D7119A46B790076E52E /* CardboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 35BF2D7019A46B790076E52E /* CardboardViewController.m */; };
+		35BF2D7419A46B790076E52E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35BF2D7219A46B790076E52E /* Main.storyboard */; };
+		35BF2D7619A46B790076E52E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35BF2D7519A46B790076E52E /* Images.xcassets */; };
+		35BF2D8C19A46C080076E52E /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35BF2D8B19A46C080076E52E /* CoreMotion.framework */; };
+		35BF2D9B19A52E240076E52E /* MagnetSensor.m in Sources */ = {isa = PBXBuildFile; fileRef = 35BF2D9A19A52E240076E52E /* MagnetSensor.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		3532BDF119A7C5F0002C826A /* HeadTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeadTracker.h; sourceTree = "<group>"; };
+		3532BDF219A7C5F0002C826A /* HeadTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeadTracker.m; sourceTree = "<group>"; };
+		359039E819A904EB00A785D0 /* So3Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = So3Util.h; sourceTree = "<group>"; };
+		359039E919A904EB00A785D0 /* So3Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = So3Util.m; sourceTree = "<group>"; };
+		35B11E0D19A81D9300974B11 /* OrientationEKF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrientationEKF.h; sourceTree = "<group>"; };
+		35B11E0E19A81D9300974B11 /* OrientationEKF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrientationEKF.m; sourceTree = "<group>"; };
+		35B11E1019A81E3000974B11 /* Matrix3x3d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Matrix3x3d.h; sourceTree = "<group>"; };
+		35B11E1119A81E3000974B11 /* Matrix3x3d.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Matrix3x3d.m; sourceTree = "<group>"; };
+		35B11E1319A8EC2300974B11 /* Vector3d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vector3d.h; sourceTree = "<group>"; };
+		35B11E1419A8EC2300974B11 /* Vector3d.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Vector3d.m; sourceTree = "<group>"; };
+		35B187F119AAAEE0005A9930 /* HeadTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeadTransform.h; sourceTree = "<group>"; };
+		35B187F219AAAEE0005A9930 /* HeadTransform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeadTransform.m; sourceTree = "<group>"; };
+		35B187F419AAB7EC005A9930 /* ScreenParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenParams.h; sourceTree = "<group>"; };
+		35B187F519AAB7EC005A9930 /* ScreenParams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScreenParams.m; sourceTree = "<group>"; };
+		35B187F719AAEFAD005A9930 /* CardboardDeviceParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardboardDeviceParams.h; sourceTree = "<group>"; };
+		35B187F819AAEFAD005A9930 /* CardboardDeviceParams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardboardDeviceParams.m; sourceTree = "<group>"; };
+		35B187FA19AAF1D9005A9930 /* Distortion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Distortion.h; sourceTree = "<group>"; };
+		35B187FB19AAF1D9005A9930 /* Distortion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Distortion.m; sourceTree = "<group>"; };
+		35B187FD19AB6EA5005A9930 /* HeadMountedDisplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeadMountedDisplay.h; sourceTree = "<group>"; };
+		35B187FE19AB6EA5005A9930 /* HeadMountedDisplay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeadMountedDisplay.m; sourceTree = "<group>"; };
+		35B1880019AB7322005A9930 /* FieldOfView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FieldOfView.h; sourceTree = "<group>"; };
+		35B1880119AB7322005A9930 /* FieldOfView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FieldOfView.m; sourceTree = "<group>"; };
+		35B1880319AB7A32005A9930 /* EyeParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EyeParams.h; sourceTree = "<group>"; };
+		35B1880419AB7A32005A9930 /* EyeParams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EyeParams.m; sourceTree = "<group>"; };
+		35B1880619AB7A52005A9930 /* EyeTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EyeTransform.h; sourceTree = "<group>"; };
+		35B1880719AB7A52005A9930 /* EyeTransform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EyeTransform.m; sourceTree = "<group>"; };
+		35B1880919AB7DA8005A9930 /* Viewport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Viewport.h; sourceTree = "<group>"; };
+		35B1880A19AB7DA8005A9930 /* Viewport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Viewport.m; sourceTree = "<group>"; };
+		35B1880D19AB897E005A9930 /* DistortionRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DistortionRenderer.h; sourceTree = "<group>"; };
+		35B1880E19AB897E005A9930 /* DistortionRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DistortionRenderer.m; sourceTree = "<group>"; };
+		35B1881019ABB8C0005A9930 /* EyeViewport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EyeViewport.h; sourceTree = "<group>"; };
+		35B1881119ABB8C0005A9930 /* EyeViewport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EyeViewport.m; sourceTree = "<group>"; };
+		35B1881319ABB917005A9930 /* ProgramHolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgramHolder.h; sourceTree = "<group>"; };
+		35B1881419ABB917005A9930 /* ProgramHolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgramHolder.m; sourceTree = "<group>"; };
+		35B1881619ABB95A005A9930 /* DistortionMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DistortionMesh.h; sourceTree = "<group>"; };
+		35B1881719ABB95A005A9930 /* DistortionMesh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DistortionMesh.m; sourceTree = "<group>"; };
+		35B1881919ABBEF5005A9930 /* CardboardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardboardView.h; sourceTree = "<group>"; };
+		35B1881A19ABBEF5005A9930 /* CardboardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardboardView.m; sourceTree = "<group>"; };
+		35BEB32219AA94AD000B65F9 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		35BF2D6519A46B790076E52E /* CardboardVR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CardboardVR.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		35BF2D6919A46B790076E52E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		35BF2D6A19A46B790076E52E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		35BF2D6C19A46B790076E52E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		35BF2D6D19A46B790076E52E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		35BF2D6F19A46B790076E52E /* CardboardViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CardboardViewController.h; sourceTree = "<group>"; };
+		35BF2D7019A46B790076E52E /* CardboardViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CardboardViewController.m; sourceTree = "<group>"; };
+		35BF2D7319A46B790076E52E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		35BF2D7519A46B790076E52E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		35BF2D8B19A46C080076E52E /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		35BF2D9919A52E240076E52E /* MagnetSensor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MagnetSensor.h; sourceTree = "<group>"; };
+		35BF2D9A19A52E240076E52E /* MagnetSensor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MagnetSensor.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		35BF2D6219A46B790076E52E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				35BEB32319AA94AD000B65F9 /* GLKit.framework in Frameworks */,
+				35BF2D8C19A46C080076E52E /* CoreMotion.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		359039EB19A904F800A785D0 /* internal */ = {
+			isa = PBXGroup;
+			children = (
+				35B11E0D19A81D9300974B11 /* OrientationEKF.h */,
+				35B11E0E19A81D9300974B11 /* OrientationEKF.m */,
+				35B11E1019A81E3000974B11 /* Matrix3x3d.h */,
+				35B11E1119A81E3000974B11 /* Matrix3x3d.m */,
+				359039E819A904EB00A785D0 /* So3Util.h */,
+				359039E919A904EB00A785D0 /* So3Util.m */,
+				35B11E1319A8EC2300974B11 /* Vector3d.h */,
+				35B11E1419A8EC2300974B11 /* Vector3d.m */,
+			);
+			name = internal;
+			sourceTree = "<group>";
+		};
+		35B187F019AAAD45005A9930 /* sensors */ = {
+			isa = PBXGroup;
+			children = (
+				3532BDF119A7C5F0002C826A /* HeadTracker.h */,
+				3532BDF219A7C5F0002C826A /* HeadTracker.m */,
+				35BF2D9919A52E240076E52E /* MagnetSensor.h */,
+				35BF2D9A19A52E240076E52E /* MagnetSensor.m */,
+				359039EB19A904F800A785D0 /* internal */,
+			);
+			name = sensors;
+			sourceTree = "<group>";
+		};
+		35B1880C19AB87DC005A9930 /* Cardboard */ = {
+			isa = PBXGroup;
+			children = (
+				35B187F719AAEFAD005A9930 /* CardboardDeviceParams.h */,
+				35B187F819AAEFAD005A9930 /* CardboardDeviceParams.m */,
+				35B187FA19AAF1D9005A9930 /* Distortion.h */,
+				35B187FB19AAF1D9005A9930 /* Distortion.m */,
+				35B1881619ABB95A005A9930 /* DistortionMesh.h */,
+				35B1881719ABB95A005A9930 /* DistortionMesh.m */,
+				35B1880D19AB897E005A9930 /* DistortionRenderer.h */,
+				35B1880E19AB897E005A9930 /* DistortionRenderer.m */,
+				35B1880319AB7A32005A9930 /* EyeParams.h */,
+				35B1880419AB7A32005A9930 /* EyeParams.m */,
+				35B1880619AB7A52005A9930 /* EyeTransform.h */,
+				35B1880719AB7A52005A9930 /* EyeTransform.m */,
+				35B1881019ABB8C0005A9930 /* EyeViewport.h */,
+				35B1881119ABB8C0005A9930 /* EyeViewport.m */,
+				35B1880019AB7322005A9930 /* FieldOfView.h */,
+				35B1880119AB7322005A9930 /* FieldOfView.m */,
+				35B187FD19AB6EA5005A9930 /* HeadMountedDisplay.h */,
+				35B187FE19AB6EA5005A9930 /* HeadMountedDisplay.m */,
+				35B187F119AAAEE0005A9930 /* HeadTransform.h */,
+				35B187F219AAAEE0005A9930 /* HeadTransform.m */,
+				35B1881319ABB917005A9930 /* ProgramHolder.h */,
+				35B1881419ABB917005A9930 /* ProgramHolder.m */,
+				35B187F419AAB7EC005A9930 /* ScreenParams.h */,
+				35B187F519AAB7EC005A9930 /* ScreenParams.m */,
+				35B1880919AB7DA8005A9930 /* Viewport.h */,
+				35B1880A19AB7DA8005A9930 /* Viewport.m */,
+				35B187F019AAAD45005A9930 /* sensors */,
+			);
+			name = Cardboard;
+			sourceTree = "<group>";
+		};
+		35BF2D5C19A46B790076E52E = {
+			isa = PBXGroup;
+			children = (
+				35BEB32219AA94AD000B65F9 /* GLKit.framework */,
+				35BF2D8B19A46C080076E52E /* CoreMotion.framework */,
+				35BF2D6719A46B790076E52E /* CardboardVR */,
+				35BF2D6619A46B790076E52E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		35BF2D6619A46B790076E52E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				35BF2D6519A46B790076E52E /* CardboardVR.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		35BF2D6719A46B790076E52E /* CardboardVR */ = {
+			isa = PBXGroup;
+			children = (
+				35B1880C19AB87DC005A9930 /* Cardboard */,
+				35BF2D6C19A46B790076E52E /* AppDelegate.h */,
+				35BF2D6D19A46B790076E52E /* AppDelegate.m */,
+				35B1881919ABBEF5005A9930 /* CardboardView.h */,
+				35B1881A19ABBEF5005A9930 /* CardboardView.m */,
+				35BF2D6F19A46B790076E52E /* CardboardViewController.h */,
+				35BF2D7019A46B790076E52E /* CardboardViewController.m */,
+				35BF2D7219A46B790076E52E /* Main.storyboard */,
+				35BF2D7519A46B790076E52E /* Images.xcassets */,
+				35BF2D6819A46B790076E52E /* Supporting Files */,
+			);
+			path = CardboardVR;
+			sourceTree = "<group>";
+		};
+		35BF2D6819A46B790076E52E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				35BF2D6919A46B790076E52E /* Info.plist */,
+				35BF2D6A19A46B790076E52E /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		35BF2D6419A46B790076E52E /* CardboardVR */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 35BF2D8519A46B790076E52E /* Build configuration list for PBXNativeTarget "CardboardVR" */;
+			buildPhases = (
+				35BF2D6119A46B790076E52E /* Sources */,
+				35BF2D6219A46B790076E52E /* Frameworks */,
+				35BF2D6319A46B790076E52E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CardboardVR;
+			productName = CardboardVR;
+			productReference = 35BF2D6519A46B790076E52E /* CardboardVR.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		35BF2D5D19A46B790076E52E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0600;
+				ORGANIZATIONNAME = "Peter Tribe";
+				TargetAttributes = {
+					35BF2D6419A46B790076E52E = {
+						CreatedOnToolsVersion = 6.0;
+					};
+				};
+			};
+			buildConfigurationList = 35BF2D6019A46B790076E52E /* Build configuration list for PBXProject "CardboardVR" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 35BF2D5C19A46B790076E52E;
+			productRefGroup = 35BF2D6619A46B790076E52E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				35BF2D6419A46B790076E52E /* CardboardVR */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		35BF2D6319A46B790076E52E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				35BF2D7419A46B790076E52E /* Main.storyboard in Resources */,
+				35BF2D7619A46B790076E52E /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		35BF2D6119A46B790076E52E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				35B187F919AAEFAD005A9930 /* CardboardDeviceParams.m in Sources */,
+				35B1880219AB7322005A9930 /* FieldOfView.m in Sources */,
+				35BF2D7119A46B790076E52E /* CardboardViewController.m in Sources */,
+				35BF2D6E19A46B790076E52E /* AppDelegate.m in Sources */,
+				35B187F619AAB7EC005A9930 /* ScreenParams.m in Sources */,
+				35B187FC19AAF1D9005A9930 /* Distortion.m in Sources */,
+				35BF2D6B19A46B790076E52E /* main.m in Sources */,
+				35B1880819AB7A52005A9930 /* EyeTransform.m in Sources */,
+				35B1880F19AB897E005A9930 /* DistortionRenderer.m in Sources */,
+				35B11E0F19A81D9300974B11 /* OrientationEKF.m in Sources */,
+				35B187F319AAAEE0005A9930 /* HeadTransform.m in Sources */,
+				35B11E1219A81E3000974B11 /* Matrix3x3d.m in Sources */,
+				35B187FF19AB6EA5005A9930 /* HeadMountedDisplay.m in Sources */,
+				3532BDF319A7C5F0002C826A /* HeadTracker.m in Sources */,
+				35B1881519ABB917005A9930 /* ProgramHolder.m in Sources */,
+				35B1880B19AB7DA8005A9930 /* Viewport.m in Sources */,
+				35B1881219ABB8C0005A9930 /* EyeViewport.m in Sources */,
+				35B1881B19ABBEF5005A9930 /* CardboardView.m in Sources */,
+				35B1881819ABB95A005A9930 /* DistortionMesh.m in Sources */,
+				35BF2D9B19A52E240076E52E /* MagnetSensor.m in Sources */,
+				35B1880519AB7A32005A9930 /* EyeParams.m in Sources */,
+				35B11E1519A8EC2300974B11 /* Vector3d.m in Sources */,
+				359039EA19A904EB00A785D0 /* So3Util.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		35BF2D7219A46B790076E52E /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				35BF2D7319A46B790076E52E /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		35BF2D8319A46B790076E52E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		35BF2D8419A46B790076E52E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		35BF2D8619A46B790076E52E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				INFOPLIST_FILE = CardboardVR/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		35BF2D8719A46B790076E52E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				INFOPLIST_FILE = CardboardVR/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		35BF2D6019A46B790076E52E /* Build configuration list for PBXProject "CardboardVR" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				35BF2D8319A46B790076E52E /* Debug */,
+				35BF2D8419A46B790076E52E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		35BF2D8519A46B790076E52E /* Build configuration list for PBXNativeTarget "CardboardVR" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				35BF2D8619A46B790076E52E /* Debug */,
+				35BF2D8719A46B790076E52E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 35BF2D5D19A46B790076E52E /* Project object */;
+}
