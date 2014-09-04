@@ -20,6 +20,8 @@
 		35B1885F19ABEFA6005A9930 /* MagnetSensor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 35B1885D19ABEFA6005A9930 /* MagnetSensor.mm */; };
 		35B1886119ABF053005A9930 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35B1886019ABF053005A9930 /* CoreMotion.framework */; };
 		35B1886319ABF059005A9930 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35B1886219ABF059005A9930 /* GLKit.framework */; };
+		35E07AFE19B8A42200B0116B /* CardboardViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 35E07AFD19B8A42200B0116B /* CardboardViewController.mm */; };
+		35E07B0119B8A7B000B0116B /* CardboardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 35E07B0019B8A7B000B0116B /* CardboardView.m */; };
 		35F21F7A19AC2B1900FF7A31 /* HeadTracker.mm in Sources */ = {isa = PBXBuildFile; fileRef = 35F21F7819AC2B1900FF7A31 /* HeadTracker.mm */; };
 		35F21F7E19AC2CCD00FF7A31 /* OrientationEKF.mm in Sources */ = {isa = PBXBuildFile; fileRef = 35F21F7C19AC2CCD00FF7A31 /* OrientationEKF.mm */; };
 		35F21F8119AC2CEA00FF7A31 /* Matrix3x3d.mm in Sources */ = {isa = PBXBuildFile; fileRef = 35F21F7F19AC2CEA00FF7A31 /* Matrix3x3d.mm */; };
@@ -56,6 +58,10 @@
 		35B1885E19ABEFA6005A9930 /* MagnetSensor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MagnetSensor.h; sourceTree = "<group>"; };
 		35B1886019ABF053005A9930 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		35B1886219ABF059005A9930 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		35E07AFC19B8A42200B0116B /* CardboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardboardViewController.h; sourceTree = "<group>"; };
+		35E07AFD19B8A42200B0116B /* CardboardViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CardboardViewController.mm; sourceTree = "<group>"; };
+		35E07AFF19B8A7B000B0116B /* CardboardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardboardView.h; sourceTree = "<group>"; };
+		35E07B0019B8A7B000B0116B /* CardboardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardboardView.m; sourceTree = "<group>"; };
 		35F21F7819AC2B1900FF7A31 /* HeadTracker.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HeadTracker.mm; sourceTree = "<group>"; };
 		35F21F7919AC2B1900FF7A31 /* HeadTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeadTracker.h; sourceTree = "<group>"; };
 		35F21F7B19AC2C4200FF7A31 /* Structs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Structs.h; sourceTree = "<group>"; };
@@ -95,6 +101,8 @@
 		35955E5419B1169A0046C047 /* To Merge */ = {
 			isa = PBXGroup;
 			children = (
+				35E07AFF19B8A7B000B0116B /* CardboardView.h */,
+				35E07B0019B8A7B000B0116B /* CardboardView.m */,
 			);
 			name = "To Merge";
 			sourceTree = "<group>";
@@ -174,6 +182,8 @@
 			children = (
 				35955E5419B1169A0046C047 /* To Merge */,
 				35B1885A19ABEF69005A9930 /* sensorts */,
+				35E07AFC19B8A42200B0116B /* CardboardViewController.h */,
+				35E07AFD19B8A42200B0116B /* CardboardViewController.mm */,
 				35F32CA419AD2806009FB861 /* Distortion.mm */,
 				35F32CA519AD2806009FB861 /* Distortion.h */,
 				35955E5B19B11F7B0046C047 /* DistortionRenderer.mm */,
@@ -277,12 +287,14 @@
 				35F21F8119AC2CEA00FF7A31 /* Matrix3x3d.mm in Sources */,
 				35F32CBE19AD54E4009FB861 /* HeadTransform.mm in Sources */,
 				35F32CBB19AD52CB009FB861 /* Viewport.mm in Sources */,
+				35E07AFE19B8A42200B0116B /* CardboardViewController.mm in Sources */,
 				35B1883A19ABEF58005A9930 /* main.m in Sources */,
 				35F32CAD19AD3664009FB861 /* FieldOfView.mm in Sources */,
 				35B1885F19ABEFA6005A9930 /* MagnetSensor.mm in Sources */,
 				35F21F8419AC2D0000FF7A31 /* So3Util.mm in Sources */,
 				35955E5D19B11F7B0046C047 /* DistortionRenderer.mm in Sources */,
 				3564DA6519AD8C0B00FA9E3D /* EyeParams.mm in Sources */,
+				35E07B0119B8A7B000B0116B /* CardboardView.m in Sources */,
 				35F21F8719AC2D1100FF7A31 /* Vector3d.mm in Sources */,
 				3564DA6219AD8BFB00FA9E3D /* EyeTransform.mm in Sources */,
 				3564DA6819ADA19000FA9E3D /* HeadMountedDisplay.mm in Sources */,
