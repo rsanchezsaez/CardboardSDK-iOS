@@ -9,18 +9,9 @@
 #import <Foundation/Foundation.h>
 #import <GLKit/GLKit.h>
 
-#include "CardboardView.h"
-#include "MagnetSensor.h"
-#include "CardboardDeviceParams.h"
 
 @interface CardboardViewController : GLKViewController
 
-@property (nonatomic, assign) CardboardView *cardboardView;
-@property (nonatomic, assign) MagnetSensor *magnetSensor;
-@property (nonatomic, assign) CardboardDeviceParams *cardboardDeviceParams;
-
-- (id)initWithCardboardView:(CardboardView*)cardboardView;
-- (CardboardView*)getCardboardView;
 - (void)onCardboardTrigger:(id)sender;
 
 @end
