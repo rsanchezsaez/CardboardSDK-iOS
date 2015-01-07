@@ -28,6 +28,8 @@
 		BC67336F1A5D90C700C6D79B /* Vector3d.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC67335A1A5D90C700C6D79B /* Vector3d.mm */; };
 		BC6733701A5D90C700C6D79B /* MagnetSensor.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC67335C1A5D90C700C6D79B /* MagnetSensor.mm */; };
 		BC6733711A5D90C700C6D79B /* Viewport.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC67335E1A5D90C700C6D79B /* Viewport.mm */; };
+		BCCBC5871A5D94660093F31A /* GLCubeRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = BCCBC5861A5D94660093F31A /* GLCubeRenderer.m */; };
+		BCCBC58A1A5D95830093F31A /* GLCubeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCCBC5891A5D95830093F31A /* GLCubeViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -74,6 +76,10 @@
 		BC67335D1A5D90C700C6D79B /* Viewport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Viewport.h; sourceTree = "<group>"; };
 		BC67335E1A5D90C700C6D79B /* Viewport.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Viewport.mm; sourceTree = "<group>"; };
 		BCCBC5821A5D93170093F31A /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
+		BCCBC5851A5D94660093F31A /* GLCubeRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLCubeRenderer.h; sourceTree = "<group>"; };
+		BCCBC5861A5D94660093F31A /* GLCubeRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLCubeRenderer.m; sourceTree = "<group>"; };
+		BCCBC5881A5D95830093F31A /* GLCubeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLCubeViewController.h; sourceTree = "<group>"; };
+		BCCBC5891A5D95830093F31A /* GLCubeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLCubeViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +116,7 @@
 			isa = PBXGroup;
 			children = (
 				BC6733391A5D90C700C6D79B /* CardboardSDK */,
+				BCCBC5841A5D94100093F31A /* Samples */,
 				BC6733361A5D90C700C6D79B /* Supporting Files */,
 				35B1883B19ABEF58005A9930 /* AppDelegate.h */,
 				35B1883C19ABEF58005A9930 /* AppDelegate.m */,
@@ -194,6 +201,17 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		BCCBC5841A5D94100093F31A /* Samples */ = {
+			isa = PBXGroup;
+			children = (
+				BCCBC5851A5D94660093F31A /* GLCubeRenderer.h */,
+				BCCBC5861A5D94660093F31A /* GLCubeRenderer.m */,
+				BCCBC5881A5D95830093F31A /* GLCubeViewController.h */,
+				BCCBC5891A5D95830093F31A /* GLCubeViewController.m */,
+			);
+			path = Samples;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -265,6 +283,7 @@
 				BC67336F1A5D90C700C6D79B /* Vector3d.mm in Sources */,
 				BC6733601A5D90C700C6D79B /* main.m in Sources */,
 				BC67336C1A5D90C700C6D79B /* Matrix3x3d.mm in Sources */,
+				BCCBC5871A5D94660093F31A /* GLCubeRenderer.m in Sources */,
 				BC6733711A5D90C700C6D79B /* Viewport.mm in Sources */,
 				BC6733641A5D90C700C6D79B /* DistortionRenderer.mm in Sources */,
 				BC6733651A5D90C700C6D79B /* EyeParams.mm in Sources */,
@@ -278,6 +297,7 @@
 				BC6733671A5D90C700C6D79B /* FieldOfView.mm in Sources */,
 				BC6733691A5D90C700C6D79B /* HeadTransform.mm in Sources */,
 				BC67336D1A5D90C700C6D79B /* OrientationEKF.mm in Sources */,
+				BCCBC58A1A5D95830093F31A /* GLCubeViewController.m in Sources */,
 				BC6733621A5D90C700C6D79B /* CardboardViewController.mm in Sources */,
 				BC6733701A5D90C700C6D79B /* MagnetSensor.mm in Sources */,
 			);

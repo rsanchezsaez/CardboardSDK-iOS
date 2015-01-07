@@ -8,6 +8,8 @@
 
 #import "AppDelegate.h"
 
+#import "GLCubeViewController.h"
+
 @interface AppDelegate ()
 
 @end
@@ -17,6 +19,14 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.backgroundColor = [UIColor whiteColor];
+    [self.window makeKeyAndVisible];
+
+    GLCubeViewController *cardboardViewController = [GLCubeViewController new];
+    
+    self.window.rootViewController = cardboardViewController;
+
     return YES;
 }
 
