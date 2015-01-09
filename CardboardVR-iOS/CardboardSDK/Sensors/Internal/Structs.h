@@ -23,11 +23,4 @@ struct ViewportRect {
     float r[4];
 };
 
-typedef enum
-{
-    MONOCULAR = 0,
-    LEFT = 1,
-    RIGHT = 2
-} EyeParamsEyeType;
-
 #endif

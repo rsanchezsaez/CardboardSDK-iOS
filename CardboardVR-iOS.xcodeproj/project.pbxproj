@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		35B1883D19ABEF58005A9930 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 35B1883C19ABEF58005A9930 /* AppDelegate.m */; };
+		35B1883D19ABEF58005A9930 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 35B1883C19ABEF58005A9930 /* AppDelegate.mm */; };
 		35B1886119ABF053005A9930 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35B1886019ABF053005A9930 /* CoreMotion.framework */; };
 		35B1886319ABF059005A9930 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35B1886219ABF059005A9930 /* GLKit.framework */; };
 		BC6733601A5D90C700C6D79B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BC6733381A5D90C700C6D79B /* main.m */; };
@@ -35,7 +35,7 @@
 /* Begin PBXFileReference section */
 		35B1883419ABEF58005A9930 /* CardboardVR-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CardboardVR-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		35B1883B19ABEF58005A9930 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		35B1883C19ABEF58005A9930 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		35B1883C19ABEF58005A9930 /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
 		35B1886019ABF053005A9930 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		35B1886219ABF059005A9930 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		BC6733371A5D90C700C6D79B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -119,7 +119,7 @@
 				BCCBC5841A5D94100093F31A /* Samples */,
 				BC6733361A5D90C700C6D79B /* Supporting Files */,
 				35B1883B19ABEF58005A9930 /* AppDelegate.h */,
-				35B1883C19ABEF58005A9930 /* AppDelegate.m */,
+				35B1883C19ABEF58005A9930 /* AppDelegate.mm */,
 			);
 			path = "CardboardVR-iOS";
 			sourceTree = "<group>";
@@ -289,7 +289,7 @@
 				BC6733651A5D90C700C6D79B /* EyeParams.mm in Sources */,
 				BC67336E1A5D90C700C6D79B /* So3Util.mm in Sources */,
 				BC6733681A5D90C700C6D79B /* HeadMountedDisplay.mm in Sources */,
-				35B1883D19ABEF58005A9930 /* AppDelegate.m in Sources */,
+				35B1883D19ABEF58005A9930 /* AppDelegate.mm in Sources */,
 				BC6733611A5D90C700C6D79B /* CardboardDeviceParams.mm in Sources */,
 				BC6733631A5D90C700C6D79B /* Distortion.mm in Sources */,
 				BC67336A1A5D90C700C6D79B /* ScreenParams.mm in Sources */,
@@ -389,6 +389,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_INPUT_FILETYPE = automatic;
 				INFOPLIST_FILE = "CardboardVR-iOS/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -401,6 +402,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_INPUT_FILETYPE = automatic;
 				INFOPLIST_FILE = "CardboardVR-iOS/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

@@ -10,10 +10,16 @@
 #define __CardboardVR_iOS__EyeParams__
 
 #import <UIKit/UIKit.h>
-#include "Structs.h"
 #include "Viewport.h"
 #include "FieldOfView.h"
 #include "EyeTransform.h"
+
+typedef enum
+{
+    EyeParamsEyeTypeMonocular = 0,
+    EyeParamsEyeTypeLeft = 1,
+    EyeParamsEyeTypeRight = 2
+} EyeParamsEyeType;
 
 class EyeParams
 {

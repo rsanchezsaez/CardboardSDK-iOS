@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Peter Tribe. All rights reserved.
 //
 
-#import "CardboardViewController.h"
+#import <GLKit/GLKit.h>
 
-@interface GLCubeViewController : CardboardViewController
+@interface GLCubeViewController : GLKViewController
 
 @end
