@@ -8,6 +8,8 @@
 
 #include "DistortionRenderer.h"
 
+#import <OpenGLES/ES2/glext.h>
+
 DistortionRenderer::DistortionRenderer()
 {
     this->textureId = -1;
@@ -24,27 +26,27 @@ DistortionRenderer::DistortionRenderer()
 
 void DistortionRenderer::beforeDrawFrame()
 {
-    glGetIntegerv(36006, &this->originalFramebufferId);
-    glBindFramebuffer(36160, this->framebufferId);
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &this->originalFramebufferId);
+    glBindFramebuffer(GL_FRAMEBUFFER, this->framebufferId);
 }
 
 void DistortionRenderer::afterDrawFrame()
 {
-    glBindFramebuffer(36160, this->originalFramebufferId);
+    glBindFramebuffer(GL_FRAMEBUFFER, this->originalFramebufferId);
     glViewport(0, 0, this->hmd->getScreen()->getWidth(), this->hmd->getScreen()->getHeight());
     
-    glGetIntegerv(2978, this->viewport);
-    glGetIntegerv(2884, &this->cullFaceEnabled);
-    glGetIntegerv(3089, &this->scissorTestEnabled);
-    glDisable(3089);
-    glDisable(2884);
+    glGetIntegerv(GL_VIEWPORT, this->viewport);
+    glGetIntegerv(GL_CULL_FACE, &this->cullFaceEnabled);
+    glGetIntegerv(GL_SCISSOR_TEST, &this->scissorTestEnabled);
+    glDisable(GL_SCISSOR_TEST);
+    glDisable(GL_CULL_FACE);
     
     glClearColor(0.0F, 0.0F, 0.0F, 1.0F);
-    glClear(16640);
+    glClear(GL_COLOR_BUFFER_BIT + GL_DEPTH_BUFFER_BIT);
     
     glUseProgram(this->programHolder->program);
     
-    glEnable(3089);
+    glEnable(GL_SCISSOR_TEST);
     
     glScissor(0, 0, this->hmd->getScreen()->getWidth() / 2, this->hmd->getScreen()->getHeight());
     
@@ -58,14 +60,14 @@ void DistortionRenderer::afterDrawFrame()
     glDisableVertexAttribArray(this->programHolder->aVignette);
     glDisableVertexAttribArray(this->programHolder->aTextureCoord);
     glUseProgram(0);
-    glBindBuffer(34962, 0);
-    glBindBuffer(34963, 0);
-    glDisable(3089);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glDisable(GL_SCISSOR_TEST);
     if (this->cullFaceEnabled == 1) {
-        glEnable(2884);
+        glEnable(GL_CULL_FACE);
     }
     if (this->scissorTestEnabled == 1) {
-        glEnable(3089);
+        glEnable(GL_SCISSOR_TEST);
     }
     glViewport(this->viewport[0], this->viewport[1], this->viewport[2], this->viewport[3]);
 }
@@ -149,21 +151,21 @@ DistortionRenderer::DistortionMesh* DistortionRenderer::createDistortionMesh(Eye
 
 void DistortionRenderer::renderDistortionMesh(DistortionMesh *mesh)
 {
-    glBindBuffer(34962, mesh->arrayBufferId);
-    glVertexAttribPointer(this->programHolder->aPosition, 3, 5126, false, 5 * sizeof(float), &mesh->vertexData[0]);
+    glBindBuffer(GL_ARRAY_BUFFER, mesh->arrayBufferId);
+    glVertexAttribPointer(this->programHolder->aPosition, 3, GL_FLOAT, false, 5 * sizeof(float), &mesh->vertexData[0]);
     glEnableVertexAttribArray(this->programHolder->aPosition);
-    glVertexAttribPointer(this->programHolder->aVignette, 1, 5126, false, 5 * sizeof(float), &mesh->vertexData[2 * sizeof(float)]);
+    glVertexAttribPointer(this->programHolder->aVignette, 1, GL_FLOAT, false, 5 * sizeof(float), &mesh->vertexData[2 * sizeof(float)]);
     glEnableVertexAttribArray(this->programHolder->aVignette);
-    glVertexAttribPointer(this->programHolder->aTextureCoord, 2, 5126, false, 5 * sizeof(float), &mesh->vertexData[3 * sizeof(float)]);
+    glVertexAttribPointer(this->programHolder->aTextureCoord, 2, GL_FLOAT, false, 5 * sizeof(float), &mesh->vertexData[3 * sizeof(float)]);
     glEnableVertexAttribArray(this->programHolder->aTextureCoord);
     
-    glActiveTexture(33984);
-    glBindTexture(3553, this->textureId);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, this->textureId);
     glUniform1i(this->programHolder->uTextureSampler, 0);
     glUniform1f(this->programHolder->uTextureCoordScale, this->resolutionScale);
     
-    glBindBuffer(34963, mesh->elementBufferId);
-    glDrawElements(5, mesh->indices, 5125, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->elementBufferId);
+    glDrawElements(5, mesh->indices, GL_UNSIGNED_INT, 0);
 }
 
 float DistortionRenderer::computeDistortionScale(Distortion *distortion, float screenWidthM, float interpupillaryDistanceM)
@@ -175,12 +177,12 @@ int DistortionRenderer::createTexture(int width, int height)
 {
     GLuint textureIds;
     glGenTextures(1, &textureIds);
-    glBindTexture(3553, textureIds);
-    glTexParameteri(3553, 10242, 33071);
-    glTexParameteri(3553, 10243, 33071);
-    glTexParameteri(3553, 10240, 9729);
-    glTexParameteri(3553, 10241, 9729);
-    glTexImage2D(3553, 0, 6407, width, height, 0, 6407, 33635, nil);
+    glBindTexture(GL_TEXTURE_2D, textureIds);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, nil);
     return textureIds;
 }
 
@@ -204,27 +206,27 @@ int DistortionRenderer::setupRenderTextureAndRenderbuffer(int width, int height)
     
     GLuint renderbufferIds;
     glGenRenderbuffers(1, &renderbufferIds);
-    glBindRenderbuffer(36161, renderbufferIds);
-    glRenderbufferStorage(36161, 33189, width, height);
+    glBindRenderbuffer(GL_RENDERBUFFER, renderbufferIds);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, width, height);
     
     this->renderbufferId = renderbufferIds;
     this->checkGlError(@"setupRenderTextureAndRenderbuffer: create renderbuffer");
     
     GLuint framebufferIds;
     glGenFramebuffers(1, &framebufferIds);
-    glBindFramebuffer(36160, framebufferIds);
+    glBindFramebuffer(GL_FRAMEBUFFER, framebufferIds);
     this->framebufferId = framebufferIds;
     
-    glFramebufferTexture2D(36160, 36064, 3553, this->textureId, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->textureId, 0);
     
-    glFramebufferRenderbuffer(36160, 36096, 36161, renderbufferIds);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, renderbufferIds);
     
-    GLuint status = glCheckFramebufferStatus(36160);
-    if (status != 36053) {
+    GLuint status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+    if (status != GL_FRAMEBUFFER_COMPLETE) {
         [NSException raise:@"DistortionRenderer" format:@"Framebuffer is not complete: %d", status];
     }
     
-    glBindFramebuffer(36160, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
     
     return framebufferIds;
 }
@@ -236,7 +238,7 @@ int DistortionRenderer::loadShader(GLenum shaderType, const GLchar *source)
         glShaderSource(shader, 1, &source, nil);
         glCompileShader(shader);
         GLint status;
-        glGetShaderiv(shader, 35713, &status);
+        glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
         if (status == 0)
         {
             GLchar message[256];
@@ -251,11 +253,11 @@ int DistortionRenderer::loadShader(GLenum shaderType, const GLchar *source)
 
 int DistortionRenderer::createProgram(const GLchar *vertexSource, const GLchar *fragmentSource)
 {
-    GLuint vertexShader = this->loadShader(35633, vertexSource);
+    GLuint vertexShader = this->loadShader(GL_VERTEX_SHADER, vertexSource);
     if (vertexShader == 0) {
         return 0;
     }
-    GLuint pixelShader = this->loadShader(35632, fragmentSource);
+    GLuint pixelShader = this->loadShader(GL_FRAGMENT_SHADER, fragmentSource);
     if (pixelShader == 0) {
         return 0;
     }
@@ -267,7 +269,7 @@ int DistortionRenderer::createProgram(const GLchar *vertexSource, const GLchar *
         this->checkGlError(@"glAttachShader");
         glLinkProgram(program);
         GLint status;
-        glGetProgramiv(program, 35714, &status);
+        glGetProgramiv(program, GL_LINK_STATUS, &status);
         if (status != 1) {
             GLchar message[256];
             glGetProgramInfoLog(program, sizeof(message), 0, &message[0]);
@@ -414,14 +416,14 @@ DistortionRenderer::DistortionMesh::DistortionMesh(EyeParams *eye, Distortion *d
     this->arrayBufferId = bufferIds[0];
     this->elementBufferId = bufferIds[1];
     
-    glBindBuffer(34962, this->arrayBufferId);
-    glBufferData(34962, sizeof(vertexData), vertexData, 35044);
+    glBindBuffer(GL_ARRAY_BUFFER, this->arrayBufferId);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
     
-    glBindBuffer(34963, this->elementBufferId);
-    glBufferData(34963, sizeof(indexData), indexData, 35044);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->elementBufferId);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexData), indexData, GL_STATIC_DRAW);
     
-    glBindBuffer(34962, 0);
-    glBindBuffer(34963, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     
 }
 
