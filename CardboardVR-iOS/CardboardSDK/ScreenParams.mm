@@ -11,12 +11,15 @@
 
 ScreenParams::ScreenParams(UIScreen *screen)
 {
-    this->width = screen.bounds.size.width;
-    this->height = screen.bounds.size.height;
+    this->width = screen.bounds.size.width * screen.nativeScale;
+    this->height = screen.bounds.size.height  * screen.nativeScale;
     float pixelsPerInch = this->pixelsPerInch(screen);
-    this->xMetersPerPixel = (0.0254f / pixelsPerInch);
-    this->yMetersPerPixel = (0.0254f / pixelsPerInch);
-    this->borderSizeMeters = 0.003f;
+    
+    const float metersPerInch = 0.0254f;
+    const float defaultBorderSizeMeters = 0.003f;
+    this->xMetersPerPixel = (metersPerInch / pixelsPerInch);
+    this->yMetersPerPixel = (metersPerInch / pixelsPerInch);
+    this->borderSizeMeters = defaultBorderSizeMeters;
 }
 
 ScreenParams::ScreenParams(ScreenParams *screenParams)
@@ -81,17 +84,42 @@ bool ScreenParams::equals(ScreenParams *other)
 
 float ScreenParams::pixelsPerInch(UIScreen* screen)
 {
-    float pixelsPerInch = 163.0f;
+    // Default iPhone retina pixels per inch
+    float pixelsPerInch = 163.0f * 2;
     struct utsname sysinfo;
-    if (uname(&sysinfo) == 0) {
+    if (uname(&sysinfo) == 0)
+    {
         NSString *identifier = [NSString stringWithUTF8String:sysinfo.machine];
-        NSArray *deviceArray = @[@{@"identifiers": @[@"iPad1,1", @"iPad2,1", @"iPad2,2", @"iPad2,3", @"iPad2,4", @"iPad3,1", @"iPad3,2", @"iPad3,3", @"iPad3,4", @"iPad3,5", @"iPad3,6", @"iPad4,1", @"iPad4,2"], @"pointsPerInch": @132.0f}, @{@"identifiers": @[@"iPod5,1", @"iPhone1,1", @"iPhone1,2", @"iPhone2,1", @"iPhone3,1", @"iPhone3,2", @"iPhone3,3", @"iPhone4,1", @"iPhone5,1", @"iPhone5,2", @"iPhone5,3", @"iPhone5,4", @"iPhone6,1", @"iPhone6,2", @"iPad2,5", @"iPad2,6", @"iPad2,7", @"iPad4,4", @"iPad4,5", @"i386", @"x86_64"], @"pointsPerInch":  @163.0f}];
-        for (id device in deviceArray)
+        NSArray *deviceClassArray =
+  @[
+    // iPads
+  @{@"identifiers":
+        @[@"iPad1,1",
+          @"iPad2,1", @"iPad2,2", @"iPad2,3", @"iPad2,4",
+          @"iPad3,1", @"iPad3,2", @"iPad3,3", @"iPad3,4",
+          @"iPad3,5", @"iPad3,6", @"iPad4,1", @"iPad4,2"],
+    @"pointsPerInch": @132.0f},
+  // iPhones, iPad Minis and simulators
+  @{@"identifiers":
+        @[@"iPod5,1",
+          @"iPhone1,1", @"iPhone1,2",
+          @"iPhone2,1",
+          @"iPhone3,1", @"iPhone3,2", @"iPhone3,3",
+          @"iPhone4,1",
+          @"iPhone5,1", @"iPhone5,2", @"iPhone5,3", @"iPhone5,4",
+          @"iPhone6,1", @"iPhone6,2",
+          @"iPhone7,1", @"iPhone7,2",
+          @"iPad2,5", @"iPad2,6", @"iPad2,7",
+          @"iPad4,4", @"iPad4,5",
+          @"i386", @"x86_64"],
+    @"pointsPerInch":  @163.0f } ];
+        for (NSDictionary *deviceClass in deviceClassArray)
         {
-            for (NSString *deviceId in [device objectForKey:@"identifiers"])
+            for (NSString *deviceId in deviceClass[@"identifiers"])
             {
-                if ([identifier isEqualToString:deviceId]) {
-                    pixelsPerInch = [[device objectForKey:@"pointsPerInch"] floatValue] * [screen scale];
+                if ([identifier isEqualToString:deviceId])
+                {
+                    pixelsPerInch = [deviceClass[@"pointsPerInch"] floatValue] * [screen nativeScale];
                     break;
                 }
             }
