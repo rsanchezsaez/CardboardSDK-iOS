@@ -8,7 +8,7 @@
 
 #include "EyeParams.h"
 
-EyeParams::EyeParams(EyeParamsEyeType eye)
+EyeParams::EyeParams(EyeParamsType eye)
 {
     this->eye = eye;
     this->viewport = new Viewport();
@@ -23,7 +23,7 @@ EyeParams::~EyeParams()
     delete this->eyeTransform;
 }
 
-EyeParamsEyeType EyeParams::getEye()
+EyeParamsType EyeParams::getEye()
 {
     return this->eye;
 }

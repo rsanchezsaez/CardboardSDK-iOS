@@ -53,27 +53,32 @@
 
 - (void)drawFrameWithHeadTransform:(HeadTransform *)headTransform leftEyeParams:(EyeParams *)leftEyeParams rightEyeParams:(EyeParams *)rightEyeParams
 {
+    checkGLError();
+    
     [self.stereoRendererDelegate prepareNewFrameWithHeadTransform:headTransform];
     
-    printGLError();
+    checkGLError();
     
     glEnable(GL_SCISSOR_TEST);
     leftEyeParams->getViewport()->setGLViewport();
     leftEyeParams->getViewport()->setGLScissor();
 
-    [self.stereoRendererDelegate drawEyeWithTransformA:leftEyeParams->getTransform()];
+    checkGLError();
+    
+    [self.stereoRendererDelegate drawEyeWithTransform:leftEyeParams->getTransform() eyeType:leftEyeParams->getEye()];
 
-    printGLError();
+    checkGLError();
 
     if (rightEyeParams == nullptr) { return; }
     
     rightEyeParams->getViewport()->setGLViewport();
     rightEyeParams->getViewport()->setGLScissor();
     
-    [self.stereoRendererDelegate drawEyeWithTransformB:rightEyeParams->getTransform()];
+    checkGLError();
+    
+    [self.stereoRendererDelegate drawEyeWithTransform:rightEyeParams->getTransform() eyeType:rightEyeParams->getEye()];
 
-    printGLError();
-
+    checkGLError();
 }
 
 - (void)finishFrameWithViewPort:(Viewport *)viewport
@@ -130,19 +135,18 @@
     self.headTransform = new HeadTransform();
     self.headMountedDisplay = new HeadMountedDisplay([UIScreen mainScreen]);
     
-    self.monocularParams = new EyeParams(EyeParamsEyeTypeMonocular);
-    self.leftEyeParams = new EyeParams(EyeParamsEyeTypeLeft);
-    self.rightEyeParams = new EyeParams(EyeParamsEyeTypeRight);
+    self.monocularParams = new EyeParams(EyeParamsTypeMonocular);
+    self.leftEyeParams = new EyeParams(EyeParamsTypeLeft);
+    self.rightEyeParams = new EyeParams(EyeParamsTypeRight);
 
     self.distortionRenderer = new DistortionRenderer();
     
+    self.stereoRenderer = [StereoRenderer new];
+    self.isVRModeEnabled = YES;
+    
     self.distortionCorrectionEnabled = YES;
     self.distortionCorrectionScale = 1.0f;
-    
-    self.stereoRenderer = [StereoRenderer new];
-    
-    self.isVRModeEnabled = NO;
-    
+
     self.zNear = 0.1f;
     self.zFar = 100.0f;
 
@@ -235,6 +239,8 @@
 {
     // TODO: Check that is not shutting down and that view size is valid before drawing
     
+    checkGLError();
+
     CardboardDeviceParams *cardboardDeviceParams = _headMountedDisplay->getCardboard();
     
     _headTransform->getHeadView() = _headTracker->getLastHeadView();
@@ -303,7 +309,7 @@
             _rightEyeParams->getViewport()->setViewport(screenParams->getWidth() / 2, 0, screenParams->getWidth() / 2, screenParams->getHeight());
         }
         
-        _projectionChanged = false;
+        _projectionChanged = NO;
     }
     
     if (self.isVRModeEnabled)
@@ -348,6 +354,8 @@
             }
             
             _distortionRenderer->afterDrawFrame();
+            
+            checkGLError();
         }
         else
         {
@@ -364,6 +372,8 @@
     }
     
     [_stereoRenderer finishFrameWithViewPort:_monocularParams->getViewport()];
+    
+    checkGLError();
 }
 
 - (void)updateFovsWithLeftEyeFov:(FieldOfView *)leftEyeFov rightEyeFov:(FieldOfView *)rightEyeFov

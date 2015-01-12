@@ -180,7 +180,7 @@ enum
     
     glBindVertexArrayOES(_vertexArray);
     
-    // Render the object again ES2
+    // Render the object ES2
     glUseProgram(_program);
     
     glUniformMatrix4fv(uniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX], 1, 0, _modelViewProjectionMatrix.m);
@@ -191,16 +191,32 @@ enum
 
 - (void)renderA
 {
-    glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
+    glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
+    glBindVertexArrayOES(_vertexArray);
+    
+    // Render the object ES2
+    glUseProgram(_program);
+    
+    glUniformMatrix4fv(uniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX], 1, 0, _modelViewProjectionMatrix.m);
+    glUniformMatrix3fv(uniforms[UNIFORM_NORMAL_MATRIX], 1, 0, _normalMatrix.m);
     
     glDrawArrays(GL_TRIANGLES, 0, 36);
 }
 
 - (void)renderB
 {
-    glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
+    glBindVertexArrayOES(_vertexArray);
+    
+    // Render the object ES2
+    glUseProgram(_program);
+    
+    glUniformMatrix4fv(uniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX], 1, 0, _modelViewProjectionMatrix.m);
+    glUniformMatrix3fv(uniforms[UNIFORM_NORMAL_MATRIX], 1, 0, _normalMatrix.m);
     
     glDrawArrays(GL_TRIANGLES, 0, 36);
 }

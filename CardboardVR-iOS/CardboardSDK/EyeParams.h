@@ -16,22 +16,22 @@
 
 typedef enum
 {
-    EyeParamsEyeTypeMonocular = 0,
-    EyeParamsEyeTypeLeft = 1,
-    EyeParamsEyeTypeRight = 2
-} EyeParamsEyeType;
+    EyeParamsTypeMonocular = 0,
+    EyeParamsTypeLeft = 1,
+    EyeParamsTypeRight = 2
+} EyeParamsType;
 
 class EyeParams
 {
 public:
-    EyeParams(EyeParamsEyeType eye);
+    EyeParams(EyeParamsType eye);
     ~EyeParams();
-    EyeParamsEyeType getEye();
+    EyeParamsType getEye();
     Viewport* getViewport();
     FieldOfView* getFov();
     EyeTransform* getTransform();
 private:
-    EyeParamsEyeType eye;
+    EyeParamsType eye;
     Viewport *viewport;
     FieldOfView *fov;
     EyeTransform *eyeTransform;

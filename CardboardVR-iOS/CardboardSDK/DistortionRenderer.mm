@@ -10,6 +10,8 @@
 
 #import <OpenGLES/ES2/glext.h>
 
+#import "DebugUtils.h"
+
 DistortionRenderer::DistortionRenderer()
 {
     this->textureId = -1;
@@ -42,7 +44,7 @@ void DistortionRenderer::afterDrawFrame()
     glDisable(GL_CULL_FACE);
     
     glClearColor(0.0F, 0.0F, 0.0F, 1.0F);
-    glClear(GL_COLOR_BUFFER_BIT + GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     glUseProgram(this->programHolder->program);
     
@@ -70,6 +72,8 @@ void DistortionRenderer::afterDrawFrame()
         glEnable(GL_SCISSOR_TEST);
     }
     glViewport(this->viewport[0], this->viewport[1], this->viewport[2], this->viewport[3]);
+    
+    checkGLError();
 }
 
 void DistortionRenderer::setResolutionScale(float scale)
@@ -146,7 +150,15 @@ DistortionRenderer::EyeViewport DistortionRenderer::initViewportForEye(EyeParams
 
 DistortionRenderer::DistortionMesh* DistortionRenderer::createDistortionMesh(EyeParams *eye, EyeViewport eyeViewport, float textureWidthM, float textureHeightM, float xEyeOffsetMScreen, float yEyeOffsetMScreen)
 {
-    return new DistortionMesh(eye, this->hmd->getCardboard()->getDistortion(), this->hmd->getScreen()->getWidthMeters(), this->hmd->getScreen()->getHeightMeters(), xEyeOffsetMScreen, yEyeOffsetMScreen, textureWidthM, textureHeightM, eyeViewport.eyeX, eyeViewport.eyeY, eyeViewport.x, eyeViewport.y, eyeViewport.width, eyeViewport.height);
+    return new DistortionMesh(eye,
+                              this->hmd->getCardboard()->getDistortion(),
+                              this->hmd->getScreen()->getWidthMeters(),
+                              this->hmd->getScreen()->getHeightMeters(),
+                              xEyeOffsetMScreen, yEyeOffsetMScreen,
+                              textureWidthM, textureHeightM,
+                              eyeViewport.eyeX, eyeViewport.eyeY,
+                              eyeViewport.x, eyeViewport.y,
+                              eyeViewport.width, eyeViewport.height);
 }
 
 void DistortionRenderer::renderDistortionMesh(DistortionMesh *mesh)
@@ -166,6 +178,8 @@ void DistortionRenderer::renderDistortionMesh(DistortionMesh *mesh)
     
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->elementBufferId);
     glDrawElements(5, mesh->indices, GL_UNSIGNED_INT, 0);
+    
+    checkGLError();
 }
 
 float DistortionRenderer::computeDistortionScale(Distortion *distortion, float screenWidthM, float interpupillaryDistanceM)
@@ -183,6 +197,9 @@ int DistortionRenderer::createTexture(int width, int height)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, nil);
+    
+    checkGLError();
+
     return textureIds;
 }
 
@@ -228,6 +245,8 @@ int DistortionRenderer::setupRenderTextureAndRenderbuffer(int width, int height)
     
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     
+    checkGLError();
+
     return framebufferIds;
 }
 
@@ -248,6 +267,9 @@ int DistortionRenderer::loadShader(GLenum shaderType, const GLchar *source)
             shader = 0;
         }
     }
+    
+    checkGLError();
+
     return shader;
 }
 
@@ -278,10 +300,13 @@ int DistortionRenderer::createProgram(const GLchar *vertexSource, const GLchar *
             program = 0;
         }
     }
+    
+    checkGLError();
+
     return program;
 }
 
-DistortionRenderer::ProgramHolder* DistortionRenderer::createProgramHolder()
+DistortionRenderer::ProgramHolder *DistortionRenderer::createProgramHolder()
 {
     ProgramHolder *holder = new ProgramHolder();
     holder->program = this->createProgram("attribute vec2 aPosition;\nattribute float aVignette;\nattribute vec2 aTextureCoord;\nvarying vec2 vTextureCoord;\nvarying float vVignette;\nuniform float uTextureCoordScale;\nvoid main() {\n    gl_Position = vec4(aPosition, 0.0, 1.0);\n    vTextureCoord = aTextureCoord.xy * uTextureCoordScale;\n    vVignette = aVignette;\n}\n", "precision mediump float;\nvarying vec2 vTextureCoord;\nvarying float vVignette;\nuniform sampler2D uTextureSampler;\nvoid main() {\n    gl_FragColor = vVignette * texture2D(uTextureSampler, vTextureCoord);\n}\n");
@@ -317,6 +342,9 @@ DistortionRenderer::ProgramHolder* DistortionRenderer::createProgramHolder()
     {
         [NSException raise:@"DistortionRenderer" format:@"Could not get attrib location for uTextureSampler"];
     }
+    
+    checkGLError();
+
     return holder;
 }
 
@@ -424,12 +452,14 @@ DistortionRenderer::DistortionMesh::DistortionMesh(EyeParams *eye, Distortion *d
     
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    
+
+    checkGLError();
 }
 
 //EyeViewport
 
 NSString* DistortionRenderer::EyeViewport::toString()
 {
-    return [NSString stringWithFormat:@"EyeViewport {x:%f y:%f width:%f height:%f eyeX:%f, eyeY:%f}", this->x, this->y, this->width, this->height, this->eyeX, this->eyeY];
+    return [NSString stringWithFormat:@"EyeViewport {x:%f y:%f width:%f height:%f eyeX:%f, eyeY:%f}",
+            this->x, this->y, this->width, this->height, this->eyeX, this->eyeY];
 }

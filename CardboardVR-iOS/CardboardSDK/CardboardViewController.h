@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <GLKit/GLKit.h>
 
+#import "EyeParams.h"
 
 class EyeTransform;
 class HeadTransform;
@@ -22,9 +23,7 @@ class Viewport;
 - (void)renderViewDidChangeSize:(CGSize)size;
 
 - (void)prepareNewFrameWithHeadTransform:(HeadTransform *)headTransform;
-- (void)drawEyeWithTransform:(EyeTransform *)eyeTransform;
-- (void)drawEyeWithTransformA:(EyeTransform *)eyeTransform;
-- (void)drawEyeWithTransformB:(EyeTransform *)eyeTransform;
+- (void)drawEyeWithTransform:(EyeTransform *)eyeTransform eyeType:(EyeParamsType)eyeType;
 - (void)finishFrameWithViewport:(Viewport *)viewPort;
 
 @end
