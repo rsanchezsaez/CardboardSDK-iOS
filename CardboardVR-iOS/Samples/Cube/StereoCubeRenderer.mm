@@ -40,25 +40,23 @@
 {
 }
 
-- (void)drawEyeWithTransform:(EyeTransform *)eyeTransform
+- (void)drawEyeWithTransform:(EyeTransform *)eyeTransform eyeType:(EyeParamsType)eyeType
 {
     [self.cubeRenderer updateTimeWithDelta:1/60.0f];
-    [self.cubeRenderer render];
-    printGLError();
-}
-
-- (void)drawEyeWithTransformA:(EyeTransform *)eyeTransform
-{
-    [self.cubeRenderer updateTimeWithDelta:1/60.0f];
-    [self.cubeRenderer renderA];
-    printGLError();
-}
-
-- (void)drawEyeWithTransformB:(EyeTransform *)eyeTransform
-{
-    [self.cubeRenderer updateTimeWithDelta:1/60.0f];
-    [self.cubeRenderer renderB];
-    printGLError();
+    // [self.cubeRenderer render];
+    if (eyeType == EyeParamsTypeMonocular)
+    {
+        [self.cubeRenderer render];
+    }
+    else if (eyeType == EyeParamsTypeLeft)
+    {
+        [self.cubeRenderer renderA];
+    }
+    else if (eyeType == EyeParamsTypeRight)
+    {
+        [self.cubeRenderer renderB];
+    }
+    checkGLError();
 }
 
 - (void)finishFrameWithViewport:(Viewport *)viewPort

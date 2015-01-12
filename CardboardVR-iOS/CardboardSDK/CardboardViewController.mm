@@ -353,6 +353,8 @@
                 _rightEyeParams->getViewport()->setViewport(rightX, rightY, rightWidth, rightHeight);
             }
             
+            checkGLError();
+
             _distortionRenderer->afterDrawFrame();
             
             checkGLError();

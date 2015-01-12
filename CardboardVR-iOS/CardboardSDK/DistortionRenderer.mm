@@ -81,7 +81,11 @@ void DistortionRenderer::setResolutionScale(float scale)
     this->resolutionScale = scale;
 }
 
-void DistortionRenderer::onProjectionChanged(HeadMountedDisplay *hmd, EyeParams *leftEye, EyeParams *rightEye, float zNear, float zFar)
+void DistortionRenderer::onProjectionChanged(HeadMountedDisplay *hmd,
+                                             EyeParams *leftEye,
+                                             EyeParams *rightEye,
+                                             float zNear,
+                                             float zFar)
 {
     this->hmd = new HeadMountedDisplay(hmd);
     this->leftEyeFov = new FieldOfView(leftEye->getFov());
@@ -148,7 +152,12 @@ DistortionRenderer::EyeViewport DistortionRenderer::initViewportForEye(EyeParams
     return vp;
 }
 
-DistortionRenderer::DistortionMesh* DistortionRenderer::createDistortionMesh(EyeParams *eye, EyeViewport eyeViewport, float textureWidthM, float textureHeightM, float xEyeOffsetMScreen, float yEyeOffsetMScreen)
+DistortionRenderer::DistortionMesh* DistortionRenderer::createDistortionMesh(EyeParams *eye,
+                                                                             EyeViewport eyeViewport,
+                                                                             float textureWidthM,
+                                                                             float textureHeightM,
+                                                                             float xEyeOffsetMScreen,
+                                                                             float yEyeOffsetMScreen)
 {
     return new DistortionMesh(eye,
                               this->hmd->getCardboard()->getDistortion(),
@@ -363,9 +372,21 @@ float DistortionRenderer::clamp(float val, float min, float max)
 
 //DistortionMesh
 
-DistortionRenderer::DistortionMesh::DistortionMesh(EyeParams *eye, Distortion *distortion, float screenWidthM, float screenHeightM, float xEyeOffsetMScreen, float yEyeOffsetMScreen, float textureWidthM, float textureHeightM, float xEyeOffsetMTexture, float yEyeOffsetMTexture, float viewportXMTexture, float viewportYMTexture, float viewportWidthMTexture, float viewportHeightMTexture)
+DistortionRenderer::DistortionMesh::DistortionMesh(EyeParams *eye,
+                                                   Distortion *distortion,
+                                                   float screenWidthM,
+                                                   float screenHeightM,
+                                                   float xEyeOffsetMScreen,
+                                                   float yEyeOffsetMScreen,
+                                                   float textureWidthM,
+                                                   float textureHeightM,
+                                                   float xEyeOffsetMTexture,
+                                                   float yEyeOffsetMTexture,
+                                                   float viewportXMTexture,
+                                                   float viewportYMTexture,
+                                                   float viewportWidthMTexture,
+                                                   float viewportHeightMTexture)
 {
-    
     float mPerUScreen = screenWidthM;
     float mPerVScreen = screenHeightM;
     float mPerUTexture = textureWidthM;

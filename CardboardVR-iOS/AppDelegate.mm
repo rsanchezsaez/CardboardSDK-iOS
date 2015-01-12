@@ -25,9 +25,9 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
 
-    GLCubeViewController *cardboardViewController = [GLCubeViewController new];
-//    CardboardViewController *cardboardViewController = [CardboardViewController new];
-//    cardboardViewController.stereoRendererDelegate = [StereoCubeRenderer new];
+    CardboardViewController *cardboardViewController = [CardboardViewController new];
+    cardboardViewController.stereoRendererDelegate = [StereoCubeRenderer new];
+//    GLCubeViewController *cardboardViewController = [GLCubeViewController new];
     self.window.rootViewController = cardboardViewController;
     
     return YES;

@@ -18,7 +18,7 @@ inline void checkGLError()
     if (err != GL_NO_ERROR)
     {
         NSLog(@"glError: 0x%04X", err);
-        assert(NO);
+        // assert(NO);
     }
 }
 
