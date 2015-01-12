@@ -16,8 +16,10 @@
 
 - (instancetype)initWithContext:(EAGLContext *)context;
 
-- (void)updateProjectionMatrixAspectWithRect:(CGRect)rect;
+- (void)updateProjectionMatrixAspectWithSize:(CGSize)size;
 - (void)updateTimeWithDelta:(NSTimeInterval)timeSinceLastUpdate;
 - (void)render;
+- (void)renderA;
+- (void)renderB;
 
 @end

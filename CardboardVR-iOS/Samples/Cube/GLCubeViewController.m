@@ -26,7 +26,6 @@
     [super viewDidLoad];
     
     self.preferredFramesPerSecond = 60;
-    
     self.view.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
     if (!self.view.context)
     {
@@ -41,7 +40,7 @@
 {
     [super viewDidLayoutSubviews];
     
-    [self.cubeRenderer updateProjectionMatrixAspectWithRect:self.view.bounds];
+    [self.cubeRenderer updateProjectionMatrixAspectWithSize:self.view.bounds.size];
 }
 
 - (void)update

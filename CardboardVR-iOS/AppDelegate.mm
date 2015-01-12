@@ -10,6 +10,7 @@
 
 #import "GLCubeViewController.h"
 #import "CardboardViewController.h"
+#import "StereoCubeRenderer.h"
 
 @interface AppDelegate ()
 
@@ -26,6 +27,7 @@
 
     GLCubeViewController *cardboardViewController = [GLCubeViewController new];
 //    CardboardViewController *cardboardViewController = [CardboardViewController new];
+//    cardboardViewController.stereoRendererDelegate = [StereoCubeRenderer new];
     self.window.rootViewController = cardboardViewController;
     
     return YES;

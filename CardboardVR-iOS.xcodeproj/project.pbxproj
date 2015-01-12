@@ -10,6 +10,7 @@
 		35B1883D19ABEF58005A9930 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 35B1883C19ABEF58005A9930 /* AppDelegate.mm */; };
 		35B1886119ABF053005A9930 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35B1886019ABF053005A9930 /* CoreMotion.framework */; };
 		35B1886319ABF059005A9930 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35B1886219ABF059005A9930 /* GLKit.framework */; };
+		BC4FA7321A63FA94008E60E3 /* DebugUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = BC4FA7311A63FA94008E60E3 /* DebugUtils.m */; };
 		BC6733601A5D90C700C6D79B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BC6733381A5D90C700C6D79B /* main.m */; };
 		BC6733611A5D90C700C6D79B /* CardboardDeviceParams.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC67333B1A5D90C700C6D79B /* CardboardDeviceParams.mm */; };
 		BC6733621A5D90C700C6D79B /* CardboardViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC67333D1A5D90C700C6D79B /* CardboardViewController.mm */; };
@@ -28,8 +29,11 @@
 		BC67336F1A5D90C700C6D79B /* Vector3d.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC67335A1A5D90C700C6D79B /* Vector3d.mm */; };
 		BC6733701A5D90C700C6D79B /* MagnetSensor.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC67335C1A5D90C700C6D79B /* MagnetSensor.mm */; };
 		BC6733711A5D90C700C6D79B /* Viewport.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC67335E1A5D90C700C6D79B /* Viewport.mm */; };
-		BCCBC5871A5D94660093F31A /* GLCubeRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = BCCBC5861A5D94660093F31A /* GLCubeRenderer.m */; };
-		BCCBC58A1A5D95830093F31A /* GLCubeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCCBC5891A5D95830093F31A /* GLCubeViewController.m */; };
+		BCD7096D1A64194700E78B84 /* CubeShader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = BCD709651A64194700E78B84 /* CubeShader.fsh */; };
+		BCD7096E1A64194700E78B84 /* CubeShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = BCD709661A64194700E78B84 /* CubeShader.vsh */; };
+		BCD7096F1A64194700E78B84 /* GLCubeRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = BCD709681A64194700E78B84 /* GLCubeRenderer.m */; };
+		BCD709701A64194700E78B84 /* GLCubeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCD7096A1A64194700E78B84 /* GLCubeViewController.m */; };
+		BCD709711A64194700E78B84 /* StereoCubeRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = BCD7096C1A64194700E78B84 /* StereoCubeRenderer.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +42,9 @@
 		35B1883C19ABEF58005A9930 /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
 		35B1886019ABF053005A9930 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		35B1886219ABF059005A9930 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		BC4FA72B1A63ECA4008E60E3 /* CardboardSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CardboardSDK.h; sourceTree = "<group>"; };
+		BC4FA7301A63FA94008E60E3 /* DebugUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugUtils.h; sourceTree = "<group>"; };
+		BC4FA7311A63FA94008E60E3 /* DebugUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebugUtils.m; sourceTree = "<group>"; };
 		BC6733371A5D90C700C6D79B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BC6733381A5D90C700C6D79B /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		BC67333A1A5D90C700C6D79B /* CardboardDeviceParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardboardDeviceParams.h; sourceTree = "<group>"; };
@@ -76,10 +83,14 @@
 		BC67335D1A5D90C700C6D79B /* Viewport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Viewport.h; sourceTree = "<group>"; };
 		BC67335E1A5D90C700C6D79B /* Viewport.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Viewport.mm; sourceTree = "<group>"; };
 		BCCBC5821A5D93170093F31A /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
-		BCCBC5851A5D94660093F31A /* GLCubeRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLCubeRenderer.h; sourceTree = "<group>"; };
-		BCCBC5861A5D94660093F31A /* GLCubeRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLCubeRenderer.m; sourceTree = "<group>"; };
-		BCCBC5881A5D95830093F31A /* GLCubeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLCubeViewController.h; sourceTree = "<group>"; };
-		BCCBC5891A5D95830093F31A /* GLCubeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLCubeViewController.m; sourceTree = "<group>"; };
+		BCD709651A64194700E78B84 /* CubeShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = CubeShader.fsh; sourceTree = "<group>"; };
+		BCD709661A64194700E78B84 /* CubeShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = CubeShader.vsh; sourceTree = "<group>"; };
+		BCD709671A64194700E78B84 /* GLCubeRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLCubeRenderer.h; sourceTree = "<group>"; };
+		BCD709681A64194700E78B84 /* GLCubeRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLCubeRenderer.m; sourceTree = "<group>"; };
+		BCD709691A64194700E78B84 /* GLCubeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLCubeViewController.h; sourceTree = "<group>"; };
+		BCD7096A1A64194700E78B84 /* GLCubeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLCubeViewController.m; sourceTree = "<group>"; };
+		BCD7096B1A64194700E78B84 /* StereoCubeRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StereoCubeRenderer.h; sourceTree = "<group>"; };
+		BCD7096C1A64194700E78B84 /* StereoCubeRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StereoCubeRenderer.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,6 +171,9 @@
 				BC67334D1A5D90C700C6D79B /* ScreenParams.mm */,
 				BC67335D1A5D90C700C6D79B /* Viewport.h */,
 				BC67335E1A5D90C700C6D79B /* Viewport.mm */,
+				BC4FA72B1A63ECA4008E60E3 /* CardboardSDK.h */,
+				BC4FA7301A63FA94008E60E3 /* DebugUtils.h */,
+				BC4FA7311A63FA94008E60E3 /* DebugUtils.m */,
 			);
 			path = CardboardSDK;
 			sourceTree = "<group>";
@@ -204,12 +218,24 @@
 		BCCBC5841A5D94100093F31A /* Samples */ = {
 			isa = PBXGroup;
 			children = (
-				BCCBC5851A5D94660093F31A /* GLCubeRenderer.h */,
-				BCCBC5861A5D94660093F31A /* GLCubeRenderer.m */,
-				BCCBC5881A5D95830093F31A /* GLCubeViewController.h */,
-				BCCBC5891A5D95830093F31A /* GLCubeViewController.m */,
+				BCD709641A64194700E78B84 /* Cube */,
 			);
 			path = Samples;
+			sourceTree = "<group>";
+		};
+		BCD709641A64194700E78B84 /* Cube */ = {
+			isa = PBXGroup;
+			children = (
+				BCD709651A64194700E78B84 /* CubeShader.fsh */,
+				BCD709661A64194700E78B84 /* CubeShader.vsh */,
+				BCD709671A64194700E78B84 /* GLCubeRenderer.h */,
+				BCD709681A64194700E78B84 /* GLCubeRenderer.m */,
+				BCD709691A64194700E78B84 /* GLCubeViewController.h */,
+				BCD7096A1A64194700E78B84 /* GLCubeViewController.m */,
+				BCD7096B1A64194700E78B84 /* StereoCubeRenderer.h */,
+				BCD7096C1A64194700E78B84 /* StereoCubeRenderer.mm */,
+			);
+			path = Cube;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -269,6 +295,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BCD7096D1A64194700E78B84 /* CubeShader.fsh in Resources */,
+				BCD7096E1A64194700E78B84 /* CubeShader.vsh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -281,23 +309,25 @@
 			files = (
 				BC67336B1A5D90C700C6D79B /* HeadTracker.mm in Sources */,
 				BC67336F1A5D90C700C6D79B /* Vector3d.mm in Sources */,
+				BC4FA7321A63FA94008E60E3 /* DebugUtils.m in Sources */,
 				BC6733601A5D90C700C6D79B /* main.m in Sources */,
 				BC67336C1A5D90C700C6D79B /* Matrix3x3d.mm in Sources */,
-				BCCBC5871A5D94660093F31A /* GLCubeRenderer.m in Sources */,
 				BC6733711A5D90C700C6D79B /* Viewport.mm in Sources */,
 				BC6733641A5D90C700C6D79B /* DistortionRenderer.mm in Sources */,
 				BC6733651A5D90C700C6D79B /* EyeParams.mm in Sources */,
 				BC67336E1A5D90C700C6D79B /* So3Util.mm in Sources */,
 				BC6733681A5D90C700C6D79B /* HeadMountedDisplay.mm in Sources */,
 				35B1883D19ABEF58005A9930 /* AppDelegate.mm in Sources */,
+				BCD7096F1A64194700E78B84 /* GLCubeRenderer.m in Sources */,
 				BC6733611A5D90C700C6D79B /* CardboardDeviceParams.mm in Sources */,
 				BC6733631A5D90C700C6D79B /* Distortion.mm in Sources */,
 				BC67336A1A5D90C700C6D79B /* ScreenParams.mm in Sources */,
 				BC6733661A5D90C700C6D79B /* EyeTransform.mm in Sources */,
+				BCD709701A64194700E78B84 /* GLCubeViewController.m in Sources */,
 				BC6733671A5D90C700C6D79B /* FieldOfView.mm in Sources */,
+				BCD709711A64194700E78B84 /* StereoCubeRenderer.mm in Sources */,
 				BC6733691A5D90C700C6D79B /* HeadTransform.mm in Sources */,
 				BC67336D1A5D90C700C6D79B /* OrientationEKF.mm in Sources */,
-				BCCBC58A1A5D95830093F31A /* GLCubeViewController.m in Sources */,
 				BC6733621A5D90C700C6D79B /* CardboardViewController.mm in Sources */,
 				BC6733701A5D90C700C6D79B /* MagnetSensor.mm in Sources */,
 			);
