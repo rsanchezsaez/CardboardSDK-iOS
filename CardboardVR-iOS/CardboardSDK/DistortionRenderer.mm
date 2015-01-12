@@ -239,7 +239,7 @@ int DistortionRenderer::loadShader(GLenum shaderType, const GLchar *source)
         glCompileShader(shader);
         GLint status;
         glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
-        if (status == 0)
+        if (status == GL_FALSE)
         {
             GLchar message[256];
             glGetShaderInfoLog(shader, sizeof(message), 0, &message[0]);
@@ -270,7 +270,7 @@ int DistortionRenderer::createProgram(const GLchar *vertexSource, const GLchar *
         glLinkProgram(program);
         GLint status;
         glGetProgramiv(program, GL_LINK_STATUS, &status);
-        if (status != 1) {
+        if (status == GL_FALSE) {
             GLchar message[256];
             glGetProgramInfoLog(program, sizeof(message), 0, &message[0]);
             NSLog(@"Could not link program:\n%s", message);
@@ -284,7 +284,7 @@ int DistortionRenderer::createProgram(const GLchar *vertexSource, const GLchar *
 DistortionRenderer::ProgramHolder* DistortionRenderer::createProgramHolder()
 {
     ProgramHolder *holder = new ProgramHolder();
-    this->createProgram("attribute vec2 aPosition;\nattribute float aVignette;\nattribute vec2 aTextureCoord;\nvarying vec2 vTextureCoord;\nvarying float vVignette;\nuniform float uTextureCoordScale;\nvoid main() {\n    gl_Position = vec4(aPosition, 0.0, 1.0);\n    vTextureCoord = aTextureCoord.xy * uTextureCoordScale;\n    vVignette = aVignette;\n}\n", "precision mediump float;\nvarying vec2 vTextureCoord;\nvarying float vVignette;\nuniform sampler2D uTextureSampler;\nvoid main() {\n    gl_FragColor = vVignette * texture2D(uTextureSampler, vTextureCoord);\n}\n");
+    holder->program = this->createProgram("attribute vec2 aPosition;\nattribute float aVignette;\nattribute vec2 aTextureCoord;\nvarying vec2 vTextureCoord;\nvarying float vVignette;\nuniform float uTextureCoordScale;\nvoid main() {\n    gl_Position = vec4(aPosition, 0.0, 1.0);\n    vTextureCoord = aTextureCoord.xy * uTextureCoordScale;\n    vVignette = aVignette;\n}\n", "precision mediump float;\nvarying vec2 vTextureCoord;\nvarying float vVignette;\nuniform sampler2D uTextureSampler;\nvoid main() {\n    gl_FragColor = vVignette * texture2D(uTextureSampler, vTextureCoord);\n}\n");
     if (holder->program == 0) {
         [NSException raise:@"DistortionRenderer" format:@"Could not create program"];
     }

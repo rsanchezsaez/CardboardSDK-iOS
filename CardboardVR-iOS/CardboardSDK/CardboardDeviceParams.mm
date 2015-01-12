@@ -151,10 +151,6 @@ float CardboardDeviceParams::getEyeToLensDistance()
 
 Distortion* CardboardDeviceParams::getDistortion()
 {
-    if (this->distortion != nullptr)
-    {
-        delete this->distortion;
-    }
     return this->distortion;
 }
 
