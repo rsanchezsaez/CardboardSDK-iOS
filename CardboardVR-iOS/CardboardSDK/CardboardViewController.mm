@@ -16,6 +16,8 @@
 #include "HeadMountedDisplay.h"
 #include "Viewport.h"
 
+#import "DebugUtils.h"
+
 
 @interface StereoRenderer : NSObject
 
@@ -27,29 +29,14 @@
 
 @implementation StereoRenderer
 
-- (void)drawFrameWithHeadTransform:(HeadTransform *)headTransform leftEyeParams:(EyeParams *)leftEyeParams rightEyeParams:(EyeParams *)rightEyeParams
+- (void)setupRendererWithView:(GLKView *)GLView
 {
-    [self.stereoRendererDelegate prepareNewFrameWithHeadTransform:headTransform];
-    
-    glEnable(GL_SCISSOR_TEST);
-    leftEyeParams->getViewport()->setGLViewport();
-    leftEyeParams->getViewport()->setGLScissor();
-    
-    [self.stereoRendererDelegate drawEyeWithTransform:leftEyeParams->getTransform()];
-    
-    if (rightEyeParams == nullptr) { return; }
-    
-    rightEyeParams->getViewport()->setGLViewport();
-    rightEyeParams->getViewport()->setGLScissor();
-    
-    [self.stereoRendererDelegate drawEyeWithTransform:rightEyeParams->getTransform()];
+    [self.stereoRendererDelegate setupRendererWithView:GLView];
 }
 
-- (void)finishFrameWithViewPort:(Viewport *)viewport
+- (void)shutdownRendererWithView:(GLKView *)GLView
 {
-    viewport->setGLViewport();
-    viewport->setGLScissor();
-    [self.stereoRendererDelegate finishFrameWithViewport:viewport];
+    [self.stereoRendererDelegate shutdownRendererWithView:GLView];
 }
 
 - (void)updateRenderViewSize:(CGSize)size
@@ -64,14 +51,36 @@
     }
 }
 
-- (void)setupRenderer
+- (void)drawFrameWithHeadTransform:(HeadTransform *)headTransform leftEyeParams:(EyeParams *)leftEyeParams rightEyeParams:(EyeParams *)rightEyeParams
 {
-    [self.stereoRendererDelegate setupRenderer];
+    [self.stereoRendererDelegate prepareNewFrameWithHeadTransform:headTransform];
+    
+    printGLError();
+    
+    glEnable(GL_SCISSOR_TEST);
+    leftEyeParams->getViewport()->setGLViewport();
+    leftEyeParams->getViewport()->setGLScissor();
+
+    [self.stereoRendererDelegate drawEyeWithTransformA:leftEyeParams->getTransform()];
+
+    printGLError();
+
+    if (rightEyeParams == nullptr) { return; }
+    
+    rightEyeParams->getViewport()->setGLViewport();
+    rightEyeParams->getViewport()->setGLScissor();
+    
+    [self.stereoRendererDelegate drawEyeWithTransformB:rightEyeParams->getTransform()];
+
+    printGLError();
+
 }
 
-- (void)shutdownRenderer
+- (void)finishFrameWithViewPort:(Viewport *)viewport
 {
-    [self.stereoRendererDelegate shutdownRenderer];
+    viewport->setGLViewport();
+    viewport->setGLScissor();
+    [self.stereoRendererDelegate finishFrameWithViewport:viewport];
 }
 
 @end
@@ -80,6 +89,8 @@
 
 
 @interface CardboardViewController () <GLKViewControllerDelegate>
+
+@property (nonatomic) GLKView *view;
 
 @property (nonatomic, assign) HeadTracker *headTracker;
 @property (nonatomic, assign) HeadTransform *headTransform;
@@ -100,6 +111,8 @@
 @property (nonatomic, assign) BOOL projectionChanged;
 
 @property (nonatomic, strong) StereoRenderer *stereoRenderer;
+
+- (void)onCardboardTrigger:(id)sender;
 
 @end
 
@@ -128,6 +141,8 @@
     
     self.stereoRenderer = [StereoRenderer new];
     
+    self.isVRModeEnabled = NO;
+    
     self.zNear = 0.1f;
     self.zFar = 100.0f;
 
@@ -141,10 +156,28 @@
     return self;
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    self.preferredFramesPerSecond = 60;
+    self.view.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+    if (!self.view.context)
+    {
+        NSLog(@"Failed to create OpenGL ES 2.0 context");
+    }
+    
+    [self.stereoRendererDelegate setupRendererWithView:self.view];
+    
+    // self.view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
+}
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
+    [self.stereoRendererDelegate shutdownRendererWithView:self.view];
+
     if (self.headTracker != nullptr) { delete self.headTracker; }
     if (self.headTransform != nullptr) { delete self.headTransform; }
     if (self.headMountedDisplay != nullptr) { delete self.headMountedDisplay; }
@@ -362,6 +395,5 @@
     leftEyeFov->setBottom(MIN(bottomAngle, idealFovAngle));
     leftEyeFov->setTop(MIN(topAngle, idealFovAngle));
 }
-
 
 @end

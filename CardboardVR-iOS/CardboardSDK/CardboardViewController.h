@@ -17,22 +17,22 @@ class Viewport;
 
 @protocol StereoRendererDelegate
 
-- (void)prepareNewFrameWithHeadTransform:(HeadTransform *)headTransform;
-- (void)drawEyeWithTransform:(EyeTransform *)eyeTransform;
-- (void)finishFrameWithViewport:(Viewport *)viewPort;
-
+- (void)setupRendererWithView:(GLKView *)GLView;
+- (void)shutdownRendererWithView:(GLKView *)GLView;
 - (void)renderViewDidChangeSize:(CGSize)size;
 
-- (void)setupRenderer;
-- (void)shutdownRenderer;
+- (void)prepareNewFrameWithHeadTransform:(HeadTransform *)headTransform;
+- (void)drawEyeWithTransform:(EyeTransform *)eyeTransform;
+- (void)drawEyeWithTransformA:(EyeTransform *)eyeTransform;
+- (void)drawEyeWithTransformB:(EyeTransform *)eyeTransform;
+- (void)finishFrameWithViewport:(Viewport *)viewPort;
 
 @end
 
 
 @interface CardboardViewController : GLKViewController
 
+@property (nonatomic) id <StereoRendererDelegate> stereoRendererDelegate;
 @property (nonatomic) BOOL isVRModeEnabled;
-
-- (void)onCardboardTrigger:(id)sender;
 
 @end
