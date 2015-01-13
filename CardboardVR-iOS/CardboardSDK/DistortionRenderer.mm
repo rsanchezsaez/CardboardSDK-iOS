@@ -17,7 +17,7 @@ DistortionRenderer::DistortionRenderer()
     this->textureId = -1;
     this->renderbufferId = -1;
     this->framebufferId = -1;
-    this->originalFramebufferId = 0;
+    //this->originalFramebufferId = 0;
     this->cullFaceEnabled = 0;
     this->scissorTestEnabled = 0;
     for (int i = 0; i < 4; i++) {
@@ -28,20 +28,22 @@ DistortionRenderer::DistortionRenderer()
 
 void DistortionRenderer::beforeDrawFrame()
 {
-    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &this->originalFramebufferId);
+    //glGetIntegerv(GL_FRAMEBUFFER_BINDING, &this->originalFramebufferId);
     glBindFramebuffer(GL_FRAMEBUFFER, this->framebufferId);
 }
 
 void DistortionRenderer::afterDrawFrame()
 {
-    glBindFramebuffer(GL_FRAMEBUFFER, this->originalFramebufferId);
+    //glBindFramebuffer(GL_FRAMEBUFFER, this->originalFramebufferId);
     glViewport(0, 0, this->hmd->getScreen()->getWidth(), this->hmd->getScreen()->getHeight());
     
     glGetIntegerv(GL_VIEWPORT, this->viewport);
-    glGetIntegerv(GL_CULL_FACE, &this->cullFaceEnabled);
-    glGetIntegerv(GL_SCISSOR_TEST, &this->scissorTestEnabled);
-    glDisable(GL_SCISSOR_TEST);
+    
+    this->cullFaceEnabled = glIsEnabled(GL_CULL_FACE);
+    this->scissorTestEnabled = glIsEnabled(GL_SCISSOR_TEST);
+ 
     glDisable(GL_CULL_FACE);
+    glDisable(GL_SCISSOR_TEST);
     
     glClearColor(0.0F, 0.0F, 0.0F, 1.0F);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -64,16 +66,32 @@ void DistortionRenderer::afterDrawFrame()
     glUseProgram(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    glDisable(GL_SCISSOR_TEST);
-    if (this->cullFaceEnabled == 1) {
+    if (this->cullFaceEnabled == 1)
+    {
         glEnable(GL_CULL_FACE);
     }
-    if (this->scissorTestEnabled == 1) {
+    if (this->scissorTestEnabled == 1)
+    {
         glEnable(GL_SCISSOR_TEST);
     }
+    else
+    {
+        glDisable(GL_SCISSOR_TEST);
+    }
+    
     glViewport(this->viewport[0], this->viewport[1], this->viewport[2], this->viewport[3]);
     
     checkGLError();
+}
+
+DistortionRenderer::~DistortionRenderer()
+{
+    if (this->leftEyeDistortionMesh != nullptr) { delete this->leftEyeDistortionMesh; }
+    if (this->rightEyeDistortionMesh != nullptr) { delete this->rightEyeDistortionMesh; }
+    if (this->hmd != nullptr) { delete this->hmd; }
+    if (this->leftEyeFov != nullptr) { delete this->leftEyeFov; }
+    if (this->rightEyeFov != nullptr) { delete this->rightEyeFov; }
+    if (this->programHolder != nullptr) { delete this->programHolder; }
 }
 
 void DistortionRenderer::setResolutionScale(float scale)
@@ -94,7 +112,8 @@ void DistortionRenderer::onProjectionChanged(HeadMountedDisplay *hmd,
     ScreenParams *screen = hmd->getScreen();
     CardboardDeviceParams *cdp = hmd->getCardboard();
     
-    if (this->programHolder == nullptr) {
+    if (this->programHolder == nullptr)
+    {
         this->programHolder = this->createProgramHolder();
     }
     
@@ -173,11 +192,11 @@ DistortionRenderer::DistortionMesh* DistortionRenderer::createDistortionMesh(Eye
 void DistortionRenderer::renderDistortionMesh(DistortionMesh *mesh)
 {
     glBindBuffer(GL_ARRAY_BUFFER, mesh->arrayBufferId);
-    glVertexAttribPointer(this->programHolder->aPosition, 3, GL_FLOAT, false, 5 * sizeof(float), &mesh->vertexData[0]);
+    glVertexAttribPointer(this->programHolder->aPosition, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)(0 * sizeof(float)));
     glEnableVertexAttribArray(this->programHolder->aPosition);
-    glVertexAttribPointer(this->programHolder->aVignette, 1, GL_FLOAT, false, 5 * sizeof(float), &mesh->vertexData[2 * sizeof(float)]);
+    glVertexAttribPointer(this->programHolder->aVignette, 1, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)(2 * sizeof(float)));
     glEnableVertexAttribArray(this->programHolder->aVignette);
-    glVertexAttribPointer(this->programHolder->aTextureCoord, 2, GL_FLOAT, false, 5 * sizeof(float), &mesh->vertexData[3 * sizeof(float)]);
+    glVertexAttribPointer(this->programHolder->aTextureCoord, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)(3 * sizeof(float)));
     glEnableVertexAttribArray(this->programHolder->aTextureCoord);
     
     glActiveTexture(GL_TEXTURE0);

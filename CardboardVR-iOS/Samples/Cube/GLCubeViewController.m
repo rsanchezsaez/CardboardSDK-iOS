@@ -10,6 +10,8 @@
 
 #import "GLCubeRenderer.h"
 
+#import <OpenGLES/ES2/glext.h>
+
 
 @interface GLCubeViewController ()
 
@@ -31,7 +33,7 @@
     {
         NSLog(@"Failed to create OpenGL ES 2.0 context");
     }
-    self.view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
+    self.view.drawableDepthFormat = GLKViewDrawableDepthFormat16;
     
     self.cubeRenderer = [[GLCubeRenderer alloc] initWithContext:self.view.context];
 }
@@ -50,6 +52,8 @@
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 {
+//    glInsertEventMarkerEXT(0, "com.apple.GPUTools.event.debug-frame");
+
     [self.cubeRenderer render];
 }
 

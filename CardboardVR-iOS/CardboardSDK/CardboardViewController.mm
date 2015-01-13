@@ -18,6 +18,8 @@
 
 #import "DebugUtils.h"
 
+#import <OpenGLES/ES2/glext.h>
+
 
 @interface StereoRenderer : NSObject
 
@@ -170,10 +172,9 @@
     {
         NSLog(@"Failed to create OpenGL ES 2.0 context");
     }
+    self.view.drawableDepthFormat = GLKViewDrawableDepthFormat16;
     
     [self.stereoRendererDelegate setupRendererWithView:self.view];
-    
-    // self.view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
 }
 
 - (void)dealloc
@@ -239,6 +240,8 @@
 {
     // TODO: Check that is not shutting down and that view size is valid before drawing
     
+    // glInsertEventMarkerEXT(0, "com.apple.GPUTools.event.debug-frame");
+
     checkGLError();
 
     CardboardDeviceParams *cardboardDeviceParams = _headMountedDisplay->getCardboard();
@@ -355,6 +358,8 @@
             
             checkGLError();
 
+            // Rebind original framebuffer
+            [self.view bindDrawable];
             _distortionRenderer->afterDrawFrame();
             
             checkGLError();

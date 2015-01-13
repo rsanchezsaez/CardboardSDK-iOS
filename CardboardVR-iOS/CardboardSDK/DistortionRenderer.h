@@ -19,6 +19,7 @@ class DistortionRenderer
 {
 public:
     DistortionRenderer();
+    ~DistortionRenderer();
     void beforeDrawFrame();
     void afterDrawFrame();
     void setResolutionScale(float scale);
@@ -36,7 +37,7 @@ private:
         int arrayBufferId;
         int elementBufferId;
         float vertexData[8000];
-        float indexData[3158];
+        unsigned int indexData[3158];
     public:
         DistortionMesh();
         DistortionMesh(EyeParams *eye,
@@ -53,8 +54,6 @@ private:
                        float viewportYMTexture,
                        float viewportWidthMTexture,
                        float viewportHeightMTexture);
-    private:
-        ~DistortionMesh();
     };
     
     class EyeViewport
@@ -84,9 +83,9 @@ private:
     GLuint textureId;
     GLuint renderbufferId;
     GLuint framebufferId;
-    int originalFramebufferId;
-    int cullFaceEnabled;
-    int scissorTestEnabled;
+    //int originalFramebufferId;
+    GLboolean cullFaceEnabled;
+    GLboolean scissorTestEnabled;
     int viewport[4];
     float resolutionScale;
     DistortionMesh *leftEyeDistortionMesh;
