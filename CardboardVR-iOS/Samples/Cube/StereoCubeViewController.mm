@@ -41,7 +41,7 @@
 }
 
 - (void)drawEyeWithTransform:(EyeTransform *)eyeTransform eyeType:(EyeParamsType)eyeType
-{
+{    
     [self.cubeRenderer updateTimeWithDelta:1/60.0f];
     [self.cubeRenderer render];
     checkGLError();

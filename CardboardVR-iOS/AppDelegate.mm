@@ -30,10 +30,10 @@
 //    GLCubeViewController *cardboardViewController = [GLCubeViewController new];
 
     // Stereo cube example (wip)
-    StereoCubeViewController *cardboardViewController = [StereoCubeViewController new];
+//    StereoCubeViewController *cardboardViewController = [StereoCubeViewController new];
 
     // Google's treasure example
-//    TreasureViewController *cardboardViewController = [TreasureViewController new];
+    TreasureViewController *cardboardViewController = [TreasureViewController new];
     
     self.window.rootViewController = cardboardViewController;
     

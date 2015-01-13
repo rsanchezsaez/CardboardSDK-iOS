@@ -25,11 +25,11 @@ public:
     GLKMatrix4 getLastHeadView();
 private:
     GLKMatrix4 getRotateEulerMatrix(float x, float y, float z);
-private:
     CMMotionManager *manager;
-    double lastGyroEventTimeSeconds;
     OrientationEKF *tracker;
     GLKMatrix4 ekfToHeadTracker;
+    NSTimeInterval referenceTimestamp;
+    NSTimeInterval lastGyroEventTimestamp;
 };
 
 #endif

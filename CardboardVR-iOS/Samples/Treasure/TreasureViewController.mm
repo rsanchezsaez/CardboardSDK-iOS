@@ -504,6 +504,8 @@
 
 - (void)drawEyeWithTransform:(EyeTransform *)eyeTransform eyeType:(EyeParamsType)eyeType
 {
+    // NSLog(@"%@", NSStringFromGLKMatrix4(eyeTransform->getEyeView()));
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     checkGLError();
