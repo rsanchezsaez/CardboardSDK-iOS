@@ -1,14 +1,16 @@
 //
-//  DebugUtils.h
+//  GLHelpers.h
 //  CardboardVR-iOS
 //
-//  Created by Ricardo Sánchez-Sáez on 12/01/2015.
+//  Created by Ricardo Sánchez-Sáez on 13/01/2015.
 //  Copyright (c) 2015 Peter Tribe. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 
 #import <OpenGLES/ES2/gl.h>
+#import <OpenGLES/ES2/glext.h>
+
 
 #ifdef DEBUG
 
@@ -27,3 +29,13 @@ inline void checkGLError()
 #define checkGLError() ;
 
 #endif
+
+
+@interface GLHelpers : NSObject
+
++ (BOOL)compileShader:(GLuint *)shader type:(GLenum)type file:(NSString *)file;
++ (BOOL)linkProgram:(GLuint)prog;
++ (BOOL)validateProgram:(GLuint)prog;
+
+
+@end

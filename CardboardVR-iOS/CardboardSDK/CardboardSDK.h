@@ -6,12 +6,9 @@
 //  Copyright (c) 2015 Peter Tribe. All rights reserved.
 //
 
-#ifndef CardboardVR_iOS_CardboardSDK_h
-#define CardboardVR_iOS_CardboardSDK_h
+#import "GLHelpers.h"
 
-#include "CardboardViewController.h"
-#include "EyeTransform.h"
-#include "HeadTransform.h"
-#include "Viewport.h"
-
-#endif
+#import "CardboardViewController.h"
+#import "EyeTransform.h"
+#import "HeadTransform.h"
+#import "Viewport.h"

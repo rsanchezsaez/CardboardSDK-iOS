@@ -8,9 +8,10 @@
 
 #include "DistortionRenderer.h"
 
+#import "GLHelpers.h"
+
 #import <OpenGLES/ES2/glext.h>
 
-#import "DebugUtils.h"
 
 DistortionRenderer::DistortionRenderer()
 {

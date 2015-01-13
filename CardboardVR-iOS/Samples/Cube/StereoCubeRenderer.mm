@@ -11,7 +11,6 @@
 #import "CardboardSDK.h"
 #import "GLCubeRenderer.h"
 
-#import "DebugUtils.h"
 
 @interface StereoCubeRenderer ()
 

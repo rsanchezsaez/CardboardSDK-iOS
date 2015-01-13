@@ -11,6 +11,7 @@
 #import "GLCubeViewController.h"
 #import "CardboardViewController.h"
 #import "StereoCubeRenderer.h"
+#import "TreasureViewController.h"
 
 @interface AppDelegate ()
 
@@ -25,9 +26,16 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
 
-    CardboardViewController *cardboardViewController = [CardboardViewController new];
-    cardboardViewController.stereoRendererDelegate = [StereoCubeRenderer new];
+    // Non-stereo plain OpenGL example
 //    GLCubeViewController *cardboardViewController = [GLCubeViewController new];
+
+    // Stereo cube example (wip)
+//    CardboardViewController *cardboardViewController = [CardboardViewController new];
+//    cardboardViewController.stereoRendererDelegate = [StereoCubeRenderer new];
+
+    // Google's treasure example
+    TreasureViewController *cardboardViewController = [TreasureViewController new];
+    
     self.window.rootViewController = cardboardViewController;
     
     return YES;

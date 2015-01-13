@@ -16,7 +16,7 @@
 #include "HeadMountedDisplay.h"
 #include "Viewport.h"
 
-#import "DebugUtils.h"
+#import "GLHelpers.h"
 
 #import <OpenGLES/ES2/glext.h>
 
@@ -146,7 +146,7 @@
     self.stereoRenderer = [StereoRenderer new];
     self.isVRModeEnabled = YES;
     
-    self.distortionCorrectionEnabled = YES;
+    //self.distortionCorrectionEnabled = YES;
     self.distortionCorrectionScale = 1.0f;
 
     self.zNear = 0.1f;
