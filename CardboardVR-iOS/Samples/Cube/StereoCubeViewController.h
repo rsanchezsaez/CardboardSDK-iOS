@@ -10,6 +10,6 @@
 
 #import "CardboardSDK.h"
 
-@interface StereoCubeRenderer : NSObject <StereoRendererDelegate>
+@interface StereoCubeViewController : CardboardViewController
 
 @end

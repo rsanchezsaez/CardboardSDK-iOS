@@ -37,7 +37,7 @@
 		BCD7096E1A64194700E78B84 /* CubeShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = BCD709661A64194700E78B84 /* CubeShader.vsh */; };
 		BCD7096F1A64194700E78B84 /* GLCubeRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = BCD709681A64194700E78B84 /* GLCubeRenderer.m */; };
 		BCD709701A64194700E78B84 /* GLCubeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCD7096A1A64194700E78B84 /* GLCubeViewController.m */; };
-		BCD709711A64194700E78B84 /* StereoCubeRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = BCD7096C1A64194700E78B84 /* StereoCubeRenderer.mm */; };
+		BCD709711A64194700E78B84 /* StereoCubeViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BCD7096C1A64194700E78B84 /* StereoCubeViewController.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -98,8 +98,8 @@
 		BCD709681A64194700E78B84 /* GLCubeRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLCubeRenderer.m; sourceTree = "<group>"; };
 		BCD709691A64194700E78B84 /* GLCubeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLCubeViewController.h; sourceTree = "<group>"; };
 		BCD7096A1A64194700E78B84 /* GLCubeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLCubeViewController.m; sourceTree = "<group>"; };
-		BCD7096B1A64194700E78B84 /* StereoCubeRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StereoCubeRenderer.h; sourceTree = "<group>"; };
-		BCD7096C1A64194700E78B84 /* StereoCubeRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StereoCubeRenderer.mm; sourceTree = "<group>"; };
+		BCD7096B1A64194700E78B84 /* StereoCubeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StereoCubeViewController.h; sourceTree = "<group>"; };
+		BCD7096C1A64194700E78B84 /* StereoCubeViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StereoCubeViewController.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -262,8 +262,8 @@
 				BCD709681A64194700E78B84 /* GLCubeRenderer.m */,
 				BCD709691A64194700E78B84 /* GLCubeViewController.h */,
 				BCD7096A1A64194700E78B84 /* GLCubeViewController.m */,
-				BCD7096B1A64194700E78B84 /* StereoCubeRenderer.h */,
-				BCD7096C1A64194700E78B84 /* StereoCubeRenderer.mm */,
+				BCD7096B1A64194700E78B84 /* StereoCubeViewController.h */,
+				BCD7096C1A64194700E78B84 /* StereoCubeViewController.mm */,
 			);
 			path = Cube;
 			sourceTree = "<group>";
@@ -359,7 +359,7 @@
 				BC6733661A5D90C700C6D79B /* EyeTransform.mm in Sources */,
 				BCD709701A64194700E78B84 /* GLCubeViewController.m in Sources */,
 				BC6733671A5D90C700C6D79B /* FieldOfView.mm in Sources */,
-				BCD709711A64194700E78B84 /* StereoCubeRenderer.mm in Sources */,
+				BCD709711A64194700E78B84 /* StereoCubeViewController.mm in Sources */,
 				BC6733691A5D90C700C6D79B /* HeadTransform.mm in Sources */,
 				BC67336D1A5D90C700C6D79B /* OrientationEKF.mm in Sources */,
 				BC6733621A5D90C700C6D79B /* CardboardViewController.mm in Sources */,

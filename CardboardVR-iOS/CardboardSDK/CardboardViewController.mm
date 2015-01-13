@@ -144,10 +144,10 @@
     self.distortionRenderer = new DistortionRenderer();
     
     self.stereoRenderer = [StereoRenderer new];
-    self.isVRModeEnabled = YES;
-    
-    //self.distortionCorrectionEnabled = YES;
     self.distortionCorrectionScale = 1.0f;
+
+    self.isVRModeEnabled = YES;
+    // self.distortionCorrectionEnabled = YES;
 
     self.zNear = 0.1f;
     self.zFar = 100.0f;

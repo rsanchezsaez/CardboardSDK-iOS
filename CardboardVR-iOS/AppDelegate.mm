@@ -10,7 +10,7 @@
 
 #import "GLCubeViewController.h"
 #import "CardboardViewController.h"
-#import "StereoCubeRenderer.h"
+#import "StereoCubeViewController.h"
 #import "TreasureViewController.h"
 
 @interface AppDelegate ()
@@ -30,11 +30,10 @@
 //    GLCubeViewController *cardboardViewController = [GLCubeViewController new];
 
     // Stereo cube example (wip)
-//    CardboardViewController *cardboardViewController = [CardboardViewController new];
-//    cardboardViewController.stereoRendererDelegate = [StereoCubeRenderer new];
+    StereoCubeViewController *cardboardViewController = [StereoCubeViewController new];
 
     // Google's treasure example
-    TreasureViewController *cardboardViewController = [TreasureViewController new];
+//    TreasureViewController *cardboardViewController = [TreasureViewController new];
     
     self.window.rootViewController = cardboardViewController;
     

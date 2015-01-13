@@ -6,13 +6,13 @@
 //  Copyright (c) 2015 Peter Tribe. All rights reserved.
 //
 
-#import "StereoCubeRenderer.h"
+#import "StereoCubeViewController.h"
 
 #import "CardboardSDK.h"
 #import "GLCubeRenderer.h"
 
 
-@interface StereoCubeRenderer ()
+@interface StereoCubeRenderer : NSObject <StereoRendererDelegate>
 
 @property (nonatomic) GLCubeRenderer *cubeRenderer;
 
@@ -24,6 +24,7 @@
 - (void)setupRendererWithView:(GLKView *)GLView
 {
     self.cubeRenderer = [[GLCubeRenderer alloc] initWithContext:GLView.context];
+    [self.cubeRenderer updateProjectionMatrixAspectWithSize:GLView.bounds.size];
 }
 
 - (void)shutdownRendererWithView:(GLKView *)GLView
@@ -42,19 +43,7 @@
 - (void)drawEyeWithTransform:(EyeTransform *)eyeTransform eyeType:(EyeParamsType)eyeType
 {
     [self.cubeRenderer updateTimeWithDelta:1/60.0f];
-    // [self.cubeRenderer render];
-    if (eyeType == EyeParamsTypeMonocular)
-    {
-        [self.cubeRenderer render];
-    }
-    else if (eyeType == EyeParamsTypeLeft)
-    {
-        [self.cubeRenderer renderA];
-    }
-    else if (eyeType == EyeParamsTypeRight)
-    {
-        [self.cubeRenderer renderB];
-    }
+    [self.cubeRenderer render];
     checkGLError();
 }
 
@@ -62,6 +51,27 @@
 {
 }
 
+@end
 
+
+@interface StereoCubeViewController()
+
+@property (nonatomic) StereoCubeRenderer *stereoCubeRenderer;
+
+@end
+
+
+@implementation StereoCubeViewController
+
+- (instancetype)init
+{
+    self = [super init];
+    if (!self) {return nil; }
+    
+    self.stereoCubeRenderer = [StereoCubeRenderer new];
+    self.stereoRendererDelegate = self.stereoCubeRenderer;
+    
+    return self;
+}
 
 @end

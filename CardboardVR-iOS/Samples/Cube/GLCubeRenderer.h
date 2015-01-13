@@ -19,7 +19,5 @@
 - (void)updateProjectionMatrixAspectWithSize:(CGSize)size;
 - (void)updateTimeWithDelta:(NSTimeInterval)timeSinceLastUpdate;
 - (void)render;
-- (void)renderA;
-- (void)renderB;
 
 @end
