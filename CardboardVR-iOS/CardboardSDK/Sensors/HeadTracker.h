@@ -24,6 +24,7 @@ public:
     void stopTracking();
     GLKMatrix4 getLastHeadView();
 private:
+    GLKMatrix4 glMatrixFromRotationMatrix(CMRotationMatrix rotationMatrix);
     GLKMatrix4 getRotateEulerMatrix(float x, float y, float z);
     CMMotionManager *manager;
     OrientationEKF *tracker;

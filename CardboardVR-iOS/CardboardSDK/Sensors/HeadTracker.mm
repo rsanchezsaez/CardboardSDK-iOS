@@ -62,33 +62,34 @@ void HeadTracker::startTracking()
     }
     this->tracker->reset();
     this->manager = [[CMMotionManager alloc] init];
-    if (this->manager.isMagnetometerAvailable)
+    if ([this->manager isDeviceMotionAvailable])
     {
-        this->manager.magnetometerUpdateInterval = 1.0f / 100.0f;
-        [this->manager startAccelerometerUpdatesToQueue:
-         [NSOperationQueue currentQueue] withHandler:^
-         (CMAccelerometerData *accelerometerData, NSError *error)
-        {
-            GLKVector3 motionVector = GLKVector3Make(-accelerometerData.acceleration.y,
-                                                     accelerometerData.acceleration.x,
-                                                     accelerometerData.acceleration.z);
-            this->tracker->processAcc(motionVector, accelerometerData.timestamp);
-        }];
-        [this->manager startGyroUpdatesToQueue:
-         [NSOperationQueue currentQueue] withHandler:^
-         (CMGyroData *gyroData, NSError *error)
-        {
-            GLKVector3 motionVector = GLKVector3Make(-gyroData.rotationRate.y,
-                                                     gyroData.rotationRate.x,
-                                                     gyroData.rotationRate.z);
-            if (this->referenceTimestamp == 0)
-            {
-                this->referenceTimestamp =
-                [[NSDate dateWithTimeIntervalSinceNow:-gyroData.timestamp] timeIntervalSinceReferenceDate];
-            }
-            this->lastGyroEventTimestamp = gyroData.timestamp;
-            this->tracker->processAcc(motionVector, gyroData.timestamp);
-        }];
+        [this->manager startDeviceMotionUpdates];
+//        this->manager.magnetometerUpdateInterval = 1.0f / 100.0f;
+//        [this->manager startAccelerometerUpdatesToQueue:
+//         [NSOperationQueue currentQueue] withHandler:^
+//         (CMAccelerometerData *accelerometerData, NSError *error)
+//        {
+//            GLKVector3 motionVector = GLKVector3Make(-accelerometerData.acceleration.y,
+//                                                     accelerometerData.acceleration.x,
+//                                                     accelerometerData.acceleration.z);
+//            this->tracker->processAcc(motionVector, accelerometerData.timestamp);
+//        }];
+//        [this->manager startGyroUpdatesToQueue:
+//         [NSOperationQueue currentQueue] withHandler:^
+//         (CMGyroData *gyroData, NSError *error)
+//        {
+//            GLKVector3 motionVector = GLKVector3Make(-gyroData.rotationRate.y,
+//                                                     gyroData.rotationRate.x,
+//                                                     gyroData.rotationRate.z);
+//            if (this->referenceTimestamp == 0)
+//            {
+//                this->referenceTimestamp =
+//                [[NSDate dateWithTimeIntervalSinceNow:-gyroData.timestamp] timeIntervalSinceReferenceDate];
+//            }
+//            this->lastGyroEventTimestamp = gyroData.timestamp;
+//            this->tracker->processAcc(motionVector, gyroData.timestamp);
+//        }];
     }
 }
 
@@ -102,18 +103,52 @@ void HeadTracker::stopTracking()
     this->manager = nil;
 }
 
+GLKMatrix4 HeadTracker::glMatrixFromRotationMatrix(CMRotationMatrix rotationMatrix)
+{
+    
+    GLKMatrix4 glRotationMatrix;
+    
+    glRotationMatrix.m00 = rotationMatrix.m11;
+    glRotationMatrix.m01 = rotationMatrix.m12;
+    glRotationMatrix.m02 = rotationMatrix.m13;
+    glRotationMatrix.m03 = 0.0f;
+    
+    glRotationMatrix.m10 = rotationMatrix.m21;
+    glRotationMatrix.m11 = rotationMatrix.m22;
+    glRotationMatrix.m12 = rotationMatrix.m23;
+    glRotationMatrix.m13 = 0.0f;
+    
+    glRotationMatrix.m20 = rotationMatrix.m31;
+    glRotationMatrix.m21 = rotationMatrix.m32;
+    glRotationMatrix.m22 = rotationMatrix.m33;
+    glRotationMatrix.m23 = 0.0f;
+
+    glRotationMatrix.m30 = 0.0f;
+    glRotationMatrix.m31 = 0.0f;
+    glRotationMatrix.m32 = 0.0f;
+    glRotationMatrix.m33 = 1.0f;
+
+    return glRotationMatrix;
+}
+
 GLKMatrix4 HeadTracker::getLastHeadView()
 {
-    if (this->referenceTimestamp == 0)
-    {
-        return GLKMatrix4Identity;
-    }
+//    if (this->referenceTimestamp == 0)
+//    {
+//        return GLKMatrix4Identity;
+//    }
+//    
+//    double secondsSinceLastGyroEvent = [[NSDate date] timeIntervalSinceReferenceDate] - this->referenceTimestamp - this->lastGyroEventTimestamp;
+//    // NSLog(@"%f", secondsSinceLastGyroEvent);
+//    double secondsToPredictForward = secondsSinceLastGyroEvent + 0.03333333333333333;
+//    GLKMatrix4 tempHeadView = this->tracker->getPredictedGLMatrix(secondsToPredictForward);
+    CMDeviceMotion *motion = this->manager.deviceMotion;
     
-    double secondsSinceLastGyroEvent = [[NSDate date] timeIntervalSinceReferenceDate] - this->referenceTimestamp - this->lastGyroEventTimestamp;
-    // NSLog(@"%f", secondsSinceLastGyroEvent);
-    double secondsToPredictForward = secondsSinceLastGyroEvent + 0.03333333333333333;
-    GLKMatrix4 tempHeadView = this->tracker->getPredictedGLMatrix(secondsToPredictForward);
-    GLKMatrix4 outMatrix = GLKMatrix4Multiply(tempHeadView, this->ekfToHeadTracker);
+    // NSLog(@"%.3f %.3f %.3f", motion.attitude.roll, motion.attitude.pitch, motion.attitude.yaw);
+    
+    CMRotationMatrix rotationMatrix = motion.attitude.rotationMatrix;
+    GLKMatrix4 glRotationMatrix = this->glMatrixFromRotationMatrix(rotationMatrix);
+    GLKMatrix4 outMatrix = GLKMatrix4Multiply(glRotationMatrix, this->ekfToHeadTracker);
     // NSLog(@"%@", NSStringFromGLKMatrix4(outMatrix));
     return outMatrix;
 }
