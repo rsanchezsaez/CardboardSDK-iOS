@@ -30,6 +30,7 @@ inline void checkGLError()
 
 #endif
 
+#define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
 @interface GLHelpers : NSObject
 
