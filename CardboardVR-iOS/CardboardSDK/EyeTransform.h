@@ -18,6 +18,7 @@ class EyeTransform
 public:
     EyeTransform(EyeParams *params);
     GLKMatrix4 getEyeView();
+    void setEyeView(GLKMatrix4 eyeView);
     GLKMatrix4 getPerspective();
     void setPerspective(GLKMatrix4 perspective);
     EyeParams* getParams();

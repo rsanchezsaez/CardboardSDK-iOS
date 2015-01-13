@@ -15,7 +15,7 @@ HeadTransform::HeadTransform()
 
 void HeadTransform::setHeadView(GLKMatrix4 headview)
 {
-    this->headView = headView;
+    this->headView = headview;
 }
 
 GLKMatrix4 HeadTransform::getHeadView()

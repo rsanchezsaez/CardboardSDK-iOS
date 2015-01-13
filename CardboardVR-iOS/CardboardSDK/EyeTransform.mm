@@ -20,6 +20,11 @@ GLKMatrix4 EyeTransform::getEyeView()
     return this->eyeView;
 }
 
+void EyeTransform::setEyeView(GLKMatrix4 eyeView)
+{
+    this->eyeView = eyeView;
+}
+
 GLKMatrix4 EyeTransform::getPerspective()
 {
     return this->perspective;

@@ -56,7 +56,9 @@
 - (void)drawFrameWithHeadTransform:(HeadTransform *)headTransform leftEyeParams:(EyeParams *)leftEyeParams rightEyeParams:(EyeParams *)rightEyeParams
 {
     checkGLError();
-    
+ 
+    // NSLog(@"%@", NSStringFromGLKMatrix4(leftEyeParams->getTransform()->getEyeView()));
+
     [self.stereoRendererDelegate prepareNewFrameWithHeadTransform:headTransform];
     
     checkGLError();
@@ -246,9 +248,11 @@
 
     CardboardDeviceParams *cardboardDeviceParams = _headMountedDisplay->getCardboard();
     
-    _headTransform->getHeadView() = _headTracker->getLastHeadView();
+    _headTransform->setHeadView(_headTracker->getLastHeadView());
     float halfInterpupillaryDistance = cardboardDeviceParams->getInterpupillaryDistance() * 0.5f;
     
+    // NSLog(@"%@", NSStringFromGLKMatrix4(_headTracker->getLastHeadView()));
+
     if (self.isVRModeEnabled)
     {
         GLKMatrix4 leftEyeTranslate = GLKMatrix4Identity;
@@ -257,12 +261,14 @@
         GLKMatrix4Translate(leftEyeTranslate, halfInterpupillaryDistance, 0, 0);
         GLKMatrix4Translate(rightEyeTranslate, -halfInterpupillaryDistance, 0, 0);
         
-        _leftEyeParams->getTransform()->getEyeView() = GLKMatrix4Multiply(leftEyeTranslate, _headTransform->getHeadView());
-        _rightEyeParams->getTransform()->getEyeView() = GLKMatrix4Multiply(rightEyeTranslate, _headTransform->getHeadView());
+        // NSLog(@"%@", NSStringFromGLKMatrix4(_headTransform->getHeadView()));
+
+        _leftEyeParams->getTransform()->setEyeView( GLKMatrix4Multiply(leftEyeTranslate, _headTransform->getHeadView()));
+        _rightEyeParams->getTransform()->setEyeView( GLKMatrix4Multiply(rightEyeTranslate, _headTransform->getHeadView()));
     }
     else
     {
-        _monocularParams->getTransform()->getEyeView() = _headTransform->getHeadView();
+        _monocularParams->getTransform()->setEyeView(_headTransform->getHeadView());
     }
     
     if (_projectionChanged)
@@ -273,11 +279,11 @@
         if (!self.isVRModeEnabled)
         {
             float aspectRatio = screenParams->getWidth() / screenParams->getHeight();
-            _monocularParams->getTransform()->getPerspective() =
+            _monocularParams->getTransform()->setPerspective(
             GLKMatrix4MakePerspective(GLKMathDegreesToRadians(_headMountedDisplay->getCardboard()->getFovY()),
                                       aspectRatio,
                                       _zNear,
-                                      _zFar);
+                                      _zFar));
         }
         else if (_distortionCorrectionEnabled)
         {
@@ -305,8 +311,8 @@
             rightEyeFov->setBottom(leftEyeFov->getBottom());
             rightEyeFov->setTop(leftEyeFov->getTop());
             
-            _leftEyeParams->getTransform()->getPerspective() = leftEyeFov->toPerspectiveMatrix(_zNear, _zFar);
-            _rightEyeParams->getTransform()->getPerspective() = rightEyeFov->toPerspectiveMatrix(_zNear, _zFar);
+            _leftEyeParams->getTransform()->setPerspective( leftEyeFov->toPerspectiveMatrix(_zNear, _zFar));
+            _rightEyeParams->getTransform()->setPerspective( rightEyeFov->toPerspectiveMatrix(_zNear, _zFar));
             
             _leftEyeParams->getViewport()->setViewport(0, 0, screenParams->getWidth() / 2, screenParams->getHeight());
             _rightEyeParams->getViewport()->setViewport(screenParams->getWidth() / 2, 0, screenParams->getWidth() / 2, screenParams->getHeight());
