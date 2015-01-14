@@ -149,7 +149,7 @@
     self.distortionCorrectionScale = 1.0f;
 
     self.isVRModeEnabled = YES;
-//    self.distortionCorrectionEnabled = YES;
+    self.distortionCorrectionEnabled = YES;
 
     self.zNear = 0.1f;
     self.zFar = 100.0f;
@@ -418,10 +418,10 @@
     leftEyeFov->setBottom(MIN(bottomAngle, idealFovAngle));
     leftEyeFov->setTop(MIN(topAngle, idealFovAngle));
 
-    leftEyeFov->setLeft(MIN(innerAngle, idealFovAngle));
-    leftEyeFov->setRight(MIN(outerAngle, idealFovAngle));
-    leftEyeFov->setBottom(MIN(bottomAngle, idealFovAngle));
-    leftEyeFov->setTop(MIN(topAngle, idealFovAngle));
+    rightEyeFov->setLeft(MIN(innerAngle, idealFovAngle));
+    rightEyeFov->setRight(MIN(outerAngle, idealFovAngle));
+    rightEyeFov->setBottom(MIN(bottomAngle, idealFovAngle));
+    rightEyeFov->setTop(MIN(topAngle, idealFovAngle));
 }
 
 @end

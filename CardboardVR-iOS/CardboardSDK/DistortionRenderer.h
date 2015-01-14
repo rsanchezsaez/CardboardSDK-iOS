@@ -80,10 +80,10 @@ private:
         int uTextureSampler;
     };
     
+    //int originalFramebufferId;
+    GLuint framebufferId;
     GLuint textureId;
     GLuint renderbufferId;
-    GLuint framebufferId;
-    //int originalFramebufferId;
     GLboolean cullFaceEnabled;
     GLboolean scissorTestEnabled;
     int viewport[4];

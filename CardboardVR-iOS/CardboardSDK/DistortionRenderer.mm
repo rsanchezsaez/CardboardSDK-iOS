@@ -15,10 +15,17 @@
 
 DistortionRenderer::DistortionRenderer()
 {
+    this->programHolder = nullptr;
+    this->hmd = nullptr;
+    this->leftEyeDistortionMesh = nullptr;
+    this->rightEyeDistortionMesh = nullptr;
+    this->leftEyeFov = nullptr;
+    this->rightEyeFov = nullptr;
+
+    //this->originalFramebufferId = 0;
+    this->framebufferId = -1;
     this->textureId = -1;
     this->renderbufferId = -1;
-    this->framebufferId = -1;
-    //this->originalFramebufferId = 0;
     this->cullFaceEnabled = 0;
     this->scissorTestEnabled = 0;
     for (int i = 0; i < 4; i++) {
@@ -36,7 +43,8 @@ void DistortionRenderer::beforeDrawFrame()
 void DistortionRenderer::afterDrawFrame()
 {
     //glBindFramebuffer(GL_FRAMEBUFFER, this->originalFramebufferId);
-    glViewport(0, 0, this->hmd->getScreen()->getWidth(), this->hmd->getScreen()->getHeight());
+    ScreenParams *screen = this->hmd->getScreen();
+    glViewport(0, 0, screen->getWidth(), screen->getHeight());
     
     glGetIntegerv(GL_VIEWPORT, this->viewport);
     
@@ -48,16 +56,16 @@ void DistortionRenderer::afterDrawFrame()
     
     glClearColor(0.0F, 0.0F, 0.0F, 1.0F);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
+
     glUseProgram(this->programHolder->program);
     
     glEnable(GL_SCISSOR_TEST);
     
-    glScissor(0, 0, this->hmd->getScreen()->getWidth() / 2, this->hmd->getScreen()->getHeight());
+    glScissor(0, 0, screen->getWidth() / 2, screen->getHeight());
     
     this->renderDistortionMesh(this->leftEyeDistortionMesh);
     
-    glScissor(this->hmd->getScreen()->getWidth() / 2, 0, this->hmd->getScreen()->getWidth() / 2, this->hmd->getScreen()->getHeight());
+    glScissor(screen->getWidth() / 2, 0, screen->getWidth() / 2, screen->getHeight());
 
     this->renderDistortionMesh(this->rightEyeDistortionMesh);
     
@@ -106,6 +114,10 @@ void DistortionRenderer::onProjectionChanged(HeadMountedDisplay *hmd,
                                              float zNear,
                                              float zFar)
 {
+    if (this->hmd != nullptr) { delete this->hmd; }
+    if (this->leftEyeFov != nullptr) { delete this->leftEyeFov; }
+    if (this->rightEyeFov != nullptr) { delete this->rightEyeFov; }
+
     this->hmd = new HeadMountedDisplay(hmd);
     this->leftEyeFov = new FieldOfView(leftEye->getFov());
     this->rightEyeFov = new FieldOfView(rightEye->getFov());
@@ -373,7 +385,9 @@ DistortionRenderer::ProgramHolder *DistortionRenderer::createProgramHolder()
     }
     
     checkGLError();
-
+    
+    // NSLog(@"ProgramHolder created %p %d", this, holder->program);
+    
     return holder;
 }
 

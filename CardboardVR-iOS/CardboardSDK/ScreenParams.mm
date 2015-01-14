@@ -55,11 +55,12 @@ ScreenParams::ScreenParams(UIScreen *screen)
 
 ScreenParams::ScreenParams(ScreenParams *screenParams)
 {
-    this->width = screenParams->getWidth();
-    this->height = screenParams->getHeight();
-    this->xMetersPerPixel = screenParams->getWidthMeters() / (float)this->width;
-    this->yMetersPerPixel =  screenParams->getHeightMeters() / (float)this->height;
-    this->borderSizeMeters = screenParams->getBorderSizeMeters();
+    this->scale = screenParams->scale;
+    this->width = screenParams->width;
+    this->height = screenParams->height;
+    this->xMetersPerPixel = screenParams->xMetersPerPixel;
+    this->yMetersPerPixel = screenParams->yMetersPerPixel;
+    this->borderSizeMeters = screenParams->borderSizeMeters;
 }
 
 void ScreenParams::setWidth(int width)
@@ -85,14 +86,12 @@ int ScreenParams::getHeight()
 float ScreenParams::getWidthMeters()
 {
     float meters = this->width * this->xMetersPerPixel;
-    // NSLog(@"%f", meters);
     return meters;
 }
 
 float ScreenParams::getHeightMeters()
 {
     float meters = this->height * this->yMetersPerPixel;
-    // NSLog(@"%f", meters);
     return meters;
 }
 
