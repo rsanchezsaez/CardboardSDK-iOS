@@ -136,6 +136,9 @@
     self = [super init];
     if (!self) { return nil; }
     
+    // Do not allow the display going into sleep
+    [UIApplication sharedApplication].idleTimerDisabled = YES;
+
     self.delegate = self;
 
     self.magnetSensor = new MagnetSensor();
