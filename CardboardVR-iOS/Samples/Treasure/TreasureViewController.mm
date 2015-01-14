@@ -90,7 +90,7 @@
     _zFar = 100.0f;
     
     _cameraZ = 0.01f;
-    _timeDelta = 0.3f;
+    _timeDelta = 1.0f;
     
     _yawLimit = 0.12f;
     _pitchLimit = 0.12f;
