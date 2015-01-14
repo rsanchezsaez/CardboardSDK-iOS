@@ -67,7 +67,7 @@ void HeadTracker::startTracking()
     this->manager = [[CMMotionManager alloc] init];
     if ([this->manager isDeviceMotionAvailable])
     {
-        [this->manager startDeviceMotionUpdatesUsingReferenceFrame:CMAttitudeReferenceFrameXArbitraryZVertical];
+        [this->manager startDeviceMotionUpdatesUsingReferenceFrame:CMAttitudeReferenceFrameXArbitraryCorrectedZVertical];
 //        this->manager.magnetometerUpdateInterval = 1.0f / 100.0f;
 //        [this->manager startAccelerometerUpdatesToQueue:
 //         [NSOperationQueue currentQueue] withHandler:^
@@ -154,6 +154,7 @@ GLKMatrix4 HeadTracker::getLastHeadView()
     GLKMatrix4 inertialReferenceFrameToDevice = GLKMatrix4Transpose(this->glMatrixFromRotationMatrix(rotationMatrix)); // note the matrix inversion
     GLKMatrix4 worldToDevice = GLKMatrix4Multiply(inertialReferenceFrameToDevice, worldToInertialReferenceFrame);
     GLKMatrix4 worldToDisplay = GLKMatrix4Multiply(deviceToDisplay, worldToDevice);
+    // GLKMatrix4 outMatrix = GLKMatrix4Multiply(glRotationMatrix, this->ekfToHeadTracker);
     // NSLog(@"%@", NSStringFromGLKMatrix4(outMatrix));
     return worldToDisplay;
 }
