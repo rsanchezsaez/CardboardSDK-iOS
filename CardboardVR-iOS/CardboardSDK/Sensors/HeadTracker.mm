@@ -14,7 +14,10 @@ HeadTracker::HeadTracker()
     this->lastGyroEventTimestamp = 0;
     this->manager = nil;
     this->tracker = new OrientationEKF();
-    this->ekfToHeadTracker = this->getRotateEulerMatrix(-90, 0, 0);
+    // the inertial reference frame has z up and x forward, while the world has z out and x right
+    this->worldToInertialReferenceFrame = this->getRotateEulerMatrix(-90.f, 0.f, 90.f);
+    // this assumes the device is landscape with the home button on the right
+    this->deviceToDisplay = this->getRotateEulerMatrix(0.f, 0.f, -90.f);
 }
 
 HeadTracker::~HeadTracker()
@@ -64,7 +67,7 @@ void HeadTracker::startTracking()
     this->manager = [[CMMotionManager alloc] init];
     if ([this->manager isDeviceMotionAvailable])
     {
-        [this->manager startDeviceMotionUpdates];
+        [this->manager startDeviceMotionUpdatesUsingReferenceFrame:CMAttitudeReferenceFrameXArbitraryZVertical];
 //        this->manager.magnetometerUpdateInterval = 1.0f / 100.0f;
 //        [this->manager startAccelerometerUpdatesToQueue:
 //         [NSOperationQueue currentQueue] withHandler:^
@@ -98,8 +101,9 @@ void HeadTracker::stopTracking()
     if (this->manager == nil) {
         return;
     }
-    [this->manager stopAccelerometerUpdates];
-    [this->manager stopGyroUpdates];
+//    [this->manager stopAccelerometerUpdates];
+//    [this->manager stopGyroUpdates];
+    [this->manager stopDeviceMotionUpdates];
     this->manager = nil;
 }
 
@@ -147,8 +151,9 @@ GLKMatrix4 HeadTracker::getLastHeadView()
     // NSLog(@"%.3f %.3f %.3f", motion.attitude.roll, motion.attitude.pitch, motion.attitude.yaw);
     
     CMRotationMatrix rotationMatrix = motion.attitude.rotationMatrix;
-    GLKMatrix4 glRotationMatrix = this->glMatrixFromRotationMatrix(rotationMatrix);
-    GLKMatrix4 outMatrix = GLKMatrix4Multiply(glRotationMatrix, this->ekfToHeadTracker);
+    GLKMatrix4 inertialReferenceFrameToDevice = GLKMatrix4Transpose(this->glMatrixFromRotationMatrix(rotationMatrix)); // note the matrix inversion
+    GLKMatrix4 worldToDevice = GLKMatrix4Multiply(inertialReferenceFrameToDevice, worldToInertialReferenceFrame);
+    GLKMatrix4 worldToDisplay = GLKMatrix4Multiply(deviceToDisplay, worldToDevice);
     // NSLog(@"%@", NSStringFromGLKMatrix4(outMatrix));
-    return outMatrix;
+    return worldToDisplay;
 }

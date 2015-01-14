@@ -28,7 +28,8 @@ private:
     GLKMatrix4 getRotateEulerMatrix(float x, float y, float z);
     CMMotionManager *manager;
     OrientationEKF *tracker;
-    GLKMatrix4 ekfToHeadTracker;
+    GLKMatrix4 deviceToDisplay;
+    GLKMatrix4 worldToInertialReferenceFrame;
     NSTimeInterval referenceTimestamp;
     NSTimeInterval lastGyroEventTimestamp;
 };
