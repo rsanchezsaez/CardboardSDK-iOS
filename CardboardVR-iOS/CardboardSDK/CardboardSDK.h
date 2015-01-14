@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 Peter Tribe. All rights reserved.
 //
 
+#import "DebugUtils.h"
+
 #import "GLHelpers.h"
 
 #import "CardboardViewController.h"

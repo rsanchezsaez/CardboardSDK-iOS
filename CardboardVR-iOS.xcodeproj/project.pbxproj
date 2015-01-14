@@ -35,6 +35,7 @@
 		BC763B341A655EB700463823 /* TreasureViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC763B331A655EB700463823 /* TreasureViewController.mm */; };
 		BC763B371A66A1D100463823 /* DebugUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = BC763B351A66A1D100463823 /* DebugUtils.m */; };
 		BC763B391A66BBBC00463823 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC763B381A66BBBC00463823 /* Images.xcassets */; };
+		BC763B3B1A66D13300463823 /* highlight_fragment.shader in Resources */ = {isa = PBXBuildFile; fileRef = BC763B3A1A66D13300463823 /* highlight_fragment.shader */; };
 		BCD7096D1A64194700E78B84 /* CubeShader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = BCD709651A64194700E78B84 /* CubeShader.fsh */; };
 		BCD7096E1A64194700E78B84 /* CubeShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = BCD709661A64194700E78B84 /* CubeShader.vsh */; };
 		BCD7096F1A64194700E78B84 /* GLCubeRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = BCD709681A64194700E78B84 /* GLCubeRenderer.m */; };
@@ -96,6 +97,7 @@
 		BC763B351A66A1D100463823 /* DebugUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebugUtils.m; sourceTree = "<group>"; };
 		BC763B361A66A1D100463823 /* DebugUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugUtils.h; sourceTree = "<group>"; };
 		BC763B381A66BBBC00463823 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		BC763B3A1A66D13300463823 /* highlight_fragment.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = highlight_fragment.shader; sourceTree = "<group>"; };
 		BCCBC5821A5D93170093F31A /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		BCD709651A64194700E78B84 /* CubeShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = CubeShader.fsh; sourceTree = "<group>"; };
 		BCD709661A64194700E78B84 /* CubeShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = CubeShader.vsh; sourceTree = "<group>"; };
@@ -234,6 +236,7 @@
 		BC763B281A655D1E00463823 /* Treasure */ = {
 			isa = PBXGroup;
 			children = (
+				BC763B3A1A66D13300463823 /* highlight_fragment.shader */,
 				BC763B291A655D1E00463823 /* grid_fragment.shader */,
 				BC763B2A1A655D1E00463823 /* light_vertex.shader */,
 				BC763B2B1A655D1E00463823 /* passthrough_fragment.shader */,
@@ -339,6 +342,7 @@
 				BC763B391A66BBBC00463823 /* Images.xcassets in Resources */,
 				BC763B2C1A655D1E00463823 /* grid_fragment.shader in Resources */,
 				BCD7096E1A64194700E78B84 /* CubeShader.vsh in Resources */,
+				BC763B3B1A66D13300463823 /* highlight_fragment.shader in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
