@@ -9,10 +9,41 @@
 #include "ScreenParams.h"
 #include <sys/utsname.h>
 
+@interface UIScreen (OrientationAware)
+
+- (CGSize)orientationAwareSize;
+
+@end
+
+@implementation UIScreen (OrientationAware)
+
+- (CGSize)orientationAwareSize
+{
+    CGSize screenSize = [UIScreen mainScreen].bounds.size;
+    if ((NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_7_1)
+        && UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
+    {
+        return CGSizeMake(screenSize.height, screenSize.width);
+    }
+    return screenSize;
+}
+
+@end
+
 ScreenParams::ScreenParams(UIScreen *screen)
 {
-    this->width = screen.bounds.size.width * screen.nativeScale;
-    this->height = screen.bounds.size.height  * screen.nativeScale;
+    if ([screen respondsToSelector:@selector(nativeScale)])
+    {
+        this->scale = screen.nativeScale;
+    }
+    else
+    {
+        this->scale = screen.scale;
+    }
+    
+    CGSize screenSize = [screen orientationAwareSize];
+    this->width = screenSize.width * this->scale;
+    this->height = screenSize.height  * this->scale;
     float pixelsPerInch = this->pixelsPerInch(screen);
     
     const float metersPerInch = 0.0254f;
@@ -53,12 +84,16 @@ int ScreenParams::getHeight()
 
 float ScreenParams::getWidthMeters()
 {
-    return this->width * this->xMetersPerPixel;
+    float meters = this->width * this->xMetersPerPixel;
+    // NSLog(@"%f", meters);
+    return meters;
 }
 
 float ScreenParams::getHeightMeters()
 {
-    return this->height * this->yMetersPerPixel;
+    float meters = this->height * this->yMetersPerPixel;
+    // NSLog(@"%f", meters);
+    return meters;
 }
 
 void ScreenParams::setBorderSizeMeters(float screenBorderSize)
@@ -119,7 +154,7 @@ float ScreenParams::pixelsPerInch(UIScreen* screen)
             {
                 if ([identifier isEqualToString:deviceId])
                 {
-                    pixelsPerInch = [deviceClass[@"pointsPerInch"] floatValue] * [screen nativeScale];
+                    pixelsPerInch = [deviceClass[@"pointsPerInch"] floatValue] * this->scale;
                     break;
                 }
             }

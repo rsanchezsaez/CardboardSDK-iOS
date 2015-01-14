@@ -26,6 +26,7 @@ public:
     float getBorderSizeMeters();
     bool equals(ScreenParams *other);
 private:
+    CGFloat scale;
     int width;
     int height;
     float xMetersPerPixel;

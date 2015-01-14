@@ -66,7 +66,7 @@
     glEnable(GL_SCISSOR_TEST);
     leftEyeParams->getViewport()->setGLViewport();
     leftEyeParams->getViewport()->setGLScissor();
-
+    
     checkGLError();
     
     [self.stereoRendererDelegate drawEyeWithTransform:leftEyeParams->getTransform() eyeType:leftEyeParams->getEye()];
@@ -77,7 +77,7 @@
     
     rightEyeParams->getViewport()->setGLViewport();
     rightEyeParams->getViewport()->setGLScissor();
-    
+
     checkGLError();
     
     [self.stereoRendererDelegate drawEyeWithTransform:rightEyeParams->getTransform() eyeType:rightEyeParams->getEye()];
@@ -149,7 +149,7 @@
     self.distortionCorrectionScale = 1.0f;
 
     self.isVRModeEnabled = YES;
-    // self.distortionCorrectionEnabled = YES;
+//    self.distortionCorrectionEnabled = YES;
 
     self.zNear = 0.1f;
     self.zFar = 100.0f;
@@ -162,6 +162,11 @@
                                                object:nil];
     
     return self;
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
 }
 
 - (void)viewDidLoad

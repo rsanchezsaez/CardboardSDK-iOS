@@ -33,6 +33,8 @@
 		BC763B2E1A655D1E00463823 /* passthrough_fragment.shader in Resources */ = {isa = PBXBuildFile; fileRef = BC763B2B1A655D1E00463823 /* passthrough_fragment.shader */; };
 		BC763B311A655D7600463823 /* GLHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = BC763B301A655D7600463823 /* GLHelpers.m */; };
 		BC763B341A655EB700463823 /* TreasureViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC763B331A655EB700463823 /* TreasureViewController.mm */; };
+		BC763B371A66A1D100463823 /* DebugUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = BC763B351A66A1D100463823 /* DebugUtils.m */; };
+		BC763B391A66BBBC00463823 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC763B381A66BBBC00463823 /* Images.xcassets */; };
 		BCD7096D1A64194700E78B84 /* CubeShader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = BCD709651A64194700E78B84 /* CubeShader.fsh */; };
 		BCD7096E1A64194700E78B84 /* CubeShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = BCD709661A64194700E78B84 /* CubeShader.vsh */; };
 		BCD7096F1A64194700E78B84 /* GLCubeRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = BCD709681A64194700E78B84 /* GLCubeRenderer.m */; };
@@ -91,6 +93,9 @@
 		BC763B301A655D7600463823 /* GLHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLHelpers.m; sourceTree = "<group>"; };
 		BC763B321A655EB700463823 /* TreasureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TreasureViewController.h; sourceTree = "<group>"; };
 		BC763B331A655EB700463823 /* TreasureViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TreasureViewController.mm; sourceTree = "<group>"; };
+		BC763B351A66A1D100463823 /* DebugUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebugUtils.m; sourceTree = "<group>"; };
+		BC763B361A66A1D100463823 /* DebugUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugUtils.h; sourceTree = "<group>"; };
+		BC763B381A66BBBC00463823 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		BCCBC5821A5D93170093F31A /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		BCD709651A64194700E78B84 /* CubeShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = CubeShader.fsh; sourceTree = "<group>"; };
 		BCD709661A64194700E78B84 /* CubeShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = CubeShader.vsh; sourceTree = "<group>"; };
@@ -140,6 +145,7 @@
 				BC6733361A5D90C700C6D79B /* Supporting Files */,
 				35B1883B19ABEF58005A9930 /* AppDelegate.h */,
 				35B1883C19ABEF58005A9930 /* AppDelegate.mm */,
+				BC763B381A66BBBC00463823 /* Images.xcassets */,
 			);
 			path = "CardboardVR-iOS";
 			sourceTree = "<group>";
@@ -217,6 +223,8 @@
 		BC763B241A655C6E00463823 /* Misc */ = {
 			isa = PBXGroup;
 			children = (
+				BC763B351A66A1D100463823 /* DebugUtils.m */,
+				BC763B361A66A1D100463823 /* DebugUtils.h */,
 				BC763B2F1A655D7600463823 /* GLHelpers.h */,
 				BC763B301A655D7600463823 /* GLHelpers.m */,
 			);
@@ -328,6 +336,7 @@
 				BCD7096D1A64194700E78B84 /* CubeShader.fsh in Resources */,
 				BC763B2E1A655D1E00463823 /* passthrough_fragment.shader in Resources */,
 				BC763B2D1A655D1E00463823 /* light_vertex.shader in Resources */,
+				BC763B391A66BBBC00463823 /* Images.xcassets in Resources */,
 				BC763B2C1A655D1E00463823 /* grid_fragment.shader in Resources */,
 				BCD7096E1A64194700E78B84 /* CubeShader.vsh in Resources */,
 			);
@@ -364,6 +373,7 @@
 				BC67336D1A5D90C700C6D79B /* OrientationEKF.mm in Sources */,
 				BC6733621A5D90C700C6D79B /* CardboardViewController.mm in Sources */,
 				BC6733701A5D90C700C6D79B /* MagnetSensor.mm in Sources */,
+				BC763B371A66A1D100463823 /* DebugUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

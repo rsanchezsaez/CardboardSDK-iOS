@@ -9,18 +9,8 @@
 #ifndef CardboardVR_iOS_Structs_h
 #define CardboardVR_iOS_Structs_h
 
-//struct MotionVector {
-//    float x;
-//    float y;
-//    float z;
-//};
-
 struct DistortionCoeffients {
     float c[2];
-};
-
-struct ViewportRect {
-    float r[4];
 };
 
 #endif
