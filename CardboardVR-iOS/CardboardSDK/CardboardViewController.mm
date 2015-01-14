@@ -71,7 +71,8 @@
     
     checkGLError();
     
-    [self.stereoRendererDelegate drawEyeWithTransform:leftEyeParams->getTransform() eyeType:leftEyeParams->getEye()];
+    [self.stereoRendererDelegate drawEyeWithTransform:leftEyeParams->getTransform()
+                                              eyeType:leftEyeParams->getEye()];
 
     checkGLError();
 
@@ -82,7 +83,8 @@
 
     checkGLError();
     
-    [self.stereoRendererDelegate drawEyeWithTransform:rightEyeParams->getTransform() eyeType:rightEyeParams->getEye()];
+    [self.stereoRendererDelegate drawEyeWithTransform:rightEyeParams->getTransform()
+                                              eyeType:rightEyeParams->getEye()];
 
     checkGLError();
 }
@@ -124,8 +126,6 @@
 
 @property (nonatomic, strong) StereoRenderer *stereoRenderer;
 
-- (void)onCardboardTrigger:(id)sender;
-
 @end
 
 
@@ -161,7 +161,7 @@
     self.projectionChanged = YES;
 
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onCardboardTrigger:)
+                                             selector:@selector(magneticTriggerPressed)
                                                  name:CBTriggerPressedNotification
                                                object:nil];
     
@@ -226,9 +226,12 @@
     self.stereoRenderer.isVRModeEnabled = isVRModeEnabled;
 }
 
-- (void)onCardboardTrigger:(id)sender
+- (void)magneticTriggerPressed
 {
-    DLog(@"");
+    if ([self.stereoRendererDelegate respondsToSelector:@selector(magneticTriggerPressed)])
+    {
+        [self.stereoRendererDelegate magneticTriggerPressed];
+    }
 }
 
 - (void)glkViewController:(GLKViewController *)controller willPause:(BOOL)pause

@@ -504,7 +504,7 @@
 // We've set all of our transformation matrices. Now we simply pass them into the shader.
 - (void)drawCube
 {
-    if ([self isLookingAtObject])
+    if ([self isLookingAtCube])
     {
         glUseProgram(_highlightedCubeProgram);
     }
@@ -565,7 +565,7 @@
 
 // Check if user is looking at object by calculating where the object is in eye-space.
 // @return true if the user is looking at the object.
-- (BOOL)isLookingAtObject
+- (BOOL)isLookingAtCube
 {
     GLKVector4 initVector = { 0, 0, 0, 1.0f };
 
@@ -581,6 +581,58 @@
     const float pitchLimit = 0.12f;
 
     return fabs(pitch) < pitchLimit && fabs(yaw) < yawLimit;
+}
+
+#define ARC4RANDOM_MAX 0x100000000
+// Return a random float in the range [0.0, 1.0]
+inline float randomFloat()
+{
+    return ((double)arc4random() / ARC4RANDOM_MAX);
+}
+
+// Find a new random position for the object.
+// We'll rotate it around the Y-axis so it's out of sight, and then up or down by a little bit.
+- (void)hideCube
+{
+    // First rotate in XZ plane, between 90 and 270 deg away, and scale so that we vary
+    // the object's distance from the user.
+    float angleXZ = randomFloat() * 180 + 90;
+    GLKMatrix4 transformationMatrix = GLKMatrix4MakeRotation(GLKMathDegreesToRadians(angleXZ), 0.0f, 1.0f, 0.0f);
+    float oldObjectDistance = _objectDistance;
+    _objectDistance = randomFloat() * 15 + 5;
+    float objectScalingFactor = _objectDistance / oldObjectDistance;
+    transformationMatrix = GLKMatrix4Scale(transformationMatrix, objectScalingFactor, objectScalingFactor,
+                  objectScalingFactor);
+    GLKVector4 positionVector = GLKMatrix4MultiplyVector4(transformationMatrix,
+                                                          GLKVector4Make(_modelCube.m30,
+                                                                         _modelCube.m31,
+                                                                         _modelCube.m32,
+                                                                         _modelCube.m33));
+    
+    // Now get the up or down angle, between -20 and 20 degrees.
+    float angleY = randomFloat() * 80 - 40; // Angle in Y plane, between -40 and 40.
+    angleY = GLKMathDegreesToRadians(angleY);
+    float newY = tanf(angleY) * _objectDistance;
+    
+    _modelCube = GLKMatrix4Identity;
+    _modelCube = GLKMatrix4Translate(_modelCube, positionVector.x, newY, positionVector.z);
+}
+
+- (void)magneticTriggerPressed
+{
+    if ([self isLookingAtCube])
+    {
+        _score++;
+        // mOverlayView.show3DToast("Found it! Look around for another one.\nScore = " + mScore);
+        [self hideCube];
+    } else {
+        // mOverlayView.show3DToast("Look around to find the object!");
+    }
+    
+//    // Always give user feedback.
+//    mVibrator.vibrate(50);
+    
+    DLog(@"Score: %d", _score);
 }
 
 @end

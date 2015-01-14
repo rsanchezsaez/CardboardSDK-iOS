@@ -16,7 +16,7 @@ class HeadTransform;
 class Viewport;
 
 
-@protocol StereoRendererDelegate
+@protocol StereoRendererDelegate <NSObject>
 
 - (void)setupRendererWithView:(GLKView *)GLView;
 - (void)shutdownRendererWithView:(GLKView *)GLView;
@@ -25,6 +25,10 @@ class Viewport;
 - (void)prepareNewFrameWithHeadTransform:(HeadTransform *)headTransform;
 - (void)drawEyeWithTransform:(EyeTransform *)eyeTransform eyeType:(EyeParamsType)eyeType;
 - (void)finishFrameWithViewport:(Viewport *)viewPort;
+
+@optional
+
+- (void)magneticTriggerPressed;
 
 @end
 
