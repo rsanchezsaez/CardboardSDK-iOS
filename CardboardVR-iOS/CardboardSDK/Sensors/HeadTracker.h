@@ -27,7 +27,7 @@ private:
     GLKMatrix4 glMatrixFromRotationMatrix(CMRotationMatrix rotationMatrix);
     GLKMatrix4 getRotateEulerMatrix(float x, float y, float z);
     CMMotionManager *manager;
-    OrientationEKF *tracker;
+    // OrientationEKF *tracker;
     GLKMatrix4 deviceToDisplay;
     GLKMatrix4 worldToInertialReferenceFrame;
     NSTimeInterval referenceTimestamp;

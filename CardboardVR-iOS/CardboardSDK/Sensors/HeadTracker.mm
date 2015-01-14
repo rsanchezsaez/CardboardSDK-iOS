@@ -10,10 +10,11 @@
 
 HeadTracker::HeadTracker()
 {
+    this->manager = [[CMMotionManager alloc] init];
+
     this->referenceTimestamp = 0;
     this->lastGyroEventTimestamp = 0;
-    this->manager = nil;
-    this->tracker = new OrientationEKF();
+    // this->tracker = new OrientationEKF();
     // the inertial reference frame has z up and x forward, while the world has z out and x right
     this->worldToInertialReferenceFrame = this->getRotateEulerMatrix(-90.f, 0.f, 90.f);
     // this assumes the device is landscape with the home button on the right
@@ -22,7 +23,7 @@ HeadTracker::HeadTracker()
 
 HeadTracker::~HeadTracker()
 {
-    delete this->tracker;
+    // delete this->tracker;
 }
 
 GLKMatrix4 HeadTracker::getRotateEulerMatrix(float x, float y, float z)
@@ -60,56 +61,21 @@ GLKMatrix4 HeadTracker::getRotateEulerMatrix(float x, float y, float z)
 
 void HeadTracker::startTracking()
 {
-    if (this->manager != nil) {
-        return;
-    }
-    this->tracker->reset();
-    this->manager = [[CMMotionManager alloc] init];
-    if ([this->manager isDeviceMotionAvailable])
+    // this->tracker->reset();
+    
+    if (this->manager.isDeviceMotionAvailable && !this->manager.isDeviceMotionActive)
     {
-        [this->manager startDeviceMotionUpdatesUsingReferenceFrame:CMAttitudeReferenceFrameXArbitraryCorrectedZVertical];
-//        this->manager.magnetometerUpdateInterval = 1.0f / 100.0f;
-//        [this->manager startAccelerometerUpdatesToQueue:
-//         [NSOperationQueue currentQueue] withHandler:^
-//         (CMAccelerometerData *accelerometerData, NSError *error)
-//        {
-//            GLKVector3 motionVector = GLKVector3Make(-accelerometerData.acceleration.y,
-//                                                     accelerometerData.acceleration.x,
-//                                                     accelerometerData.acceleration.z);
-//            this->tracker->processAcc(motionVector, accelerometerData.timestamp);
-//        }];
-//        [this->manager startGyroUpdatesToQueue:
-//         [NSOperationQueue currentQueue] withHandler:^
-//         (CMGyroData *gyroData, NSError *error)
-//        {
-//            GLKVector3 motionVector = GLKVector3Make(-gyroData.rotationRate.y,
-//                                                     gyroData.rotationRate.x,
-//                                                     gyroData.rotationRate.z);
-//            if (this->referenceTimestamp == 0)
-//            {
-//                this->referenceTimestamp =
-//                [[NSDate dateWithTimeIntervalSinceNow:-gyroData.timestamp] timeIntervalSinceReferenceDate];
-//            }
-//            this->lastGyroEventTimestamp = gyroData.timestamp;
-//            this->tracker->processAcc(motionVector, gyroData.timestamp);
-//        }];
+        [this->manager startDeviceMotionUpdatesUsingReferenceFrame:CMAttitudeReferenceFrameXArbitraryZVertical];
     }
 }
 
 void HeadTracker::stopTracking()
 {
-    if (this->manager == nil) {
-        return;
-    }
-//    [this->manager stopAccelerometerUpdates];
-//    [this->manager stopGyroUpdates];
     [this->manager stopDeviceMotionUpdates];
-    this->manager = nil;
 }
 
 GLKMatrix4 HeadTracker::glMatrixFromRotationMatrix(CMRotationMatrix rotationMatrix)
 {
-    
     GLKMatrix4 glRotationMatrix;
     
     glRotationMatrix.m00 = rotationMatrix.m11;

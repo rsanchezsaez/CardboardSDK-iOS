@@ -15,6 +15,8 @@
 #include <vector>
 #include "Structs.h"
 
+NSString *const CBTriggerPressedNotification = @"CBTriggerPressedNotification";
+
 class MagnetSensor
 {
 public:

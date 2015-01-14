@@ -14,8 +14,10 @@
 #include "HeadTracker.h"
 #include "HeadTransform.h"
 #include "HeadMountedDisplay.h"
+#include "MagnetSensor.h"
 #include "Viewport.h"
 
+#import "DebugUtils.h"
 #import "GLHelpers.h"
 
 #import <OpenGLES/ES2/glext.h>
@@ -101,6 +103,7 @@
 
 @property (nonatomic) GLKView *view;
 
+@property (nonatomic, assign) MagnetSensor *magnetSensor;
 @property (nonatomic, assign) HeadTracker *headTracker;
 @property (nonatomic, assign) HeadTransform *headTransform;
 @property (nonatomic, assign) HeadMountedDisplay *headMountedDisplay;
@@ -134,7 +137,8 @@
     if (!self) { return nil; }
     
     self.delegate = self;
-    
+
+    self.magnetSensor = new MagnetSensor();
     self.headTracker = new HeadTracker();
     self.headTransform = new HeadTransform();
     self.headMountedDisplay = new HeadMountedDisplay([UIScreen mainScreen]);
@@ -158,7 +162,7 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onCardboardTrigger:)
-                                                 name:@"TriggerClicked"
+                                                 name:CBTriggerPressedNotification
                                                object:nil];
     
     return self;
@@ -190,6 +194,7 @@
     
     [self.stereoRendererDelegate shutdownRendererWithView:self.view];
 
+    if (self.magnetSensor != nullptr) { delete self.magnetSensor; }
     if (self.headTracker != nullptr) { delete self.headTracker; }
     if (self.headTransform != nullptr) { delete self.headTransform; }
     if (self.headMountedDisplay != nullptr) { delete self.headMountedDisplay; }
@@ -223,7 +228,7 @@
 
 - (void)onCardboardTrigger:(id)sender
 {
-    
+    DLog(@"");
 }
 
 - (void)glkViewController:(GLKViewController *)controller willPause:(BOOL)pause
@@ -231,10 +236,12 @@
     if (pause)
     {
         self.headTracker->stopTracking();
+        self.magnetSensor->stop();
     }
     else
     {
         self.headTracker->startTracking();
+        self.magnetSensor->start();
     }
 }
 
@@ -245,8 +252,6 @@
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 {
-    // TODO: Check that is not shutting down and that view size is valid before drawing
-    
     // glInsertEventMarkerEXT(0, "com.apple.GPUTools.event.debug-frame");
 
     checkGLError();
