@@ -26,6 +26,8 @@
     GLuint _floorColorBuffer;
     GLuint _floorNormalBuffer;
 
+    GLuint _ceilingColorBuffer;
+
     GLuint _cubeProgram;
     GLuint _highlightedCubeProgram;
     GLuint _floorProgram;
@@ -47,13 +49,15 @@
     GLint _floorModelViewParam;
     GLint _floorModelViewProjectionParam;
     GLint _floorLightPositionParam;
-    
+
+    GLKMatrix4 _perspective;
     GLKMatrix4 _modelCube;
     GLKMatrix4 _camera;
     GLKMatrix4 _view;
     GLKMatrix4 _modelViewProjection;
     GLKMatrix4 _modelView;
     GLKMatrix4 _modelFloor;
+    GLKMatrix4 _modelCeiling;
     GLKMatrix4 _headView;
     
     float _zNear;
@@ -125,7 +129,10 @@
     
     _modelFloor = GLKMatrix4Identity;
     _modelFloor = GLKMatrix4Translate(_modelFloor, 0, -_floorDepth, 0); // Floor appears below user.
-    
+
+    _modelCeiling = GLKMatrix4Identity;
+    _modelCeiling = GLKMatrix4Translate(_modelFloor, 0, _floorDepth * 2.0, 0); // Ceiling appears above user.
+
     checkGLError();
 }
 
@@ -362,6 +369,15 @@
         0.0f, 0.3398f, 0.9023f, 1.0f,
         0.0f, 0.3398f, 0.9023f, 1.0f,
     };
+    
+    const GLfloat ceilingColors[] = {
+        0.0f, 0.9023f, 0.3398f, 1.0f,
+        0.0f, 0.9023f, 0.3398f, 1.0f,
+        0.0f, 0.9023f, 0.3398f, 1.0f,
+        0.0f, 0.9023f, 0.3398f, 1.0f,
+        0.0f, 0.9023f, 0.3398f, 1.0f,
+        0.0f, 0.9023f, 0.3398f, 1.0f,
+    };
 
     // Cube VAO setup
     glGenVertexArraysOES(1, &_cubeVertexArray);
@@ -440,8 +456,10 @@
     glBindBuffer(GL_ARRAY_BUFFER, _floorColorBuffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(floorColors), floorColors, GL_STATIC_DRAW);
     
-    glVertexAttribPointer(_floorColorParam, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
-    
+    glGenBuffers(1, &_ceilingColorBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, _ceilingColorBuffer);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(ceilingColors), ceilingColors, GL_STATIC_DRAW);
+
     checkGLError();
     
     glBindVertexArrayOES(0);
@@ -483,19 +501,11 @@
     // Set the position of the light
     _lightPositionInEyeSpace = GLKMatrix4MultiplyVector4(_view, _lightPositionInWorldSpace);
     
-    // Build the ModelView and ModelViewProjection matrices
-    // for calculating cube position and light.
     // float[] perspective = eye.getPerspective(Z_NEAR, Z_FAR);
-    GLKMatrix4 perspective = eyeTransform->getPerspective();
-    _modelView = GLKMatrix4Multiply(_view, _modelCube);
-    _modelViewProjection = GLKMatrix4Multiply(perspective, _modelView);
-
+    _perspective = eyeTransform->getPerspective();
     [self drawCube];
     
-    // Set mModelView for the floor, so we draw floor in the correct location
-    _modelView = GLKMatrix4Multiply(_view, _modelFloor);
-    _modelViewProjection = GLKMatrix4Multiply(perspective, _modelView);
-    [self drawFloor];
+    [self drawFloorAndCeiling];
 }
 
 - (void)finishFrameWithViewport:(Viewport *)viewPort
@@ -506,6 +516,11 @@
 // We've set all of our transformation matrices. Now we simply pass them into the shader.
 - (void)drawCube
 {
+    // Build the ModelView and ModelViewProjection matrices
+    // for calculating cube position and light.
+    _modelView = GLKMatrix4Multiply(_view, _modelCube);
+    _modelViewProjection = GLKMatrix4Multiply(_perspective, _modelView);
+
     if ([self isLookingAtCube])
     {
         glUseProgram(_highlightedCubeProgram);
@@ -543,10 +558,16 @@
 // This feeds in data for the floor into the shader. Note that this doesn't feed in data about
 // position of the light, so if we rewrite our code to draw the floor first, the lighting might
 // look strange.
-- (void)drawFloor
+- (void)drawFloorAndCeiling
 {
     glUseProgram(_floorProgram);
     glBindVertexArrayOES(_floorVertexArray);
+
+    
+    // Floor
+    // Set mModelView for the floor, so we draw floor in the correct location
+    _modelView = GLKMatrix4Multiply(_view, _modelFloor);
+    _modelViewProjection = GLKMatrix4Multiply(_perspective, _modelView);
 
     // Set ModelView, MVP, position, normals, and color.
     glUniform3f(_floorLightPositionParam,
@@ -557,9 +578,27 @@
     glUniformMatrix4fv(_floorModelViewParam, 1, GL_FALSE, _modelView.m);
     glUniformMatrix4fv(_floorModelViewProjectionParam, 1, GL_FALSE, _modelViewProjection.m);
     
+    glBindBuffer(GL_ARRAY_BUFFER, _floorColorBuffer);
+    glVertexAttribPointer(_floorColorParam, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+
     glDrawArrays(GL_TRIANGLES, 0, 6);
     
     checkGLError();
+
+    
+    // Ceiling
+    _modelView = GLKMatrix4Multiply(_view, _modelCeiling);
+    _modelViewProjection = GLKMatrix4Multiply(_perspective, _modelView);
+    
+    glUniformMatrix4fv(_floorModelViewProjectionParam, 1, GL_FALSE, _modelViewProjection.m);
+
+    glBindBuffer(GL_ARRAY_BUFFER, _ceilingColorBuffer);
+    glVertexAttribPointer(_floorColorParam, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+    
+    checkGLError();
+    
     
     glBindVertexArrayOES(0);
     glUseProgram(0);
