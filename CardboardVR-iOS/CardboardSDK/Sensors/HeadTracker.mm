@@ -112,7 +112,6 @@ void HeadTracker::startTracking()
     motionManager_.gyroUpdateInterval = 1.0/100.0;
     [motionManager_ startGyroUpdatesToQueue:gyroQueue withHandler:^(CMGyroData *gyroData, NSError *error) {
         CMRotationRate rotationRate = gyroData.rotationRate;
-        NSLog(@"%f %f %f", rotationRate.x, rotationRate.y, rotationRate.z);
         tracker_->processGyro(GLKVector3Make(rotationRate.x, rotationRate.y, rotationRate.z), gyroData.timestamp);
         lastGyroEventTimestamp_ = gyroData.timestamp;
     }];
