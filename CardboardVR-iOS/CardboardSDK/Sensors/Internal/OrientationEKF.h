@@ -14,38 +14,63 @@
 #define __CardboardVR_iOS__OrientationEKF__
 
 #import <GLKit/GLKit.h>
-#include "Matrix3x3d.h"
 #include "Vector3d.h"
-#include "Structs.h"
+#include "Matrix3x3d.h"
+
 
 class OrientationEKF
 {
-private:
-    double sensorTimeStampGyro;
-    double sensorTimeStampAcc;
-    Matrix3x3d *so3SensorFromWorld;
-    Matrix3x3d *so3LastMotion;
-    Matrix3x3d *currentMotion;
-    Vector3d *down;
-    Vector3d *north;
-    GLKVector3 lastGyro;
-    float filteredGyroTimestep;
-    bool gyroFilterValid;
-    bool timestepFilterInit;
-    int numGyroTimestepSamples;
-private:
-    GLKMatrix4 glMatrixFromSo3(Matrix3x3d *so3);
 public:
     OrientationEKF();
-    ~OrientationEKF();
+    virtual ~OrientationEKF();
+    
     void reset();
     bool isReady();
-    double getHeadingDegrees();
-    void setHeadingDegrees(double heading);
-    GLKMatrix4 getGLMatrix();
-    GLKMatrix4 getPredictedGLMatrix(double secondsAfterLastGyroEvent);
+    
     void processGyro(GLKVector3 gyro, double sensorTimeStamp);
     void processAcc(GLKVector3 acc, double sensorTimeStamp);
+    
+    double getHeadingDegrees();
+    void setHeadingDegrees(double heading);
+    
+    GLKMatrix4 getGLMatrix();
+    GLKMatrix4 getPredictedGLMatrix(double secondsAfterLastGyroEvent);
+
+    
+private:
+
+    Matrix3x3d so3SensorFromWorld_;
+    Matrix3x3d so3LastMotion_;
+    Matrix3x3d mP_;
+    Matrix3x3d mQ_;
+    Matrix3x3d mR_;
+    Matrix3x3d mRaccel_;
+    Matrix3x3d mS_;
+    Matrix3x3d mH_;
+    Matrix3x3d mK_;
+    Vector3d mNu_;
+    Vector3d mz_;
+    Vector3d mh_;
+    Vector3d mu_;
+    Vector3d mx_;
+    Vector3d down_;
+    Vector3d north_;
+    double sensorTimeStampGyro_;
+    GLKVector3 lastGyro_;
+    double previousAccelNorm_;
+    double movingAverageAccelNormChange_;
+    double filteredGyroTimestep_;
+    bool timestepFilterInit_;
+    int numGyroTimestepSamples_;
+    bool gyroFilterValid_;
+    bool alignedToGravity_;
+    bool alignedToNorth_;
+    
+    void filterGyroTimestep(double timestep);
+    void updateCovariancesAfterMotion();
+    void updateAccelCovariance(double currentAccelNorm);
+    void accObservationFunctionForNumericalJacobian(Matrix3x3d* so3SensorFromWorldPred, Vector3d* result);
+    
 };
 
 #endif

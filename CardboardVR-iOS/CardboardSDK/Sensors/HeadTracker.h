@@ -11,27 +11,26 @@
 
 #import <CoreMotion/CoreMotion.h>
 #import <GLKit/GLKit.h>
-#include <vector>
-#include "Structs.h"
 #include "OrientationEKF.h"
 
 class HeadTracker
 {
 public:
     HeadTracker();
-    ~HeadTracker();
+    virtual ~HeadTracker();
+    
     void startTracking();
     void stopTracking();
     GLKMatrix4 getLastHeadView();
+    
 private:
-    GLKMatrix4 glMatrixFromRotationMatrix(CMRotationMatrix rotationMatrix);
-    GLKMatrix4 getRotateEulerMatrix(float x, float y, float z);
-    CMMotionManager *manager;
-    // OrientationEKF *tracker;
-    GLKMatrix4 deviceToDisplay;
-    GLKMatrix4 worldToInertialReferenceFrame;
-    NSTimeInterval referenceTimestamp;
-    NSTimeInterval lastGyroEventTimestamp;
+    CMMotionManager* motionManager_;
+    NSDate* deviceStartupTime_;
+    OrientationEKF* tracker_;
+    GLKMatrix4 deviceToDisplay_;
+    GLKMatrix4 worldToInertialReferenceFrame_;
+    NSTimeInterval referenceTimestamp_;
+    NSTimeInterval lastGyroEventTimestamp_;
 };
 
 #endif

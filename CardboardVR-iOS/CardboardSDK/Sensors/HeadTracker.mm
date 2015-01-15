@@ -8,25 +8,11 @@
 
 #include "HeadTracker.h"
 
-HeadTracker::HeadTracker()
-{
-    this->manager = [[CMMotionManager alloc] init];
+#define USE_EKF (1)
 
-    this->referenceTimestamp = 0;
-    this->lastGyroEventTimestamp = 0;
-    // this->tracker = new OrientationEKF();
-    // the inertial reference frame has z up and x forward, while the world has z out and x right
-    this->worldToInertialReferenceFrame = this->getRotateEulerMatrix(-90.f, 0.f, 90.f);
-    // this assumes the device is landscape with the home button on the right
-    this->deviceToDisplay = this->getRotateEulerMatrix(0.f, 0.f, -90.f);
-}
+namespace {
 
-HeadTracker::~HeadTracker()
-{
-    // delete this->tracker;
-}
-
-GLKMatrix4 HeadTracker::getRotateEulerMatrix(float x, float y, float z)
+GLKMatrix4 GetRotateEulerMatrix(float x, float y, float z)
 {
     x *= (float)(M_PI / 180.0f);
     y *= (float)(M_PI / 180.0f);
@@ -59,22 +45,7 @@ GLKMatrix4 HeadTracker::getRotateEulerMatrix(float x, float y, float z)
     return matrix;
 }
 
-void HeadTracker::startTracking()
-{
-    // this->tracker->reset();
-    
-    if (this->manager.isDeviceMotionAvailable && !this->manager.isDeviceMotionActive)
-    {
-        [this->manager startDeviceMotionUpdatesUsingReferenceFrame:CMAttitudeReferenceFrameXArbitraryZVertical];
-    }
-}
-
-void HeadTracker::stopTracking()
-{
-    [this->manager stopDeviceMotionUpdates];
-}
-
-GLKMatrix4 HeadTracker::glMatrixFromRotationMatrix(CMRotationMatrix rotationMatrix)
+GLKMatrix4 GlMatrixFromRotationMatrix(CMRotationMatrix rotationMatrix)
 {
     GLKMatrix4 glRotationMatrix;
     
@@ -101,26 +72,84 @@ GLKMatrix4 HeadTracker::glMatrixFromRotationMatrix(CMRotationMatrix rotationMatr
     return glRotationMatrix;
 }
 
+} // namespace
+
+HeadTracker::HeadTracker() :
+    // this assumes the device is landscape with the home button on the right
+    deviceToDisplay_(GetRotateEulerMatrix(0.f, 0.f, -90.f)),
+    // the inertial reference frame has z up and x forward, while the world has z out and x right
+    worldToInertialReferenceFrame_(GetRotateEulerMatrix(-90.f, 0.f, 90.f)),
+    referenceTimestamp_(0),
+    lastGyroEventTimestamp_(0)
+{
+    motionManager_ = [[CMMotionManager alloc] init];
+    // apparently core motion timestamps are relative to the device startup time
+    deviceStartupTime_ = [NSDate dateWithTimeIntervalSinceNow:-[[NSProcessInfo processInfo] systemUptime]];
+    tracker_ = new OrientationEKF();
+}
+
+HeadTracker::~HeadTracker()
+{
+    delete tracker_;
+}
+
+void HeadTracker::startTracking()
+{
+    tracker_->reset();
+
+#if USE_EKF
+    NSOperationQueue *accelerometerQueue = [[NSOperationQueue alloc] init];
+    NSOperationQueue *gyroQueue = [[NSOperationQueue alloc] init];
+    
+    motionManager_.accelerometerUpdateInterval = 1.0/100.0;
+    [motionManager_ startAccelerometerUpdatesToQueue:accelerometerQueue withHandler:^(CMAccelerometerData *accelerometerData, NSError *error) {
+        CMAcceleration acceleration = accelerometerData.acceleration;
+        // note core motion uses units of G while the EKF uses ms^-2
+        const float kG = 9.81f;
+        tracker_->processAcc(GLKVector3Make(kG*acceleration.x, kG*acceleration.y, kG*acceleration.z), accelerometerData.timestamp);
+    }];
+    
+    motionManager_.gyroUpdateInterval = 1.0/100.0;
+    [motionManager_ startGyroUpdatesToQueue:gyroQueue withHandler:^(CMGyroData *gyroData, NSError *error) {
+        CMRotationRate rotationRate = gyroData.rotationRate;
+        NSLog(@"%f %f %f", rotationRate.x, rotationRate.y, rotationRate.z);
+        tracker_->processGyro(GLKVector3Make(rotationRate.x, rotationRate.y, rotationRate.z), gyroData.timestamp);
+        lastGyroEventTimestamp_ = gyroData.timestamp;
+    }];
+#else
+    if (motionManager_.isDeviceMotionAvailable && !motionManager_.isDeviceMotionActive)
+    {
+        [motionManager_ startDeviceMotionUpdatesUsingReferenceFrame:CMAttitudeReferenceFrameXArbitraryZVertical];
+    }
+#endif
+    
+}
+
+void HeadTracker::stopTracking()
+{
+#if USE_EKF
+    [motionManager_ stopAccelerometerUpdates];
+    [motionManager_ stopGyroUpdates];
+#else
+    [motionManager_ stopDeviceMotionUpdates];
+#endif
+}
+
 GLKMatrix4 HeadTracker::getLastHeadView()
 {
-//    if (this->referenceTimestamp == 0)
-//    {
-//        return GLKMatrix4Identity;
-//    }
-//    
-//    double secondsSinceLastGyroEvent = [[NSDate date] timeIntervalSinceReferenceDate] - this->referenceTimestamp - this->lastGyroEventTimestamp;
-//    // NSLog(@"%f", secondsSinceLastGyroEvent);
-//    double secondsToPredictForward = secondsSinceLastGyroEvent + 0.03333333333333333;
-//    GLKMatrix4 tempHeadView = this->tracker->getPredictedGLMatrix(secondsToPredictForward);
-    CMDeviceMotion *motion = this->manager.deviceMotion;
-    
-    // NSLog(@"%.3f %.3f %.3f", motion.attitude.roll, motion.attitude.pitch, motion.attitude.yaw);
-    
+#if USE_EKF
+    NSTimeInterval currentTimestamp = [[NSDate date] timeIntervalSinceDate:deviceStartupTime_];
+    double secondsSinceLastGyroEvent = currentTimestamp - lastGyroEventTimestamp_;
+    // TODO: should this be 1/30 or 1/60?
+    double secondsToPredictForward = secondsSinceLastGyroEvent + 0.03333333333333333;
+    GLKMatrix4 inertialReferenceFrameToDevice = tracker_->getPredictedGLMatrix(secondsToPredictForward);
+#else
+    CMDeviceMotion *motion = motionManager_.deviceMotion;
     CMRotationMatrix rotationMatrix = motion.attitude.rotationMatrix;
-    GLKMatrix4 inertialReferenceFrameToDevice = GLKMatrix4Transpose(this->glMatrixFromRotationMatrix(rotationMatrix)); // note the matrix inversion
-    GLKMatrix4 worldToDevice = GLKMatrix4Multiply(inertialReferenceFrameToDevice, worldToInertialReferenceFrame);
-    GLKMatrix4 worldToDisplay = GLKMatrix4Multiply(deviceToDisplay, worldToDevice);
-    // GLKMatrix4 outMatrix = GLKMatrix4Multiply(glRotationMatrix, this->ekfToHeadTracker);
-    // NSLog(@"%@", NSStringFromGLKMatrix4(outMatrix));
+    GLKMatrix4 inertialReferenceFrameToDevice = GLKMatrix4Transpose(GlMatrixFromRotationMatrix(rotationMatrix)); // note the matrix inversion
+#endif
+    
+    GLKMatrix4 worldToDevice = GLKMatrix4Multiply(inertialReferenceFrameToDevice, worldToInertialReferenceFrame_);
+    GLKMatrix4 worldToDisplay = GLKMatrix4Multiply(deviceToDisplay_, worldToDevice);
     return worldToDisplay;
 }
