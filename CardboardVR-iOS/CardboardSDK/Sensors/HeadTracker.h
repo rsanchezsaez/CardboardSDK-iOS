@@ -25,11 +25,9 @@ public:
     
 private:
     CMMotionManager* motionManager_;
-    NSDate* deviceStartupTime_;
     OrientationEKF* tracker_;
     GLKMatrix4 deviceToDisplay_;
     GLKMatrix4 worldToInertialReferenceFrame_;
-    NSTimeInterval referenceTimestamp_;
     NSTimeInterval lastGyroEventTimestamp_;
 };
 

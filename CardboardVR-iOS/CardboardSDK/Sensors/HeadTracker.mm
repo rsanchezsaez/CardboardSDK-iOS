@@ -81,12 +81,9 @@ HeadTracker::HeadTracker() :
     deviceToDisplay_(GetRotateEulerMatrix(0.f, 0.f, -90.f)),
     // the inertial reference frame has z up and x forward, while the world has z out and x right
     worldToInertialReferenceFrame_(GetRotateEulerMatrix(-90.f, 0.f, 90.f)),
-    referenceTimestamp_(0),
     lastGyroEventTimestamp_(0)
 {
     motionManager_ = [[CMMotionManager alloc] init];
-    // apparently core motion timestamps are relative to the device startup time
-    deviceStartupTime_ = [NSDate dateWithTimeIntervalSinceNow:-[[NSProcessInfo processInfo] systemUptime]];
     tracker_ = new OrientationEKF();
 }
 
@@ -103,8 +100,11 @@ void HeadTracker::startTracking()
     NSOperationQueue *accelerometerQueue = [[NSOperationQueue alloc] init];
     NSOperationQueue *gyroQueue = [[NSOperationQueue alloc] init];
     
+    // Probably capped at less than 100Hz
+    // (http://stackoverflow.com/questions/4790111/what-is-the-official-iphone-4-maximum-gyroscope-data-update-frequency)
     motionManager_.accelerometerUpdateInterval = 1.0/100.0;
-    [motionManager_ startAccelerometerUpdatesToQueue:accelerometerQueue withHandler:^(CMAccelerometerData *accelerometerData, NSError *error) {
+    [motionManager_ startAccelerometerUpdatesToQueue:accelerometerQueue withHandler:^(CMAccelerometerData *accelerometerData, NSError *error)
+    {
         CMAcceleration acceleration = accelerometerData.acceleration;
         // note core motion uses units of G while the EKF uses ms^-2
         const float kG = 9.81f;
@@ -139,10 +139,11 @@ void HeadTracker::stopTracking()
 GLKMatrix4 HeadTracker::getLastHeadView()
 {
 #if USE_EKF
-    NSTimeInterval currentTimestamp = [[NSDate date] timeIntervalSinceDate:deviceStartupTime_];
+    
+    NSTimeInterval currentTimestamp = CACurrentMediaTime();
     double secondsSinceLastGyroEvent = currentTimestamp - lastGyroEventTimestamp_;
-    // TODO: should this be 1/30 or 1/60?
-    double secondsToPredictForward = secondsSinceLastGyroEvent + 0.03333333333333333;
+    // 1/30 of a second prediction (shoud it be 1/60?)
+    double secondsToPredictForward = secondsSinceLastGyroEvent + 1.0/30;
     GLKMatrix4 inertialReferenceFrameToDevice = tracker_->getPredictedGLMatrix(secondsToPredictForward);
 #else
     CMDeviceMotion *motion = motionManager_.deviceMotion;
