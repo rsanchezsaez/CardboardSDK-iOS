@@ -45,7 +45,8 @@ GLKMatrix4 GetRotateEulerMatrix(float x, float y, float z)
     return matrix;
 }
 
-GLKMatrix4 GlMatrixFromRotationMatrix(CMRotationMatrix rotationMatrix)
+#if !USE_EKF
+GLKMatrix4 GLMatrixFromRotationMatrix(CMRotationMatrix rotationMatrix)
 {
     GLKMatrix4 glRotationMatrix;
     
@@ -71,7 +72,8 @@ GLKMatrix4 GlMatrixFromRotationMatrix(CMRotationMatrix rotationMatrix)
 
     return glRotationMatrix;
 }
-
+#endif
+    
 } // namespace
 
 HeadTracker::HeadTracker() :
@@ -145,7 +147,7 @@ GLKMatrix4 HeadTracker::getLastHeadView()
 #else
     CMDeviceMotion *motion = motionManager_.deviceMotion;
     CMRotationMatrix rotationMatrix = motion.attitude.rotationMatrix;
-    GLKMatrix4 inertialReferenceFrameToDevice = GLKMatrix4Transpose(GlMatrixFromRotationMatrix(rotationMatrix)); // note the matrix inversion
+    GLKMatrix4 inertialReferenceFrameToDevice = GLKMatrix4Transpose(GLMatrixFromRotationMatrix(rotationMatrix)); // note the matrix inversion
 #endif
     
     GLKMatrix4 worldToDevice = GLKMatrix4Multiply(inertialReferenceFrameToDevice, worldToInertialReferenceFrame_);
