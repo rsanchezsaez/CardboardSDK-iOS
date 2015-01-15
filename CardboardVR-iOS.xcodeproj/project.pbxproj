@@ -36,6 +36,7 @@
 		BC763B371A66A1D100463823 /* DebugUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = BC763B351A66A1D100463823 /* DebugUtils.m */; };
 		BC763B391A66BBBC00463823 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC763B381A66BBBC00463823 /* Images.xcassets */; };
 		BC763B3B1A66D13300463823 /* highlight_fragment.shader in Resources */ = {isa = PBXBuildFile; fileRef = BC763B3A1A66D13300463823 /* highlight_fragment.shader */; };
+		BC763B3D1A6828DA00463823 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC763B3C1A6828DA00463823 /* AudioToolbox.framework */; };
 		BCD7096D1A64194700E78B84 /* CubeShader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = BCD709651A64194700E78B84 /* CubeShader.fsh */; };
 		BCD7096E1A64194700E78B84 /* CubeShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = BCD709661A64194700E78B84 /* CubeShader.vsh */; };
 		BCD7096F1A64194700E78B84 /* GLCubeRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = BCD709681A64194700E78B84 /* GLCubeRenderer.m */; };
@@ -98,6 +99,7 @@
 		BC763B361A66A1D100463823 /* DebugUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugUtils.h; sourceTree = "<group>"; };
 		BC763B381A66BBBC00463823 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		BC763B3A1A66D13300463823 /* highlight_fragment.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = highlight_fragment.shader; sourceTree = "<group>"; };
+		BC763B3C1A6828DA00463823 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		BCCBC5821A5D93170093F31A /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		BCD709651A64194700E78B84 /* CubeShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = CubeShader.fsh; sourceTree = "<group>"; };
 		BCD709661A64194700E78B84 /* CubeShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = CubeShader.vsh; sourceTree = "<group>"; };
@@ -114,6 +116,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC763B3D1A6828DA00463823 /* AudioToolbox.framework in Frameworks */,
 				35B1886319ABF059005A9930 /* GLKit.framework in Frameworks */,
 				35B1886119ABF053005A9930 /* CoreMotion.framework in Frameworks */,
 			);
@@ -249,6 +252,7 @@
 		BCCBC5811A5D92450093F31A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BC763B3C1A6828DA00463823 /* AudioToolbox.framework */,
 				35B1886219ABF059005A9930 /* GLKit.framework */,
 				35B1886019ABF053005A9930 /* CoreMotion.framework */,
 			);

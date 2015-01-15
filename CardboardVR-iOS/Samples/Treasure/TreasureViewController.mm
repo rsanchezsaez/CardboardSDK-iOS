@@ -10,6 +10,8 @@
 
 #import "CardboardSDK.h"
 
+#import <AudioToolbox/AudioServices.h>
+
 
 @interface TreasureRenderer : NSObject <StereoRendererDelegate>
 {
@@ -629,8 +631,8 @@ inline float randomFloat()
         // mOverlayView.show3DToast("Look around to find the object!");
     }
     
-//    // Always give user feedback.
-//    mVibrator.vibrate(50);
+    // Always give user feedback.
+    AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
     
     DLog(@"Score: %d", _score);
 }
