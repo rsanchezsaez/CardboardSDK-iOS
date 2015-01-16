@@ -1,17 +1,32 @@
-CardboardVR-iOS
+CardboardSDK-iOS
 ===============
 
-Port of [Google's CardboardSDK](https://github.com/rsanchezsaez/cardboard-java) (with manually decompiled sources) for iOS.
+iOS port of  [Google's CardboardSDK](https://github.com/rsanchezsaez/cardboard-java).
 
-Treasure example fully running with magnetic trigger detection. Missing: text overlay messages (`CardboardOverlayView`). Successfully tested on an iPhone 6 running iOS 8 and on a iPhone 5 running iOS 7.
+*Treasure* example fully running with magnetic trigger detection. Successfully tested on an iPhone 6 running iOS 8 and on a iPhone 5 running iOS 7.
 
-Note that this currently uses `CoreMotion`'s attitude on the HeadTracker (I'm not using Google's OrientationEKF at all, probably `CoreMotion` does it's own EKF internally).  
+### Todo
 
-Todo:
+- Text overlay messages (`CardboardOverlayView`, part of  *Treasure* example).
+- Match latest CardboardSDK functionality (some refactoring which moved some transformations from CardboardView into EyeParams and the such; adding optional neck support on the HeadTracker; optional vignetting on the distortion renderer; etc).
+- Having additional examples would be nice.
 
-- Update it to be on par with the latest CardboardSDK (some refactoring which moved some transformations from CardboardView into EyeParams and the such; adding optional neck support on the HeadTracker; optional vignetting on the distortion renderer; etc).
+### Issues
 
-Issues:
+- NFC doesn't work, as there's no NFC API available on iOS 8. (Hopefully Apple will provide one on iOS 9. But then, only the iPhone 6/6+ or higher have NFC).
 
-- Latency seems a bit worse on iOS than on some Android devices. I'm not sure if this is due to `CoreMotion`'s attitude estimation being less responsive than EKF; due to the iOS hardware delivering updated readings less frequentlu; or due to some other inefficiency in the current OpenGL pipeline.
-- NFC doesn't work, as there's no NFC API available on iOS 8.
+### Discusion
+
+ The `HeadTracker` can alternatively use  *CoreMotion*'s attitude  instead of Google's `OrientationEKF` class  (*CoreMotion* does its own *EKF*-like internal *IMU*-fusion algorithm). 
+
+Using *CoreMotion* very noticeably worsens the latency , but improves the gyro drift (slight continuous rotation movement when stationary).
+
+In general using `OrientationEKF` is recommended because the lag is much less noticeable. 
+
+Set `#define USE_EKF (0)` to use *CoreMotion*.
+
+### License & Contributors
+
+*CardboardSDK-iOS*, as the original *CardboardSDK*, is available under the *Apache license*. See the [`LICENSE`](./LICENSE) file for more info.
+
+See  [`AUTHORS.md`](./AUTHORS.md) for some of the project contributors.
