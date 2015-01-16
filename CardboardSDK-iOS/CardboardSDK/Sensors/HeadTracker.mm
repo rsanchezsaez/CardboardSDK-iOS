@@ -8,7 +8,11 @@
 
 #include "HeadTracker.h"
 
-#define USE_EKF (1)
+#define HEAD_TRACKER_MODE_EKF 0
+#define HEAD_TRACKER_MODE_CORE_MOTION 1
+#define HEAD_TRACKER_MODE_CORE_MOTION_EKF 2
+
+#define HEAD_TRACKER_MODE HEAD_TRACKER_MODE_CORE_MOTION_EKF
 
 namespace {
 
@@ -45,7 +49,7 @@ GLKMatrix4 GetRotateEulerMatrix(float x, float y, float z)
     return matrix;
 }
 
-#if !USE_EKF
+#if HEAD_TRACKER_MODE == HEAD_TRACKER_MODE_CORE_MOTION
 GLKMatrix4 GLMatrixFromRotationMatrix(CMRotationMatrix rotationMatrix)
 {
     GLKMatrix4 glRotationMatrix;
@@ -96,7 +100,7 @@ void HeadTracker::startTracking()
 {
     _tracker->reset();
 
-  #if USE_EKF
+  #if HEAD_TRACKER_MODE == HEAD_TRACKER_MODE_EKF
     NSOperationQueue *accelerometerQueue = [[NSOperationQueue alloc] init];
     NSOperationQueue *gyroQueue = [[NSOperationQueue alloc] init];
     
@@ -117,34 +121,46 @@ void HeadTracker::startTracking()
         _tracker->processGyro(GLKVector3Make(rotationRate.x, rotationRate.y, rotationRate.z), gyroData.timestamp);
         _lastGyroEventTimestamp = gyroData.timestamp;
     }];
-  #else
+  #elif HEAD_TRACKER_MODE == HEAD_TRACKER_MODE_CORE_MOTION
     if (_motionManager.isDeviceMotionAvailable && !_motionManager.isDeviceMotionActive)
     {
         [_motionManager startDeviceMotionUpdatesUsingReferenceFrame:CMAttitudeReferenceFrameXArbitraryZVertical];
     }
+  #elif HEAD_TRACKER_MODE == HEAD_TRACKER_MODE_CORE_MOTION_EKF
+    NSOperationQueue *deviceMotionQueue = [[NSOperationQueue alloc] init];
+    _motionManager.deviceMotionUpdateInterval = 1.0/100.0;
+    [_motionManager startDeviceMotionUpdatesUsingReferenceFrame:CMAttitudeReferenceFrameXArbitraryZVertical toQueue:deviceMotionQueue withHandler:^(CMDeviceMotion *motion, NSError *error) {
+        CMAcceleration acceleration = motion.gravity;
+        CMRotationRate rotationRate = motion.rotationRate;
+        // note core motion uses units of G while the EKF uses ms^-2
+        const float kG = 9.81f;
+        _tracker->processAcc(GLKVector3Make(kG*acceleration.x, kG*acceleration.y, kG*acceleration.z), motion.timestamp);
+        _tracker->processGyro(GLKVector3Make(rotationRate.x, rotationRate.y, rotationRate.z), motion.timestamp);
+        _lastGyroEventTimestamp = motion.timestamp;
+    }];
   #endif
     
 }
 
 void HeadTracker::stopTracking()
 {
-  #if USE_EKF
+  #if HEAD_TRACKER_MODE == HEAD_TRACKER_MODE_EKF
     [_motionManager stopAccelerometerUpdates];
     [_motionManager stopGyroUpdates];
-  #else
+  #elif HEAD_TRACKER_MODE == HEAD_TRACKER_MODE_CORE_MOTION || HEAD_TRACKER_MODE == HEAD_TRACKER_MODE_CORE_MOTION_EKF
     [_motionManager stopDeviceMotionUpdates];
   #endif
 }
 
 GLKMatrix4 HeadTracker::getLastHeadView()
 {
-  #if USE_EKF
+  #if HEAD_TRACKER_MODE == HEAD_TRACKER_MODE_EKF || HEAD_TRACKER_MODE == HEAD_TRACKER_MODE_CORE_MOTION_EKF
     NSTimeInterval currentTimestamp = CACurrentMediaTime();
     double secondsSinceLastGyroEvent = currentTimestamp - _lastGyroEventTimestamp;
     // 1/30 of a second prediction (shoud it be 1/60?)
     double secondsToPredictForward = secondsSinceLastGyroEvent + 1.0/30;
     GLKMatrix4 inertialReferenceFrameToDevice = _tracker->getPredictedGLMatrix(secondsToPredictForward);
-  #else
+  #elif HEAD_TRACKER_MODE == HEAD_TRACKER_MODE_CORE_MOTION
     CMDeviceMotion *motion = _motionManager.deviceMotion;
     CMRotationMatrix rotationMatrix = motion.attitude.rotationMatrix;
     GLKMatrix4 inertialReferenceFrameToDevice = GLKMatrix4Transpose(GLMatrixFromRotationMatrix(rotationMatrix)); // note the matrix inversion
