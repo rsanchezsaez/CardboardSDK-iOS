@@ -17,13 +17,18 @@ iOS port of  [Google's CardboardSDK](https://github.com/rsanchezsaez/cardboard-j
 
 ### Discusion
 
- The `HeadTracker` can alternatively use  *CoreMotion*'s attitude  instead of Google's `OrientationEKF` class  (*CoreMotion* does its own *EKF*-like internal *IMU*-fusion algorithm). 
+ The `HeadTracker` can either use:
 
-Using *CoreMotion* very noticeably worsens the latency , but improves the gyro drift (slight continuous rotation movement when stationary).
+- Google's `OrientationEKF` class with raw gyro and accelerometer data. Has very low latency but suffers from gyro drift (slight continuous rotation movement when stationary). This is the current *Android*'s *CardboardSDK* approach.
+ - *CoreMotion*'s `CMDeviceMotion.attitude` improves the gyro drift, but very noticeably worsens the latency (*CoreMotion* does its own *EKF*-like internal *IMU*-fusion algorithm).
+- *CoreMotion*'s `CMDeviceMotion.attitude` data with Google's `OrientationEKF`. Best of both worlds: low latency and low gyro drift, but uses more CPU (basically it does the *IMU* integration twice).
 
-In general using `OrientationEKF` is recommended because the lag is much less noticeable. 
+In general using `HEAD_TRACKER_MODE_CORE_MOTION_EKF` is recommended. 
 
-Set `#define USE_EKF (0)` to use *CoreMotion*.
+In `HeadTracker.mm`, you can set `#define HEAD_TRACKER_MODE` to either
+`HEAD_TRACKER_MODE_EKF`,
+`HEAD_TRACKER_MODE_CORE_MOTION`, or
+` HEAD_TRACKER_MODE_CORE_MOTION_EKF`.
 
 ### License & Contributors
 
