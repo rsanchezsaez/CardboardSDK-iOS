@@ -2,9 +2,6 @@
 //  So3Util.h
 //  CardboardVR-iOS
 //
-//  Created by Peter Tribe on 2014-08-25.
-//  Copyright (c) 2014 Peter Tribe. All rights reserved.
-//
 
 #ifndef __CardboardVR_iOS__So3Util__
 #define __CardboardVR_iOS__So3Util__
@@ -14,7 +11,7 @@
 
 class So3Util
 {
-public:
+  public:
     static void sO3FromTwoVec(Vector3d *a, Vector3d *b, Matrix3x3d *result);
     static void rotationPiAboutAxis(Vector3d *v, Matrix3x3d *result);
     static void sO3FromMu(Vector3d *w, Matrix3x3d *result);

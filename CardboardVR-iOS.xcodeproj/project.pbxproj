@@ -81,7 +81,6 @@
 		BC6733551A5D90C700C6D79B /* OrientationEKF.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OrientationEKF.mm; sourceTree = "<group>"; };
 		BC6733561A5D90C700C6D79B /* So3Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = So3Util.h; sourceTree = "<group>"; };
 		BC6733571A5D90C700C6D79B /* So3Util.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = So3Util.mm; sourceTree = "<group>"; };
-		BC6733581A5D90C700C6D79B /* Structs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Structs.h; sourceTree = "<group>"; };
 		BC6733591A5D90C700C6D79B /* Vector3d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vector3d.h; sourceTree = "<group>"; };
 		BC67335A1A5D90C700C6D79B /* Vector3d.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Vector3d.mm; sourceTree = "<group>"; };
 		BC67335B1A5D90C700C6D79B /* MagnetSensor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MagnetSensor.h; sourceTree = "<group>"; };
@@ -218,7 +217,6 @@
 				BC6733551A5D90C700C6D79B /* OrientationEKF.mm */,
 				BC6733561A5D90C700C6D79B /* So3Util.h */,
 				BC6733571A5D90C700C6D79B /* So3Util.mm */,
-				BC6733581A5D90C700C6D79B /* Structs.h */,
 				BC6733591A5D90C700C6D79B /* Vector3d.h */,
 				BC67335A1A5D90C700C6D79B /* Vector3d.mm */,
 			);

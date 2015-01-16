@@ -2,13 +2,6 @@
 //  OrientationEKF.h
 //  CardboardVR-iOS
 //
-//  Created by Peter Tribe on 2014-08-25.
-//  Copyright (c) 2014 Peter Tribe. All rights reserved.
-//
-
-//#import <Foundation/Foundation.h>
-//#import <CoreMotion/CoreMotion.h>
-
 
 #ifndef __CardboardVR_iOS__OrientationEKF__
 #define __CardboardVR_iOS__OrientationEKF__
@@ -20,7 +13,7 @@
 
 class OrientationEKF
 {
-public:
+  public:
     OrientationEKF();
     virtual ~OrientationEKF();
     
@@ -35,10 +28,9 @@ public:
     
     GLKMatrix4 getGLMatrix();
     GLKMatrix4 getPredictedGLMatrix(double secondsAfterLastGyroEvent);
-
     
-private:
-
+    
+  private:
     Matrix3x3d so3SensorFromWorld_;
     Matrix3x3d so3LastMotion_;
     Matrix3x3d mP_;
@@ -70,7 +62,6 @@ private:
     void updateCovariancesAfterMotion();
     void updateAccelCovariance(double currentAccelNorm);
     void accObservationFunctionForNumericalJacobian(Matrix3x3d* so3SensorFromWorldPred, Vector3d* result);
-    
 };
 
 #endif

@@ -11,7 +11,6 @@
 
 #import <UIKit/UIKit.h>
 #import <GLKit/GLKit.h>
-#include "Structs.h"
 
 class Viewport
 {
@@ -20,6 +19,7 @@ public:
     int y;
     int width;
     int height;
+    
 public:
     void setViewport(int x, int y, int width, int height);
     void setGLViewport();

@@ -10,7 +10,11 @@
 #define __CardboardVR_iOS__Distortion__
 
 #import <UIKit/UIKit.h>
-#include "Structs.h"
+
+struct DistortionCoeffients
+{
+    float c[2];
+};
 
 class Distortion
 {
@@ -24,6 +28,7 @@ public:
     float distortInverse(float radius);
     bool equals(Distortion *other);
     NSString* toString();
+    
 private:
     DistortionCoeffients coefficients;
 };

@@ -153,5 +153,8 @@ GLKMatrix4 HeadTracker::getLastHeadView()
     
     GLKMatrix4 worldToDevice = GLKMatrix4Multiply(inertialReferenceFrameToDevice, worldToInertialReferenceFrame_);
     GLKMatrix4 worldToDisplay = GLKMatrix4Multiply(deviceToDisplay_, worldToDevice);
+    
+    // NSLog(@"%@", NSStringFromGLKMatrix4(worldToDisplay));
+    
     return worldToDisplay;
 }

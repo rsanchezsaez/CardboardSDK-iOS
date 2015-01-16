@@ -2,9 +2,6 @@
 //  OrientationEKF.mm
 //  CardboardVR-iOS
 //
-//  Created by Peter Tribe on 2014-08-25.
-//  Copyright (c) 2014 Peter Tribe. All rights reserved.
-//
 
 #include "OrientationEKF.h"
 #include "So3Util.h"
@@ -73,8 +70,8 @@ void OrientationEKF::reset()
     mh_.setZero();
     mu_.setZero();
     mx_.setZero();
-    //down_.set(0.0, 0.0, 9.81);
-    // note this is flipped so it uses the same convention as Core Motion
+    // Flipped from Android so it uses the same convention as CoreMotion
+    // was: down_.set(0.0, 0.0, 9.81);
     down_.set(0.0, 0.0, -9.81);
     north_.set(0.0, 1.0, 0.0);
     alignedToGravity_ = false;

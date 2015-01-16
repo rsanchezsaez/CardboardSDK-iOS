@@ -13,8 +13,7 @@
 #import <CoreMotion/CoreMotion.h>
 #import <GLKit/GLKit.h>
 #include <vector>
-#include "Structs.h"
-
+ 
 NSString *const CBTriggerPressedNotification = @"CBTriggerPressedNotification";
 
 class MagnetSensor
