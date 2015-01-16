@@ -1,6 +1,6 @@
 //
 //  TreasureViewController.m
-//  CardboardVR-iOS
+//  CardboardSDK-iOS
 //
 //  Created by Ricardo Sánchez-Sáez on 13/01/2015.
 //  Copyright (c) 2015 Peter Tribe. All rights reserved.
@@ -193,7 +193,8 @@
 
 - (void)setupVAOS
 {
-    const GLfloat cubeVertices[] = {
+    const GLfloat cubeVertices[] =
+    {
         // Front face
         -1.0f, 1.0f, 1.0f,
         -1.0f, -1.0f, 1.0f,
@@ -243,7 +244,8 @@
         -1.0f, -1.0f, -1.0f,
     };
     
-    const GLfloat cubeColors[] = {
+    const GLfloat cubeColors[] =
+    {
         // front, green
         0.0f, 0.5273f, 0.2656f, 1.0f,
         0.0f, 0.5273f, 0.2656f, 1.0f,
@@ -293,7 +295,8 @@
         0.8359375f,  0.17578125f,  0.125f, 1.0f,
     };
         
-    const GLfloat cubeNormals[] = {
+    const GLfloat cubeNormals[] =
+    {
         // Front face
         0.0f, 0.0f, 1.0f,
         0.0f, 0.0f, 1.0f,
@@ -343,7 +346,8 @@
         0.0f, -1.0f, 0.0f
     };
     
-    const GLfloat floorVertices[] = {
+    const GLfloat floorVertices[] =
+    {
         200.0f,  0.0f, -200.0f,
         -200.0f,  0.0f, -200.0f,
         -200.0f,  0.0f,  200.0f,
@@ -352,7 +356,8 @@
         200.0f,  0.0f,  200.0f,
     };
     
-    const GLfloat floorNormals[] = {
+    const GLfloat floorNormals[] =
+    {
         0.0f, 1.0f, 0.0f,
         0.0f, 1.0f, 0.0f,
         0.0f, 1.0f, 0.0f,
@@ -361,7 +366,8 @@
         0.0f, 1.0f, 0.0f,
     };
     
-    const GLfloat floorColors[] = {
+    const GLfloat floorColors[] =
+    {
         0.0f, 0.3398f, 0.9023f, 1.0f,
         0.0f, 0.3398f, 0.9023f, 1.0f,
         0.0f, 0.3398f, 0.9023f, 1.0f,
@@ -370,13 +376,14 @@
         0.0f, 0.3398f, 0.9023f, 1.0f,
     };
     
-    const GLfloat ceilingColors[] = {
-        0.0f, 0.9023f, 0.3398f, 1.0f,
-        0.0f, 0.9023f, 0.3398f, 1.0f,
-        0.0f, 0.9023f, 0.3398f, 1.0f,
-        0.0f, 0.9023f, 0.3398f, 1.0f,
-        0.0f, 0.9023f, 0.3398f, 1.0f,
-        0.0f, 0.9023f, 0.3398f, 1.0f,
+    const GLfloat ceilingColors[] =
+    {
+        0.0f, 0.6f, 0.0f, 1.0f,
+        0.0f, 0.6f, 0.0f, 1.0f,
+        0.0f, 0.6f, 0.0f, 1.0f,
+        0.0f, 0.6f, 0.0f, 1.0f,
+        0.0f, 0.6f, 0.0f, 1.0f,
+        0.0f, 0.6f, 0.0f, 1.0f,
     };
 
     // Cube VAO setup

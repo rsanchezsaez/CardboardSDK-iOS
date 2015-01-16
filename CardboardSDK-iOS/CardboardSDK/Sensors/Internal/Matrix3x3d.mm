@@ -1,6 +1,6 @@
 //
 //  Matrix3x3d.mm
-//  CardboardVR-iOS
+//  CardboardSDK-iOS
 //
 
 #include "Matrix3x3d.h"

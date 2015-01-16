@@ -1,6 +1,6 @@
 //
 //  Vector3d.h
-//  CardboardVR-iOS
+//  CardboardSDK-iOS
 //
 
 #ifndef __CardboardVR_iOS__Vector3d__
@@ -9,7 +9,7 @@
 class Vector3d
 {
     friend class Matrix3x3d;
-    friend class So3Util;
+    friend class SO3Util;
 
   public:
     Vector3d();

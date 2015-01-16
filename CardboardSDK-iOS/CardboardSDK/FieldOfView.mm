@@ -1,6 +1,6 @@
 //
 //  FieldOfView.cpp
-//  CardboardVR-iOS
+//  CardboardSDK-iOS
 //
 //  Created by Peter Tribe on 2014-08-26.
 //  Copyright (c) 2014 Peter Tribe. All rights reserved.

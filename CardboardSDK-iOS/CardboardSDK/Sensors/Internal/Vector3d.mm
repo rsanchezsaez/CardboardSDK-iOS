@@ -1,6 +1,6 @@
 //
 //  Vector3d.mm
-//  CardboardVR-iOS
+//  CardboardSDK-iOS
 //
 
 #include "Vector3d.h"
