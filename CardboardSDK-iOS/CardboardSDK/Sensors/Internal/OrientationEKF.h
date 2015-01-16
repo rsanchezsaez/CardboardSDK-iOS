@@ -1,6 +1,6 @@
 //
 //  OrientationEKF.h
-//  CardboardVR-iOS
+//  CardboardSDK-iOS
 //
 
 #ifndef __CardboardVR_iOS__OrientationEKF__
@@ -31,32 +31,32 @@ class OrientationEKF
     
     
   private:
-    Matrix3x3d so3SensorFromWorld_;
-    Matrix3x3d so3LastMotion_;
-    Matrix3x3d mP_;
-    Matrix3x3d mQ_;
-    Matrix3x3d mR_;
-    Matrix3x3d mRaccel_;
-    Matrix3x3d mS_;
-    Matrix3x3d mH_;
-    Matrix3x3d mK_;
-    Vector3d mNu_;
-    Vector3d mz_;
-    Vector3d mh_;
-    Vector3d mu_;
-    Vector3d mx_;
-    Vector3d down_;
-    Vector3d north_;
-    double sensorTimeStampGyro_;
-    GLKVector3 lastGyro_;
-    double previousAccelNorm_;
-    double movingAverageAccelNormChange_;
-    double filteredGyroTimestep_;
-    bool timestepFilterInit_;
-    int numGyroTimestepSamples_;
-    bool gyroFilterValid_;
-    bool alignedToGravity_;
-    bool alignedToNorth_;
+    Matrix3x3d _so3SensorFromWorld;
+    Matrix3x3d _so3LastMotion;
+    Matrix3x3d _mP;
+    Matrix3x3d _mQ;
+    Matrix3x3d _mR;
+    Matrix3x3d _mRaccel;
+    Matrix3x3d _mS;
+    Matrix3x3d _mH;
+    Matrix3x3d _mK;
+    Vector3d _mNu;
+    Vector3d _mz;
+    Vector3d _mh;
+    Vector3d _mu;
+    Vector3d _mx;
+    Vector3d _down;
+    Vector3d _north;
+    double _sensorTimeStampGyro;
+    GLKVector3 _lastGyro;
+    double _previousAccelNorm;
+    double _movingAverageAccelNormChange;
+    double _filteredGyroTimestep;
+    bool _timestepFilterInit;
+    int _numGyroTimestepSamples;
+    bool _gyroFilterValid;
+    bool _alignedToGravity;
+    bool _alignedToNorth;
     
     void filterGyroTimestep(double timestep);
     void updateCovariancesAfterMotion();

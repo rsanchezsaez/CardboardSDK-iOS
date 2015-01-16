@@ -1,17 +1,17 @@
 //
-//  So3Util.mm
-//  CardboardVR-iOS
+//  SO3Util.mm
+//  CardboardSDK-iOS
 //
 
-#include "So3Util.h"
+#include "SO3Util.h"
 #include <cmath>
 
-void So3Util::sO3FromTwoVec(Vector3d *a, Vector3d *b, Matrix3x3d *result)
+void SO3Util::so3FromTwoVecN(Vector3d *a, Vector3d *b, Matrix3x3d *result)
 {
-    Vector3d sO3FromTwoVecN;
-    Vector3d::cross(a, b, &sO3FromTwoVecN);
+    Vector3d so3FromTwoVecNN;
+    Vector3d::cross(a, b, &so3FromTwoVecNN);
     
-    if (sO3FromTwoVecN.length() == 0.0)
+    if (so3FromTwoVecNN.length() == 0.0)
     {
         double dot = Vector3d::dot(a, b);
         if (dot >= 0.0)
@@ -20,46 +20,46 @@ void So3Util::sO3FromTwoVec(Vector3d *a, Vector3d *b, Matrix3x3d *result)
         }
         else
         {
-            Vector3d sO3FromTwoVecRotationAxis;
-            Vector3d::ortho(a, &sO3FromTwoVecRotationAxis);
-            So3Util::rotationPiAboutAxis(&sO3FromTwoVecRotationAxis, result);
+            Vector3d so3FromTwoVecNRotationAxis;
+            Vector3d::ortho(a, &so3FromTwoVecNRotationAxis);
+            SO3Util::rotationPiAboutAxis(&so3FromTwoVecNRotationAxis, result);
         }
         return;
     }
     
-    Vector3d sO3FromTwoVecA(a);
-    Vector3d sO3FromTwoVecB(b);
-    sO3FromTwoVecN.normalize();
-    sO3FromTwoVecA.normalize();
-    sO3FromTwoVecB.normalize();
+    Vector3d so3FromTwoVecNA(a);
+    Vector3d so3FromTwoVecNB(b);
+    so3FromTwoVecNN.normalize();
+    so3FromTwoVecNA.normalize();
+    so3FromTwoVecNB.normalize();
     
     Vector3d tempVector;
     Matrix3x3d r1;
-    r1.setColumn(0, &sO3FromTwoVecA);
-    r1.setColumn(1, &sO3FromTwoVecN);
-    Vector3d::cross(&sO3FromTwoVecN, &sO3FromTwoVecA, &tempVector);
+    r1.setColumn(0, &so3FromTwoVecNA);
+    r1.setColumn(1, &so3FromTwoVecNN);
+    Vector3d::cross(&so3FromTwoVecNN, &so3FromTwoVecNA, &tempVector);
     r1.setColumn(2, &tempVector);
     
     Matrix3x3d r2;
-    r2.setColumn(0, &sO3FromTwoVecB);
-    r2.setColumn(1, &sO3FromTwoVecN);
-    Vector3d::cross(&sO3FromTwoVecN, &sO3FromTwoVecB, &tempVector);
+    r2.setColumn(0, &so3FromTwoVecNB);
+    r2.setColumn(1, &so3FromTwoVecNN);
+    Vector3d::cross(&so3FromTwoVecNN, &so3FromTwoVecNB, &tempVector);
     r2.setColumn(2, &tempVector);
     
     r1.transpose();
     Matrix3x3d::mult(&r2, &r1, result);
 }
 
-void So3Util::rotationPiAboutAxis(Vector3d *v, Matrix3x3d *result)
+void SO3Util::rotationPiAboutAxis(Vector3d *v, Matrix3x3d *result)
 {
     Vector3d rotationPiAboutAxisTemp(v);
     rotationPiAboutAxisTemp.scale(M_PI / rotationPiAboutAxisTemp.length());
     const double kA = 0.0;
     const double kB = 0.20264236728467558;
-    So3Util::rodriguesSo3Exp(&rotationPiAboutAxisTemp, kA, kB, result);
+    SO3Util::rodriguesSo3Exp(&rotationPiAboutAxisTemp, kA, kB, result);
 }
 
-void So3Util::sO3FromMu(Vector3d *w, Matrix3x3d *result)
+void SO3Util::so3FromMu(Vector3d *w, Matrix3x3d *result)
 {
     const double thetaSq = Vector3d::dot(w, w);
     const double theta = sqrt(thetaSq);
@@ -83,10 +83,10 @@ void So3Util::sO3FromMu(Vector3d *w, Matrix3x3d *result)
             kB = (1.0 - cos(theta)) * (invTheta * invTheta);
         }
     }
-    So3Util::rodriguesSo3Exp(w, kA, kB, result);
+    SO3Util::rodriguesSo3Exp(w, kA, kB, result);
 }
 
-void So3Util::muFromSO3(Matrix3x3d *so3, Vector3d *result)
+void SO3Util::muFromSO3(Matrix3x3d *so3, Vector3d *result)
 {
     const double cosAngle = (so3->get(0, 0) + so3->get(1, 1) + so3->get(2, 2) - 1.0) * 0.5;
     result->set((so3->get(2, 1) - so3->get(1, 2)) / 2.0,
@@ -144,7 +144,7 @@ void So3Util::muFromSO3(Matrix3x3d *so3, Vector3d *result)
     }
 }
 
-void So3Util::rodriguesSo3Exp(Vector3d *w, double kA, double kB, Matrix3x3d *result)
+void SO3Util::rodriguesSo3Exp(Vector3d *w, double kA, double kB, Matrix3x3d *result)
 {
     const double wx2 = w->_x * w->_x;
     const double wy2 = w->_y * w->_y;
@@ -169,7 +169,7 @@ void So3Util::rodriguesSo3Exp(Vector3d *w, double kA, double kB, Matrix3x3d *res
     result->set(2.0, 1.0, b + a);
 }
 
-void So3Util::generatorField(int i, Matrix3x3d *pos, Matrix3x3d *result)
+void SO3Util::generatorField(int i, Matrix3x3d *pos, Matrix3x3d *result)
 {
     result->set(i, 0.0, 0.0);
     result->set((i + 1) % 3,

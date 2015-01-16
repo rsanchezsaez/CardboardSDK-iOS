@@ -1,6 +1,6 @@
 //
 //  HeadTracker.mm
-//  CardboardVR-iOS
+//  CardboardSDK-iOS
 //
 //  Created by Peter Tribe on 2014-08-25.
 //  Copyright (c) 2014 Peter Tribe. All rights reserved.
@@ -78,81 +78,80 @@ GLKMatrix4 GLMatrixFromRotationMatrix(CMRotationMatrix rotationMatrix)
 
 HeadTracker::HeadTracker() :
     // this assumes the device is landscape with the home button on the right
-    deviceToDisplay_(GetRotateEulerMatrix(0.f, 0.f, -90.f)),
+    _deviceToDisplay(GetRotateEulerMatrix(0.f, 0.f, -90.f)),
     // the inertial reference frame has z up and x forward, while the world has z out and x right
-    worldToInertialReferenceFrame_(GetRotateEulerMatrix(-90.f, 0.f, 90.f)),
-    lastGyroEventTimestamp_(0)
+    _worldToInertialReferenceFrame(GetRotateEulerMatrix(-90.f, 0.f, 90.f)),
+    _lastGyroEventTimestamp(0)
 {
-    motionManager_ = [[CMMotionManager alloc] init];
-    tracker_ = new OrientationEKF();
+    _motionManager = [[CMMotionManager alloc] init];
+    _tracker = new OrientationEKF();
 }
 
 HeadTracker::~HeadTracker()
 {
-    delete tracker_;
+    delete _tracker;
 }
 
 void HeadTracker::startTracking()
 {
-    tracker_->reset();
+    _tracker->reset();
 
-#if USE_EKF
+  #if USE_EKF
     NSOperationQueue *accelerometerQueue = [[NSOperationQueue alloc] init];
     NSOperationQueue *gyroQueue = [[NSOperationQueue alloc] init];
     
     // Probably capped at less than 100Hz
     // (http://stackoverflow.com/questions/4790111/what-is-the-official-iphone-4-maximum-gyroscope-data-update-frequency)
-    motionManager_.accelerometerUpdateInterval = 1.0/100.0;
-    [motionManager_ startAccelerometerUpdatesToQueue:accelerometerQueue withHandler:^(CMAccelerometerData *accelerometerData, NSError *error)
+    _motionManager.accelerometerUpdateInterval = 1.0/100.0;
+    [_motionManager startAccelerometerUpdatesToQueue:accelerometerQueue withHandler:^(CMAccelerometerData *accelerometerData, NSError *error)
     {
         CMAcceleration acceleration = accelerometerData.acceleration;
         // note core motion uses units of G while the EKF uses ms^-2
         const float kG = 9.81f;
-        tracker_->processAcc(GLKVector3Make(kG*acceleration.x, kG*acceleration.y, kG*acceleration.z), accelerometerData.timestamp);
+        _tracker->processAcc(GLKVector3Make(kG*acceleration.x, kG*acceleration.y, kG*acceleration.z), accelerometerData.timestamp);
     }];
     
-    motionManager_.gyroUpdateInterval = 1.0/100.0;
-    [motionManager_ startGyroUpdatesToQueue:gyroQueue withHandler:^(CMGyroData *gyroData, NSError *error) {
+    _motionManager.gyroUpdateInterval = 1.0/100.0;
+    [_motionManager startGyroUpdatesToQueue:gyroQueue withHandler:^(CMGyroData *gyroData, NSError *error) {
         CMRotationRate rotationRate = gyroData.rotationRate;
-        tracker_->processGyro(GLKVector3Make(rotationRate.x, rotationRate.y, rotationRate.z), gyroData.timestamp);
-        lastGyroEventTimestamp_ = gyroData.timestamp;
+        _tracker->processGyro(GLKVector3Make(rotationRate.x, rotationRate.y, rotationRate.z), gyroData.timestamp);
+        _lastGyroEventTimestamp = gyroData.timestamp;
     }];
-#else
-    if (motionManager_.isDeviceMotionAvailable && !motionManager_.isDeviceMotionActive)
+  #else
+    if (_motionManager.isDeviceMotionAvailable && !_motionManager.isDeviceMotionActive)
     {
-        [motionManager_ startDeviceMotionUpdatesUsingReferenceFrame:CMAttitudeReferenceFrameXArbitraryZVertical];
+        [_motionManager startDeviceMotionUpdatesUsingReferenceFrame:CMAttitudeReferenceFrameXArbitraryZVertical];
     }
-#endif
+  #endif
     
 }
 
 void HeadTracker::stopTracking()
 {
-#if USE_EKF
-    [motionManager_ stopAccelerometerUpdates];
-    [motionManager_ stopGyroUpdates];
-#else
-    [motionManager_ stopDeviceMotionUpdates];
-#endif
+  #if USE_EKF
+    [_motionManager stopAccelerometerUpdates];
+    [_motionManager stopGyroUpdates];
+  #else
+    [_motionManager stopDeviceMotionUpdates];
+  #endif
 }
 
 GLKMatrix4 HeadTracker::getLastHeadView()
 {
-#if USE_EKF
-    
+  #if USE_EKF
     NSTimeInterval currentTimestamp = CACurrentMediaTime();
-    double secondsSinceLastGyroEvent = currentTimestamp - lastGyroEventTimestamp_;
+    double secondsSinceLastGyroEvent = currentTimestamp - _lastGyroEventTimestamp;
     // 1/30 of a second prediction (shoud it be 1/60?)
     double secondsToPredictForward = secondsSinceLastGyroEvent + 1.0/30;
-    GLKMatrix4 inertialReferenceFrameToDevice = tracker_->getPredictedGLMatrix(secondsToPredictForward);
-#else
-    CMDeviceMotion *motion = motionManager_.deviceMotion;
+    GLKMatrix4 inertialReferenceFrameToDevice = _tracker->getPredictedGLMatrix(secondsToPredictForward);
+  #else
+    CMDeviceMotion *motion = _motionManager.deviceMotion;
     CMRotationMatrix rotationMatrix = motion.attitude.rotationMatrix;
     GLKMatrix4 inertialReferenceFrameToDevice = GLKMatrix4Transpose(GLMatrixFromRotationMatrix(rotationMatrix)); // note the matrix inversion
-#endif
+  #endif
     
-    GLKMatrix4 worldToDevice = GLKMatrix4Multiply(inertialReferenceFrameToDevice, worldToInertialReferenceFrame_);
-    GLKMatrix4 worldToDisplay = GLKMatrix4Multiply(deviceToDisplay_, worldToDevice);
+    GLKMatrix4 worldToDevice = GLKMatrix4Multiply(inertialReferenceFrameToDevice, _worldToInertialReferenceFrame);
+    GLKMatrix4 worldToDisplay = GLKMatrix4Multiply(_deviceToDisplay, worldToDevice);
     
     // NSLog(@"%@", NSStringFromGLKMatrix4(worldToDisplay));
     

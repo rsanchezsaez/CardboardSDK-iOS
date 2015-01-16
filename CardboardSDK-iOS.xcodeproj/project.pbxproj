@@ -24,7 +24,7 @@
 		BC67336B1A5D90C700C6D79B /* HeadTracker.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC6733501A5D90C700C6D79B /* HeadTracker.mm */; };
 		BC67336C1A5D90C700C6D79B /* Matrix3x3d.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC6733531A5D90C700C6D79B /* Matrix3x3d.mm */; };
 		BC67336D1A5D90C700C6D79B /* OrientationEKF.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC6733551A5D90C700C6D79B /* OrientationEKF.mm */; };
-		BC67336E1A5D90C700C6D79B /* So3Util.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC6733571A5D90C700C6D79B /* So3Util.mm */; };
+		BC67336E1A5D90C700C6D79B /* SO3Util.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC6733571A5D90C700C6D79B /* SO3Util.mm */; };
 		BC67336F1A5D90C700C6D79B /* Vector3d.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC67335A1A5D90C700C6D79B /* Vector3d.mm */; };
 		BC6733701A5D90C700C6D79B /* MagnetSensor.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC67335C1A5D90C700C6D79B /* MagnetSensor.mm */; };
 		BC6733711A5D90C700C6D79B /* Viewport.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC67335E1A5D90C700C6D79B /* Viewport.mm */; };
@@ -74,8 +74,8 @@
 		BC6733531A5D90C700C6D79B /* Matrix3x3d.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Matrix3x3d.mm; sourceTree = "<group>"; };
 		BC6733541A5D90C700C6D79B /* OrientationEKF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrientationEKF.h; sourceTree = "<group>"; };
 		BC6733551A5D90C700C6D79B /* OrientationEKF.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OrientationEKF.mm; sourceTree = "<group>"; };
-		BC6733561A5D90C700C6D79B /* So3Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = So3Util.h; sourceTree = "<group>"; };
-		BC6733571A5D90C700C6D79B /* So3Util.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = So3Util.mm; sourceTree = "<group>"; };
+		BC6733561A5D90C700C6D79B /* SO3Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SO3Util.h; sourceTree = "<group>"; };
+		BC6733571A5D90C700C6D79B /* SO3Util.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SO3Util.mm; sourceTree = "<group>"; };
 		BC6733591A5D90C700C6D79B /* Vector3d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vector3d.h; sourceTree = "<group>"; };
 		BC67335A1A5D90C700C6D79B /* Vector3d.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Vector3d.mm; sourceTree = "<group>"; };
 		BC67335B1A5D90C700C6D79B /* MagnetSensor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MagnetSensor.h; sourceTree = "<group>"; };
@@ -202,8 +202,8 @@
 				BC6733531A5D90C700C6D79B /* Matrix3x3d.mm */,
 				BC6733541A5D90C700C6D79B /* OrientationEKF.h */,
 				BC6733551A5D90C700C6D79B /* OrientationEKF.mm */,
-				BC6733561A5D90C700C6D79B /* So3Util.h */,
-				BC6733571A5D90C700C6D79B /* So3Util.mm */,
+				BC6733561A5D90C700C6D79B /* SO3Util.h */,
+				BC6733571A5D90C700C6D79B /* SO3Util.mm */,
 				BC6733591A5D90C700C6D79B /* Vector3d.h */,
 				BC67335A1A5D90C700C6D79B /* Vector3d.mm */,
 			);
@@ -333,7 +333,7 @@
 				BC6733711A5D90C700C6D79B /* Viewport.mm in Sources */,
 				BC6733641A5D90C700C6D79B /* DistortionRenderer.mm in Sources */,
 				BC6733651A5D90C700C6D79B /* EyeParams.mm in Sources */,
-				BC67336E1A5D90C700C6D79B /* So3Util.mm in Sources */,
+				BC67336E1A5D90C700C6D79B /* SO3Util.mm in Sources */,
 				BC6733681A5D90C700C6D79B /* HeadMountedDisplay.mm in Sources */,
 				35B1883D19ABEF58005A9930 /* AppDelegate.mm in Sources */,
 				BC6733611A5D90C700C6D79B /* CardboardDeviceParams.mm in Sources */,

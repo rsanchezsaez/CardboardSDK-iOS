@@ -1,6 +1,6 @@
 //
 //  HeadTracker.h
-//  CardboardVR-iOS
+//  CardboardSDK-iOS
 //
 //  Created by Peter Tribe on 2014-08-25.
 //  Copyright (c) 2014 Peter Tribe. All rights reserved.
@@ -24,11 +24,11 @@ class HeadTracker
     GLKMatrix4 getLastHeadView();
     
   private:
-    CMMotionManager* motionManager_;
-    OrientationEKF* tracker_;
-    GLKMatrix4 deviceToDisplay_;
-    GLKMatrix4 worldToInertialReferenceFrame_;
-    NSTimeInterval lastGyroEventTimestamp_;
+    CMMotionManager *_motionManager;
+    OrientationEKF *_tracker;
+    GLKMatrix4 _deviceToDisplay;
+    GLKMatrix4 _worldToInertialReferenceFrame;
+    NSTimeInterval _lastGyroEventTimestamp;
 };
 
 #endif
