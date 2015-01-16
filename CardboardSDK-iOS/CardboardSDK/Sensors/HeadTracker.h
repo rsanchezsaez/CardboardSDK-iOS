@@ -15,7 +15,7 @@
 
 class HeadTracker
 {
-public:
+  public:
     HeadTracker();
     virtual ~HeadTracker();
     
@@ -23,7 +23,7 @@ public:
     void stopTracking();
     GLKMatrix4 getLastHeadView();
     
-private:
+  private:
     CMMotionManager* motionManager_;
     OrientationEKF* tracker_;
     GLKMatrix4 deviceToDisplay_;

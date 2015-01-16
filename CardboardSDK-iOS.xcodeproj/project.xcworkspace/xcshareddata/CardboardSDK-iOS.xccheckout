@@ -5,23 +5,23 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>FB9901C1-553E-411E-82BF-949CA819D0E9</string>
+	<string>0B92599F-B9F2-4E0C-AD0E-3447E688F355</string>
 	<key>IDESourceControlProjectName</key>
-	<string>CardboardVR-iOS</string>
+	<string>CardboardSDK-iOS</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>EDFFEE58A17C1EBE75F750230E9F223862BB84E3</key>
-		<string>https://github.com/equinox2k/CardboardVR-iOS.git</string>
+		<string>github.com:rsanchezsaez/CardboardVR-iOS.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>CardboardVR-iOS.xcodeproj</string>
+	<string>CardboardSDK-iOS.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>EDFFEE58A17C1EBE75F750230E9F223862BB84E3</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/equinox2k/CardboardVR-iOS.git</string>
+	<string>github.com:rsanchezsaez/CardboardVR-iOS.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>

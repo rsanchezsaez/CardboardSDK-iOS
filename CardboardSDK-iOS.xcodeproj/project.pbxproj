@@ -45,7 +45,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		35B1883419ABEF58005A9930 /* CardboardVR-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CardboardVR-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		35B1883419ABEF58005A9930 /* CardboardSDK-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CardboardSDK-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		35B1883B19ABEF58005A9930 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		35B1883C19ABEF58005A9930 /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
 		35B1886019ABF053005A9930 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
@@ -127,7 +127,7 @@
 		35B1882B19ABEF58005A9930 = {
 			isa = PBXGroup;
 			children = (
-				35B1883619ABEF58005A9930 /* CardboardVR-iOS */,
+				35B1883619ABEF58005A9930 /* CardboardSDK-iOS */,
 				BCCBC5811A5D92450093F31A /* Frameworks */,
 				35B1883519ABEF58005A9930 /* Products */,
 			);
@@ -136,12 +136,12 @@
 		35B1883519ABEF58005A9930 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				35B1883419ABEF58005A9930 /* CardboardVR-iOS.app */,
+				35B1883419ABEF58005A9930 /* CardboardSDK-iOS.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		35B1883619ABEF58005A9930 /* CardboardVR-iOS */ = {
+		35B1883619ABEF58005A9930 /* CardboardSDK-iOS */ = {
 			isa = PBXGroup;
 			children = (
 				BC6733391A5D90C700C6D79B /* CardboardSDK */,
@@ -151,7 +151,7 @@
 				35B1883C19ABEF58005A9930 /* AppDelegate.mm */,
 				BC763B381A66BBBC00463823 /* Images.xcassets */,
 			);
-			path = "CardboardVR-iOS";
+			path = "CardboardSDK-iOS";
 			sourceTree = "<group>";
 		};
 		BC6733361A5D90C700C6D79B /* Supporting Files */ = {
@@ -284,9 +284,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		35B1883319ABEF58005A9930 /* CardboardVR-iOS */ = {
+		35B1883319ABEF58005A9930 /* CardboardSDK-iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 35B1885419ABEF58005A9930 /* Build configuration list for PBXNativeTarget "CardboardVR-iOS" */;
+			buildConfigurationList = 35B1885419ABEF58005A9930 /* Build configuration list for PBXNativeTarget "CardboardSDK-iOS" */;
 			buildPhases = (
 				35B1883019ABEF58005A9930 /* Sources */,
 				35B1883119ABEF58005A9930 /* Frameworks */,
@@ -296,9 +296,9 @@
 			);
 			dependencies = (
 			);
-			name = "CardboardVR-iOS";
+			name = "CardboardSDK-iOS";
 			productName = "CardboardVR-iOS";
-			productReference = 35B1883419ABEF58005A9930 /* CardboardVR-iOS.app */;
+			productReference = 35B1883419ABEF58005A9930 /* CardboardSDK-iOS.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -315,7 +315,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 35B1882F19ABEF58005A9930 /* Build configuration list for PBXProject "CardboardVR-iOS" */;
+			buildConfigurationList = 35B1882F19ABEF58005A9930 /* Build configuration list for PBXProject "CardboardSDK-iOS" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -328,7 +328,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				35B1883319ABEF58005A9930 /* CardboardVR-iOS */,
+				35B1883319ABEF58005A9930 /* CardboardSDK-iOS */,
 			);
 		};
 /* End PBXProject section */
@@ -470,10 +470,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_INPUT_FILETYPE = automatic;
-				INFOPLIST_FILE = "CardboardVR-iOS/Supporting Files/Info.plist";
+				INFOPLIST_FILE = "CardboardSDK-iOS/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "CardboardSDK-iOS";
 			};
 			name = Debug;
 		};
@@ -483,17 +483,17 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_INPUT_FILETYPE = automatic;
-				INFOPLIST_FILE = "CardboardVR-iOS/Supporting Files/Info.plist";
+				INFOPLIST_FILE = "CardboardSDK-iOS/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "CardboardSDK-iOS";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		35B1882F19ABEF58005A9930 /* Build configuration list for PBXProject "CardboardVR-iOS" */ = {
+		35B1882F19ABEF58005A9930 /* Build configuration list for PBXProject "CardboardSDK-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				35B1885219ABEF58005A9930 /* Debug */,
@@ -502,7 +502,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		35B1885419ABEF58005A9930 /* Build configuration list for PBXNativeTarget "CardboardVR-iOS" */ = {
+		35B1885419ABEF58005A9930 /* Build configuration list for PBXNativeTarget "CardboardSDK-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				35B1885519ABEF58005A9930 /* Debug */,
