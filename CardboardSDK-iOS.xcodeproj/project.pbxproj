@@ -37,11 +37,6 @@
 		BC763B391A66BBBC00463823 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC763B381A66BBBC00463823 /* Images.xcassets */; };
 		BC763B3B1A66D13300463823 /* highlight_fragment.shader in Resources */ = {isa = PBXBuildFile; fileRef = BC763B3A1A66D13300463823 /* highlight_fragment.shader */; };
 		BC763B3D1A6828DA00463823 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC763B3C1A6828DA00463823 /* AudioToolbox.framework */; };
-		BCD7096D1A64194700E78B84 /* CubeShader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = BCD709651A64194700E78B84 /* CubeShader.fsh */; };
-		BCD7096E1A64194700E78B84 /* CubeShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = BCD709661A64194700E78B84 /* CubeShader.vsh */; };
-		BCD7096F1A64194700E78B84 /* GLCubeRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = BCD709681A64194700E78B84 /* GLCubeRenderer.m */; };
-		BCD709701A64194700E78B84 /* GLCubeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCD7096A1A64194700E78B84 /* GLCubeViewController.m */; };
-		BCD709711A64194700E78B84 /* StereoCubeViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BCD7096C1A64194700E78B84 /* StereoCubeViewController.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -100,14 +95,6 @@
 		BC763B3A1A66D13300463823 /* highlight_fragment.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = highlight_fragment.shader; sourceTree = "<group>"; };
 		BC763B3C1A6828DA00463823 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		BCCBC5821A5D93170093F31A /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
-		BCD709651A64194700E78B84 /* CubeShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = CubeShader.fsh; sourceTree = "<group>"; };
-		BCD709661A64194700E78B84 /* CubeShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = CubeShader.vsh; sourceTree = "<group>"; };
-		BCD709671A64194700E78B84 /* GLCubeRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLCubeRenderer.h; sourceTree = "<group>"; };
-		BCD709681A64194700E78B84 /* GLCubeRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLCubeRenderer.m; sourceTree = "<group>"; };
-		BCD709691A64194700E78B84 /* GLCubeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLCubeViewController.h; sourceTree = "<group>"; };
-		BCD7096A1A64194700E78B84 /* GLCubeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLCubeViewController.m; sourceTree = "<group>"; };
-		BCD7096B1A64194700E78B84 /* StereoCubeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StereoCubeViewController.h; sourceTree = "<group>"; };
-		BCD7096C1A64194700E78B84 /* StereoCubeViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StereoCubeViewController.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -260,25 +247,9 @@
 		BCCBC5841A5D94100093F31A /* Samples */ = {
 			isa = PBXGroup;
 			children = (
-				BCD709641A64194700E78B84 /* Cube */,
 				BC763B281A655D1E00463823 /* Treasure */,
 			);
 			path = Samples;
-			sourceTree = "<group>";
-		};
-		BCD709641A64194700E78B84 /* Cube */ = {
-			isa = PBXGroup;
-			children = (
-				BCD709651A64194700E78B84 /* CubeShader.fsh */,
-				BCD709661A64194700E78B84 /* CubeShader.vsh */,
-				BCD709671A64194700E78B84 /* GLCubeRenderer.h */,
-				BCD709681A64194700E78B84 /* GLCubeRenderer.m */,
-				BCD709691A64194700E78B84 /* GLCubeViewController.h */,
-				BCD7096A1A64194700E78B84 /* GLCubeViewController.m */,
-				BCD7096B1A64194700E78B84 /* StereoCubeViewController.h */,
-				BCD7096C1A64194700E78B84 /* StereoCubeViewController.mm */,
-			);
-			path = Cube;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -338,12 +309,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BCD7096D1A64194700E78B84 /* CubeShader.fsh in Resources */,
 				BC763B2E1A655D1E00463823 /* passthrough_fragment.shader in Resources */,
 				BC763B2D1A655D1E00463823 /* light_vertex.shader in Resources */,
 				BC763B391A66BBBC00463823 /* Images.xcassets in Resources */,
 				BC763B2C1A655D1E00463823 /* grid_fragment.shader in Resources */,
-				BCD7096E1A64194700E78B84 /* CubeShader.vsh in Resources */,
 				BC763B3B1A66D13300463823 /* highlight_fragment.shader in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -367,14 +336,11 @@
 				BC67336E1A5D90C700C6D79B /* So3Util.mm in Sources */,
 				BC6733681A5D90C700C6D79B /* HeadMountedDisplay.mm in Sources */,
 				35B1883D19ABEF58005A9930 /* AppDelegate.mm in Sources */,
-				BCD7096F1A64194700E78B84 /* GLCubeRenderer.m in Sources */,
 				BC6733611A5D90C700C6D79B /* CardboardDeviceParams.mm in Sources */,
 				BC6733631A5D90C700C6D79B /* Distortion.mm in Sources */,
 				BC67336A1A5D90C700C6D79B /* ScreenParams.mm in Sources */,
 				BC6733661A5D90C700C6D79B /* EyeTransform.mm in Sources */,
-				BCD709701A64194700E78B84 /* GLCubeViewController.m in Sources */,
 				BC6733671A5D90C700C6D79B /* FieldOfView.mm in Sources */,
-				BCD709711A64194700E78B84 /* StereoCubeViewController.mm in Sources */,
 				BC6733691A5D90C700C6D79B /* HeadTransform.mm in Sources */,
 				BC67336D1A5D90C700C6D79B /* OrientationEKF.mm in Sources */,
 				BC6733621A5D90C700C6D79B /* CardboardViewController.mm in Sources */,
