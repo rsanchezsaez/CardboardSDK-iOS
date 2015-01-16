@@ -101,7 +101,7 @@ void So3Util::muFromSO3(Matrix3x3d *so3, Vector3d *result)
         }
     } else if (cosAngle > -0.7071067811865476) {
         double angle = acos(cosAngle);
-        result->scale(asin(angle) / sinAngleAbs);
+        result->scale(angle / sinAngleAbs);
     } else {
         
         double angle = M_PI - asin(sinAngleAbs);
