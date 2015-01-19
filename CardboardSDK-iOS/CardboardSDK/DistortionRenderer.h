@@ -34,11 +34,11 @@ class DistortionRenderer
     class DistortionMesh
     {
       public:
-        int indices;
-        int arrayBufferId;
-        int elementBufferId;
-        float vertexData[8000];
-        unsigned int indexData[3158];
+        int _indices;
+        int _arrayBufferID;
+        int _elementBufferID;
+        float _vertexData[8000];
+        unsigned int _indexData[3158];
       public:
         DistortionMesh();
         DistortionMesh(EyeParams *eye,
@@ -57,7 +57,7 @@ class DistortionRenderer
                        float viewportHeightMTexture);
     };
     
-    class EyeViewport
+    struct EyeViewport
     {
       public:
         float x;
@@ -66,35 +66,35 @@ class DistortionRenderer
         float height;
         float eyeX;
         float eyeY;
-      public:
+
         NSString* toString();
     };
     
-    class ProgramHolder
+    struct ProgramHolder
     {
       public:
         int program;
-        int aPosition;
-        int aVignette;
-        int aTextureCoord;
-        int uTextureCoordScale;
-        int uTextureSampler;
+        int positionLocation;
+        int vignetteLocation;
+        int textureCoordLocation;
+        int uTextureCoordScaleLocation;
+        int uTextureSamplerLocation;
     };
     
-    //int originalFramebufferId;
-    GLuint framebufferId;
-    GLuint textureId;
-    GLuint renderbufferId;
-    GLboolean cullFaceEnabled;
-    GLboolean scissorTestEnabled;
-    int viewport[4];
-    float resolutionScale;
-    DistortionMesh *leftEyeDistortionMesh;
-    DistortionMesh *rightEyeDistortionMesh;
-    HeadMountedDisplay *hmd;
-    FieldOfView *leftEyeFov;
-    FieldOfView *rightEyeFov;
-    ProgramHolder *programHolder;
+    // int _originalFramebufferID;
+    GLuint _framebufferID;
+    GLuint _textureID;
+    GLuint _renderbufferID;
+    GLboolean _cullFaceEnabled;
+    GLboolean _scissorTestEnabled;
+    int _viewport[4];
+    float _resolutionScale;
+    DistortionMesh *_leftEyeDistortionMesh;
+    DistortionMesh *_rightEyeDistortionMesh;
+    HeadMountedDisplay *_headMountedDisplay;
+    FieldOfView *_leftEyeFov;
+    FieldOfView *_rightEyeFov;
+    ProgramHolder *_programHolder;
   
   private:
     EyeViewport initViewportForEye(EyeParams *eye, float xOffsetM);
@@ -114,7 +114,6 @@ class DistortionRenderer
     int createProgram(const GLchar *vertexSource,
                       const GLchar *fragmentSource);
     ProgramHolder* createProgramHolder();
-    void checkGlError(NSString* op);
     static float clamp(float val, float min, float max);
     
 };

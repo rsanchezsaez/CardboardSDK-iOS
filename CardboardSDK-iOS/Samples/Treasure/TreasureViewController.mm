@@ -2,8 +2,6 @@
 //  TreasureViewController.m
 //  CardboardSDK-iOS
 //
-//  Created by Ricardo Sánchez-Sáez on 13/01/2015.
-//  Copyright (c) 2015 Peter Tribe. All rights reserved.
 //
 
 #import "TreasureViewController.h"
@@ -32,23 +30,23 @@
     GLuint _highlightedCubeProgram;
     GLuint _floorProgram;
     
-    GLint _cubePositionParam;
-    GLint _cubeNormalParam;
-    GLint _cubeColorParam;
+    GLint _cubePositionLocation;
+    GLint _cubeNormalLocation;
+    GLint _cubeColorLocation;
     
-    GLint _cubeModelParam;
-    GLint _cubeModelViewParam;
-    GLint _cubeModelViewProjectionParam;
-    GLint _cubeLightPositionParam;
+    GLint _cubeModelLocation;
+    GLint _cubeModelViewLocation;
+    GLint _cubeModelViewProjectionLocation;
+    GLint _cubeLightPositionLocation;
 
-    GLint _floorPositionParam;
-    GLint _floorNormalParam;
-    GLint _floorColorParam;
+    GLint _floorPositionLocation;
+    GLint _floorNormalLocation;
+    GLint _floorColorLocation;
     
-    GLint _floorModelParam;
-    GLint _floorModelViewParam;
-    GLint _floorModelViewProjectionParam;
-    GLint _floorLightPositionParam;
+    GLint _floorModelLocation;
+    GLint _floorModelViewLocation;
+    GLint _floorModelViewProjectionLocation;
+    GLint _floorLightPositionLocation;
 
     GLKMatrix4 _perspective;
     GLKMatrix4 _modelCube;
@@ -390,38 +388,38 @@
     glGenVertexArraysOES(1, &_cubeVertexArray);
     glBindVertexArrayOES(_cubeVertexArray);
     
-    _cubePositionParam = glGetAttribLocation(_cubeProgram, "a_Position");
-    _cubeNormalParam = glGetAttribLocation(_cubeProgram, "a_Normal");
-    _cubeColorParam = glGetAttribLocation(_cubeProgram, "a_Color");
+    _cubePositionLocation = glGetAttribLocation(_cubeProgram, "a_Position");
+    _cubeNormalLocation = glGetAttribLocation(_cubeProgram, "a_Normal");
+    _cubeColorLocation = glGetAttribLocation(_cubeProgram, "a_Color");
     
-    _cubeModelParam = glGetUniformLocation(_cubeProgram, "u_Model");
-    _cubeModelViewParam = glGetUniformLocation(_cubeProgram, "u_MVMatrix");
-    _cubeModelViewProjectionParam = glGetUniformLocation(_cubeProgram, "u_MVP");
-    _cubeLightPositionParam = glGetUniformLocation(_cubeProgram, "u_LightPos");
+    _cubeModelLocation = glGetUniformLocation(_cubeProgram, "u_Model");
+    _cubeModelViewLocation = glGetUniformLocation(_cubeProgram, "u_MVMatrix");
+    _cubeModelViewProjectionLocation = glGetUniformLocation(_cubeProgram, "u_MVP");
+    _cubeLightPositionLocation = glGetUniformLocation(_cubeProgram, "u_LightPos");
     
-    glEnableVertexAttribArray(_cubePositionParam);
-    glEnableVertexAttribArray(_cubeNormalParam);
-    glEnableVertexAttribArray(_cubeColorParam);
+    glEnableVertexAttribArray(_cubePositionLocation);
+    glEnableVertexAttribArray(_cubeNormalLocation);
+    glEnableVertexAttribArray(_cubeColorLocation);
     
     glGenBuffers(1, &_cubeVertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, _cubeVertexBuffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), cubeVertices, GL_STATIC_DRAW);
     
     // Set the position of the cube
-    glVertexAttribPointer(_cubePositionParam, _coordsPerVertex, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+    glVertexAttribPointer(_cubePositionLocation, _coordsPerVertex, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
     
     glGenBuffers(1, &_cubeNormalBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, _cubeNormalBuffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(cubeNormals), cubeNormals, GL_STATIC_DRAW);
     
     // Set the normal positions of the cube, again for shading
-    glVertexAttribPointer(_cubeNormalParam, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+    glVertexAttribPointer(_cubeNormalLocation, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
     
     glGenBuffers(1, &_cubeColorBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, _cubeColorBuffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(cubeColors), cubeColors, GL_STATIC_DRAW);
     
-    glVertexAttribPointer(_cubeColorParam, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+    glVertexAttribPointer(_cubeColorLocation, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
     
     checkGLError();
     
@@ -432,32 +430,32 @@
     glGenVertexArraysOES(1, &_floorVertexArray);
     glBindVertexArrayOES(_floorVertexArray);
     
-    _floorModelParam = glGetUniformLocation(_floorProgram, "u_Model");
-    _floorModelViewParam = glGetUniformLocation(_floorProgram, "u_MVMatrix");
-    _floorModelViewProjectionParam = glGetUniformLocation(_floorProgram, "u_MVP");
-    _floorLightPositionParam = glGetUniformLocation(_floorProgram, "u_LightPos");
+    _floorModelLocation = glGetUniformLocation(_floorProgram, "u_Model");
+    _floorModelViewLocation = glGetUniformLocation(_floorProgram, "u_MVMatrix");
+    _floorModelViewProjectionLocation = glGetUniformLocation(_floorProgram, "u_MVP");
+    _floorLightPositionLocation = glGetUniformLocation(_floorProgram, "u_LightPos");
     
-    _floorPositionParam = glGetAttribLocation(_floorProgram, "a_Position");
-    _floorNormalParam = glGetAttribLocation(_floorProgram, "a_Normal");
-    _floorColorParam = glGetAttribLocation(_floorProgram, "a_Color");
+    _floorPositionLocation = glGetAttribLocation(_floorProgram, "a_Position");
+    _floorNormalLocation = glGetAttribLocation(_floorProgram, "a_Normal");
+    _floorColorLocation = glGetAttribLocation(_floorProgram, "a_Color");
     
-    glEnableVertexAttribArray(_floorPositionParam);
-    glEnableVertexAttribArray(_floorNormalParam);
-    glEnableVertexAttribArray(_floorColorParam);
+    glEnableVertexAttribArray(_floorPositionLocation);
+    glEnableVertexAttribArray(_floorNormalLocation);
+    glEnableVertexAttribArray(_floorColorLocation);
     
     glGenBuffers(1, &_floorVertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, _floorVertexBuffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(floorVertices), floorVertices, GL_STATIC_DRAW);
     
     // Set the position of the floor
-    glVertexAttribPointer(_floorPositionParam, _coordsPerVertex, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+    glVertexAttribPointer(_floorPositionLocation, _coordsPerVertex, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
     
     glGenBuffers(1, &_floorNormalBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, _floorNormalBuffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(floorNormals), floorNormals, GL_STATIC_DRAW);
     
     // Set the normal positions of the floor, again for shading
-    glVertexAttribPointer(_floorNormalParam, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+    glVertexAttribPointer(_floorNormalLocation, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
     
     glGenBuffers(1, &_floorColorBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, _floorColorBuffer);
@@ -489,27 +487,27 @@
     _camera = GLKMatrix4MakeLookAt(0, 0, _cameraZ,
                                    0, 0, 0,
                                    0, 1.0f, 0);
-    _headView = headTransform->getHeadView();
+    _headView = headTransform->headView();
     
     checkGLError();
 }
 
 - (void)drawEyeWithTransform:(EyeTransform *)eyeTransform eyeType:(EyeParamsType)eyeType
 {
-    // NSLog(@"%@", NSStringFromGLKMatrix4(eyeTransform->getEyeView()));
+    // NSLog(@"%@", NSStringFromGLKMatrix4(_eyeTransform->eyeView()));
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     checkGLError();
     
     // Apply the eye transformation to the camera
-    _view = GLKMatrix4Multiply(eyeTransform->getEyeView(), _camera);
+    _view = GLKMatrix4Multiply(eyeTransform->eyeView(), _camera);
     
     // Set the position of the light
     _lightPositionInEyeSpace = GLKMatrix4MultiplyVector4(_view, _lightPositionInWorldSpace);
     
     // float[] perspective = eye.getPerspective(Z_NEAR, Z_FAR);
-    _perspective = eyeTransform->getPerspective();
+    _perspective = eyeTransform->perspective();
     [self drawCube];
     
     [self drawFloorAndCeiling];
@@ -539,19 +537,19 @@
     
     glBindVertexArrayOES(_cubeVertexArray);
 
-    glUniform3f(_cubeLightPositionParam,
+    glUniform3f(_cubeLightPositionLocation,
                 _lightPositionInEyeSpace.x,
                 _lightPositionInEyeSpace.y,
                 _lightPositionInEyeSpace.z);
     
     // Set the Model in the shader, used to calculate lighting
-    glUniformMatrix4fv(_cubeModelParam, 1, GL_FALSE, _modelCube.m);
+    glUniformMatrix4fv(_cubeModelLocation, 1, GL_FALSE, _modelCube.m);
     
     // Set the ModelView in the shader, used to calculate lighting
-    glUniformMatrix4fv(_cubeModelViewParam, 1, GL_FALSE, _modelView.m);
+    glUniformMatrix4fv(_cubeModelViewLocation, 1, GL_FALSE, _modelView.m);
     
     // Set the ModelViewProjection matrix in the shader.
-    glUniformMatrix4fv(_cubeModelViewProjectionParam, 1, GL_FALSE, _modelViewProjection.m);
+    glUniformMatrix4fv(_cubeModelViewProjectionLocation, 1, GL_FALSE, _modelViewProjection.m);
     
     glDrawArrays(GL_TRIANGLES, 0, 36);
     
@@ -577,16 +575,16 @@
     _modelViewProjection = GLKMatrix4Multiply(_perspective, _modelView);
 
     // Set ModelView, MVP, position, normals, and color.
-    glUniform3f(_floorLightPositionParam,
+    glUniform3f(_floorLightPositionLocation,
                 _lightPositionInEyeSpace.x,
                 _lightPositionInEyeSpace.y,
                 _lightPositionInEyeSpace.z);
-    glUniformMatrix4fv(_floorModelParam, 1, GL_FALSE, _modelFloor.m);
-    glUniformMatrix4fv(_floorModelViewParam, 1, GL_FALSE, _modelView.m);
-    glUniformMatrix4fv(_floorModelViewProjectionParam, 1, GL_FALSE, _modelViewProjection.m);
+    glUniformMatrix4fv(_floorModelLocation, 1, GL_FALSE, _modelFloor.m);
+    glUniformMatrix4fv(_floorModelViewLocation, 1, GL_FALSE, _modelView.m);
+    glUniformMatrix4fv(_floorModelViewProjectionLocation, 1, GL_FALSE, _modelViewProjection.m);
     
     glBindBuffer(GL_ARRAY_BUFFER, _floorColorBuffer);
-    glVertexAttribPointer(_floorColorParam, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+    glVertexAttribPointer(_floorColorLocation, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
 
     glDrawArrays(GL_TRIANGLES, 0, 6);
     
@@ -597,10 +595,10 @@
     _modelView = GLKMatrix4Multiply(_view, _modelCeiling);
     _modelViewProjection = GLKMatrix4Multiply(_perspective, _modelView);
     
-    glUniformMatrix4fv(_floorModelViewProjectionParam, 1, GL_FALSE, _modelViewProjection.m);
+    glUniformMatrix4fv(_floorModelViewProjectionLocation, 1, GL_FALSE, _modelViewProjection.m);
 
     glBindBuffer(GL_ARRAY_BUFFER, _ceilingColorBuffer);
-    glVertexAttribPointer(_floorColorParam, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+    glVertexAttribPointer(_floorColorLocation, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
 
     glDrawArrays(GL_TRIANGLES, 0, 6);
     

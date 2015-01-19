@@ -2,54 +2,52 @@
 //  HeadMountedDisplay.cpp
 //  CardboardSDK-iOS
 //
-//  Created by Peter Tribe on 2014-08-26.
-//  Copyright (c) 2014 Peter Tribe. All rights reserved.
 //
 
 #include "HeadMountedDisplay.h"
 
 HeadMountedDisplay::HeadMountedDisplay(UIScreen *screen)
 {
-    this->screen = new ScreenParams(screen);
-    this->cardboard = new CardboardDeviceParams();
+    _screen = new ScreenParams(screen);
+    _cardboard = new CardboardDeviceParams();
 }
 
 HeadMountedDisplay::HeadMountedDisplay(HeadMountedDisplay *hmd)
 {
-    this->screen = new ScreenParams(hmd->getScreen());
-    this->cardboard = new CardboardDeviceParams(hmd->getCardboard());
+    _screen = new ScreenParams(hmd->getScreen());
+    _cardboard = new CardboardDeviceParams(hmd->getCardboard());
 }
 
 HeadMountedDisplay::~HeadMountedDisplay()
 {
-    delete this->screen;
-    delete this->cardboard;
+    delete _screen;
+    delete _cardboard;
 }
 
 void HeadMountedDisplay::setScreen(ScreenParams* screen)
 {
-    if (this->screen != nullptr) {
-        delete this->screen;
+    if (_screen != nullptr) {
+        delete _screen;
     }
-    this->screen = new ScreenParams(screen);
+    _screen = new ScreenParams(screen);
 }
 
 ScreenParams* HeadMountedDisplay::getScreen()
 {
-    return this->screen;
+    return _screen;
 }
 
 void HeadMountedDisplay::setCardboard(CardboardDeviceParams *cardboard)
 {
-    if (this->cardboard != nullptr) {
-        delete this->cardboard;
+    if (_cardboard != nullptr) {
+        delete _cardboard;
     }
-    this->cardboard = new CardboardDeviceParams(cardboard);
+    _cardboard = new CardboardDeviceParams(cardboard);
 }
 
 CardboardDeviceParams* HeadMountedDisplay::getCardboard()
 {
-    return this->cardboard;
+    return _cardboard;
 }
 
 bool HeadMountedDisplay::equals(HeadMountedDisplay *other)
@@ -60,8 +58,5 @@ bool HeadMountedDisplay::equals(HeadMountedDisplay *other)
     if (other == this) {
         return true;
     }
-    return this->getScreen()->equals(other->getScreen()) && this->cardboard->equals(other->cardboard);
+    return getScreen()->equals(other->getScreen()) && _cardboard->equals(other->_cardboard);
 }
-
-//Check all equals
-//check delete decon

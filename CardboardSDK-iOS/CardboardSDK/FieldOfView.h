@@ -2,8 +2,6 @@
 //  FieldOfView.h
 //  CardboardSDK-iOS
 //
-//  Created by Peter Tribe on 2014-08-26.
-//  Copyright (c) 2014 Peter Tribe. All rights reserved.
 //
 
 #ifndef __CardboardVR_iOS__FieldOfView__
@@ -14,27 +12,34 @@
 
 class FieldOfView
 {
-public:
+  public:
     FieldOfView();
     FieldOfView(float left, float right, float bottom, float top);
     FieldOfView(FieldOfView *other);
+
     void setLeft(float left);
-    float getLeft();
+    float left();
+
     void setRight(float right);
-    float getRight();
+    float right();
+
     void setBottom(float bottom);
-    float getBottom();
+    float bottom();
+
     void setTop(float top);
-    float getTop();
+    float top();
+    
     GLKMatrix4 toPerspectiveMatrix(float near, float far);
+
     bool equals(FieldOfView *other);
     NSString* toString();
-private:
-    float left;
-    float right;
-    float bottom;
-    float top;
-private:
+
+  private:
+    float _left;
+    float _right;
+    float _bottom;
+    float _top;
+
     GLKMatrix4 frustumM(float left, float right, float bottom, float top, float near, float far);
 };
 

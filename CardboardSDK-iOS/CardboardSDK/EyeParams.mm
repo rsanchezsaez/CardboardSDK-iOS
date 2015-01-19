@@ -2,43 +2,41 @@
 //  EyeParams.mm
 //  CardboardSDK-iOS
 //
-//  Created by Peter Tribe on 2014-08-26.
-//  Copyright (c) 2014 Peter Tribe. All rights reserved.
 //
 
 #include "EyeParams.h"
 
 EyeParams::EyeParams(EyeParamsType eye)
 {
-    this->eye = eye;
-    this->viewport = new Viewport();
-    this->fov = new FieldOfView();
-    this->eyeTransform = new EyeTransform(this);
+    _type = eye;
+    _viewport = new Viewport();
+    _fov = new FieldOfView();
+    _eyeTransform = new EyeTransform(this);
 }
 
 EyeParams::~EyeParams()
 {
-    delete this->viewport;
-    delete this->fov;
-    delete this->eyeTransform;
+    delete _viewport;
+    delete _fov;
+    delete _eyeTransform;
 }
 
-EyeParamsType EyeParams::getEye()
+EyeParamsType EyeParams::type()
 {
-    return this->eye;
+    return _type;
 }
 
-Viewport* EyeParams::getViewport()
+Viewport* EyeParams::viewport()
 {
-    return this->viewport;
+    return _viewport;
 }
 
-FieldOfView* EyeParams::getFov()
+FieldOfView* EyeParams::fov()
 {
-    return this->fov;
+    return _fov;
 }
 
-EyeTransform* EyeParams::getTransform()
+EyeTransform* EyeParams::transform()
 {
-    return this->eyeTransform;
+    return _eyeTransform;
 }

@@ -2,8 +2,6 @@
 //  EyeParams.h
 //  CardboardSDK-iOS
 //
-//  Created by Peter Tribe on 2014-08-26.
-//  Copyright (c) 2014 Peter Tribe. All rights reserved.
 //
 
 #ifndef __CardboardVR_iOS__EyeParams__
@@ -23,18 +21,20 @@ typedef enum
 
 class EyeParams
 {
-public:
+  public:
     EyeParams(EyeParamsType eye);
     ~EyeParams();
-    EyeParamsType getEye();
-    Viewport* getViewport();
-    FieldOfView* getFov();
-    EyeTransform* getTransform();
-private:
-    EyeParamsType eye;
-    Viewport *viewport;
-    FieldOfView *fov;
-    EyeTransform *eyeTransform;
+
+    EyeParamsType type();
+
+    Viewport *viewport();
+    FieldOfView *fov();
+    EyeTransform *transform();
+  private:
+    EyeParamsType _type;
+    Viewport *_viewport;
+    FieldOfView *_fov;
+    EyeTransform *_eyeTransform;
 };
 
 #endif

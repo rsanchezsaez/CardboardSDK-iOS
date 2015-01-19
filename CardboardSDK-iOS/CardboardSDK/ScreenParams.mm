@@ -2,8 +2,6 @@
 //  ScreenParams.mm
 //  CardboardSDK-iOS
 //
-//  Created by Peter Tribe on 2014-08-26.
-//  Copyright (c) 2014 Peter Tribe. All rights reserved.
 //
 
 #include "ScreenParams.h"
@@ -34,86 +32,93 @@ ScreenParams::ScreenParams(UIScreen *screen)
 {
     if ([screen respondsToSelector:@selector(nativeScale)])
     {
-        this->scale = screen.nativeScale;
+        _scale = screen.nativeScale;
     }
     else
     {
-        this->scale = screen.scale;
+        _scale = screen.scale;
     }
     
     CGSize screenSize = [screen orientationAwareSize];
-    this->width = screenSize.width * this->scale;
-    this->height = screenSize.height  * this->scale;
-    float pixelsPerInch = this->pixelsPerInch(screen);
+    _width = screenSize.width * _scale;
+    _height = screenSize.height  * _scale;
+    float screenPixelsPerInch = pixelsPerInch(screen);
     
     const float metersPerInch = 0.0254f;
     const float defaultBorderSizeMeters = 0.003f;
-    this->xMetersPerPixel = (metersPerInch / pixelsPerInch);
-    this->yMetersPerPixel = (metersPerInch / pixelsPerInch);
-    this->borderSizeMeters = defaultBorderSizeMeters;
+    _xMetersPerPixel = (metersPerInch / screenPixelsPerInch);
+    _yMetersPerPixel = (metersPerInch / screenPixelsPerInch);
+    _borderSizeMeters = defaultBorderSizeMeters;
 }
 
 ScreenParams::ScreenParams(ScreenParams *screenParams)
 {
-    this->scale = screenParams->scale;
-    this->width = screenParams->width;
-    this->height = screenParams->height;
-    this->xMetersPerPixel = screenParams->xMetersPerPixel;
-    this->yMetersPerPixel = screenParams->yMetersPerPixel;
-    this->borderSizeMeters = screenParams->borderSizeMeters;
+    _scale = screenParams->_scale;
+    _width = screenParams->_width;
+    _height = screenParams->_height;
+    _xMetersPerPixel = screenParams->_xMetersPerPixel;
+    _yMetersPerPixel = screenParams->_yMetersPerPixel;
+    _borderSizeMeters = screenParams->_borderSizeMeters;
 }
 
 void ScreenParams::setWidth(int width)
 {
-    this->width = width;
+    _width = width;
 }
 
-int ScreenParams::getWidth()
+int ScreenParams::width()
 {
-    return this->width;
+    return _width;
 }
 
 void ScreenParams::setHeight(int height)
 {
-    this->height = height;
+    _height = height;
 }
 
-int ScreenParams::getHeight()
+int ScreenParams::height()
 {
-    return this->height;
+    return _height;
 }
 
-float ScreenParams::getWidthMeters()
+float ScreenParams::widthInMeters()
 {
-    float meters = this->width * this->xMetersPerPixel;
+    float meters = _width * _xMetersPerPixel;
     return meters;
 }
 
-float ScreenParams::getHeightMeters()
+float ScreenParams::heightInMeters()
 {
-    float meters = this->height * this->yMetersPerPixel;
+    float meters = _height * _yMetersPerPixel;
     return meters;
 }
 
-void ScreenParams::setBorderSizeMeters(float screenBorderSize)
+void ScreenParams::setBorderSizeInMeters(float screenBorderSize)
 {
-    this->borderSizeMeters = screenBorderSize;
+    _borderSizeMeters = screenBorderSize;
 }
 
-float ScreenParams::getBorderSizeMeters()
+float ScreenParams::borderSizeInMeters()
 {
-    return this->borderSizeMeters;
+    return _borderSizeMeters;
 }
 
 bool ScreenParams::equals(ScreenParams *other)
 {
-    if (other == nullptr) {
+    if (other == nullptr)
+    {
         return false;
     }
-    if (other == this) {
+    else if (other == this)
+    {
         return true;
     }
-    return (this->getWidth() == other->getWidth()) && (this->getHeight() == other->getHeight()) && (this->getWidthMeters() == other->getWidthMeters()) && (this->getHeightMeters() == other->getHeightMeters()) && (this->getBorderSizeMeters() == other->getBorderSizeMeters());
+    return
+    (width() == other->width())
+    && (height() == other->height())
+    && (widthInMeters() == other->widthInMeters())
+    && (heightInMeters() == other->heightInMeters())
+    && (borderSizeInMeters() == other->borderSizeInMeters());
 }
 
 float ScreenParams::pixelsPerInch(UIScreen* screen)
@@ -153,7 +158,7 @@ float ScreenParams::pixelsPerInch(UIScreen* screen)
             {
                 if ([identifier isEqualToString:deviceId])
                 {
-                    pixelsPerInch = [deviceClass[@"pointsPerInch"] floatValue] * this->scale;
+                    pixelsPerInch = [deviceClass[@"pointsPerInch"] floatValue] * _scale;
                     break;
                 }
             }

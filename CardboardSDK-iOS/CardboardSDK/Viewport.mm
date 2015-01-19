@@ -2,8 +2,6 @@
 //  Viewport.mm
 //  CardboardSDK-iOS
 //
-//  Created by Peter Tribe on 2014-08-26.
-//  Copyright (c) 2014 Peter Tribe. All rights reserved.
 //
 
 #include "Viewport.h"
@@ -18,12 +16,12 @@ void Viewport::setViewport(int x, int y, int width, int height)
 
 void Viewport::setGLViewport()
 {
-    glViewport(this->x, this->y, this->width, this->height);
+    glViewport(x, y, width, height);
 }
 
 void Viewport::setGLScissor()
 {
-    glScissor(this->x, this->y, this->width, this->height);
+    glScissor(x, y, width, height);
 }
 
 NSString* Viewport::toString()

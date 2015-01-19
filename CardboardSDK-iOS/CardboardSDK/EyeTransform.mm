@@ -2,40 +2,38 @@
 //  EyeTransform.mm
 //  CardboardSDK-iOS
 //
-//  Created by Peter Tribe on 2014-08-26.
-//  Copyright (c) 2014 Peter Tribe. All rights reserved.
 //
 
 #include "EyeTransform.h"
 
 EyeTransform::EyeTransform(EyeParams *params)
 {
-    this->eyeParams = params;
-    this->eyeView = GLKMatrix4Identity;
-    this->perspective = GLKMatrix4Identity;
+    _eyeParams = params;
+    _eyeView = GLKMatrix4Identity;
+    _perspective = GLKMatrix4Identity;
 }
 
-GLKMatrix4 EyeTransform::getEyeView()
+GLKMatrix4 EyeTransform::eyeView()
 {
-    return this->eyeView;
+    return _eyeView;
 }
 
 void EyeTransform::setEyeView(GLKMatrix4 eyeView)
 {
-    this->eyeView = eyeView;
+    _eyeView = eyeView;
 }
 
-GLKMatrix4 EyeTransform::getPerspective()
+GLKMatrix4 EyeTransform::perspective()
 {
-    return this->perspective;
+    return _perspective;
 }
 
 void EyeTransform::setPerspective(GLKMatrix4 perspective)
 {
-    this->perspective = perspective;
+    _perspective = perspective;
 }
 
-EyeParams* EyeTransform::getParams()
+EyeParams* EyeTransform::eyeParams()
 {
-    return this->eyeParams;
+    return _eyeParams;
 }

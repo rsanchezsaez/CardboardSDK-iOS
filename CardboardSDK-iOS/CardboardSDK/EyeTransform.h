@@ -2,8 +2,6 @@
 //  EyeTransform.h
 //  CardboardSDK-iOS
 //
-//  Created by Peter Tribe on 2014-08-26.
-//  Copyright (c) 2014 Peter Tribe. All rights reserved.
 //
 
 #ifndef __CardboardVR_iOS__EyeTransform__
@@ -15,17 +13,21 @@ class EyeParams;
 
 class EyeTransform
 {
-public:
+  public:
     EyeTransform(EyeParams *params);
-    GLKMatrix4 getEyeView();
+
+    GLKMatrix4 eyeView();
     void setEyeView(GLKMatrix4 eyeView);
-    GLKMatrix4 getPerspective();
+
+    GLKMatrix4 perspective();
     void setPerspective(GLKMatrix4 perspective);
-    EyeParams* getParams();
-private:
-    EyeParams *eyeParams;
-    GLKMatrix4 eyeView;
-    GLKMatrix4 perspective;
+
+    EyeParams *eyeParams();
+
+  private:
+    EyeParams *_eyeParams;
+    GLKMatrix4 _eyeView;
+    GLKMatrix4 _perspective;
 };
 
 #endif 

@@ -2,8 +2,6 @@
 //  HeadTransform.h
 //  CardboardSDK-iOS
 //
-//  Created by Peter Tribe on 2014-08-26.
-//  Copyright (c) 2014 Peter Tribe. All rights reserved.
 //
 
 #ifndef __CardboardVR_iOS__HeadTransform__
@@ -13,18 +11,21 @@
 
 class HeadTransform
 {
-public:
+  public:
     HeadTransform();
+
     void setHeadView(GLKMatrix4 headView);
-    GLKMatrix4 getHeadView();
-    GLKVector3 getTranslation();
-    GLKVector3 getForwardVector();
-    GLKVector3 getUpVector();
-    GLKVector3 getRightVector();
-    GLKQuaternion getQuaternion();
-    GLKVector3 getEulerAngles();
-private:
-    GLKMatrix4 headView;
+    GLKMatrix4 headView();
+
+    GLKVector3 translation();
+    GLKVector3 forwardVector();
+    GLKVector3 upVector();
+    GLKVector3 rightVector();
+    GLKQuaternion quaternion();
+    GLKVector3 eulerAngles();
+
+  private:
+    GLKMatrix4 _headView;
 };
 
 #endif 

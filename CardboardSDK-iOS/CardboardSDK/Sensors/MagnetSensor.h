@@ -2,8 +2,6 @@
 //  MagnetSensor.h
 //  CardboardSDK-iOS
 //
-//  Created by Peter Tribe on 2014-08-25.
-//  Copyright (c) 2014 Peter Tribe. All rights reserved.
 //
 
 #ifndef __CardboardVR_iOS__MagnetSensor__
@@ -18,14 +16,15 @@ NSString *const CBTriggerPressedNotification = @"CBTriggerPressedNotification";
 
 class MagnetSensor
 {
-public:
+  public:
     MagnetSensor();
     void start();
     void stop();
-private:
-    CMMotionManager *manager;
-    std::vector<GLKVector3> sensorData;
-private:
+    
+  private:
+    CMMotionManager *_manager;
+    std::vector<GLKVector3> _sensorData;
+
     void addData(GLKVector3 value);
     void evaluateModel();
     std::vector<float> computeOffsets(int start, GLKVector3 baseline);

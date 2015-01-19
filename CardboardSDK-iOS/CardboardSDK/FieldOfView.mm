@@ -2,80 +2,81 @@
 //  FieldOfView.cpp
 //  CardboardSDK-iOS
 //
-//  Created by Peter Tribe on 2014-08-26.
-//  Copyright (c) 2014 Peter Tribe. All rights reserved.
 //
 
 #include "FieldOfView.h"
 
-FieldOfView::FieldOfView()
+FieldOfView::FieldOfView() :
+    _left(0),
+    _right(0),
+    _bottom(0),
+    _top(0)
 {
-    
 }
 
 FieldOfView::FieldOfView(float left, float right, float bottom, float top)
 {
-    this->left = left;
-    this->right = right;
-    this->bottom = bottom;
-    this->top = top;
+    _left = left;
+    _right = right;
+    _bottom = bottom;
+    _top = top;
 }
 
 FieldOfView::FieldOfView(FieldOfView *other)
 {
-    this->left = other->left;
-    this->right = other->right;
-    this->bottom = other->bottom;
-    this->top = other->top;
+    _left = other->_left;
+    _right = other->_right;
+    _bottom = other->_bottom;
+    _top = other->_top;
 }
 
 void FieldOfView::setLeft(float left)
 {
-    this->left = left;
+    _left = left;
 }
 
-float FieldOfView::getLeft()
+float FieldOfView::left()
 {
-    return this->left;
+    return _left;
 }
 
 void FieldOfView::setRight(float right)
 {
-    this->right = right;
+    _right = right;
 }
 
-float FieldOfView::getRight()
+float FieldOfView::right()
 {
-    return this->right;
+    return _right;
 }
 
 void FieldOfView::setBottom(float bottom)
 {
-    this->bottom = bottom;
+    _bottom = bottom;
 }
 
-float FieldOfView::getBottom()
+float FieldOfView::bottom()
 {
-    return this->bottom;
+    return _bottom;
 }
 
 void FieldOfView::setTop(float top)
 {
-    this->top = top;
+    _top = top;
 }
 
-float FieldOfView::getTop()
+float FieldOfView::top()
 {
-    return this->top;
+    return _top;
 }
 
 GLKMatrix4 FieldOfView::toPerspectiveMatrix(float near, float far)
 {
-    float left = -tanf(this->left * (M_PI / 180.0f)) * near;
-    float right = tanf(this->right * (M_PI / 180.0f)) * near;
-    float bottom = -tanf(this->bottom * (M_PI / 180.0f)) * near;
-    float top = tanf(this->top * (M_PI / 180.0f)) * near;
-    return this->frustumM(left, right, bottom, top, near, far);
+    float left = -tanf(_left * (M_PI / 180.0f)) * near;
+    float right = tanf(_right * (M_PI / 180.0f)) * near;
+    float bottom = -tanf(_bottom * (M_PI / 180.0f)) * near;
+    float top = tanf(_top * (M_PI / 180.0f)) * near;
+    return frustumM(left, right, bottom, top, near, far);
 }
 
 bool FieldOfView::equals(FieldOfView *other)
@@ -86,12 +87,12 @@ bool FieldOfView::equals(FieldOfView *other)
     if (other == this) {
         return true;
     }
-    return (this->getLeft() == other->getLeft()) && (this->getRight() == other->getRight()) && (this->getBottom() == other->getBottom()) && (this->getTop() == other->getTop());
+    return (left() == other->left()) && (right() == other->right()) && (bottom() == other->bottom()) && (top() == other->top());
 }
 
 NSString* FieldOfView::toString()
 {
-    return [NSString stringWithFormat:@"FieldOfView {left:%f right:%f bottom:%f top:%f}", this->left, this->right, this->bottom, this->top];
+    return [NSString stringWithFormat:@"FieldOfView {left:%f right:%f bottom:%f top:%f}", _left, _right, _bottom, _top];
 }
 
 GLKMatrix4 FieldOfView::frustumM(float left, float right, float bottom, float top, float near, float far)

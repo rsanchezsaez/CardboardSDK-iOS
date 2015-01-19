@@ -2,8 +2,6 @@
 //  ScreenParams.h
 //  CardboardSDK-iOS
 //
-//  Created by Peter Tribe on 2014-08-26.
-//  Copyright (c) 2014 Peter Tribe. All rights reserved.
 //
 
 #ifndef __CardboardVR_iOS__ScreenParams__
@@ -13,27 +11,33 @@
 
 class ScreenParams
 {
-public:
+  public:
     ScreenParams(UIScreen *screen);
     ScreenParams(ScreenParams *screenParams);
+
     void setWidth(int width);
-    int getWidth();
+    int width();
+
     void setHeight(int height);
-    int getHeight();
-    float getWidthMeters();
-    float getHeightMeters();
-    void setBorderSizeMeters(float screenBorderSize);
-    float getBorderSizeMeters();
+    int height();
+
+    float widthInMeters();
+    float heightInMeters();
+
+    void setBorderSizeInMeters(float screenBorderSize);
+    float borderSizeInMeters();
+
     bool equals(ScreenParams *other);
-private:
-    CGFloat scale;
-    int width;
-    int height;
-    float xMetersPerPixel;
-    float yMetersPerPixel;
-    float borderSizeMeters;
-private:
-    float pixelsPerInch(UIScreen* screen);
+
+  private:
+    CGFloat _scale;
+    int _width;
+    int _height;
+    float _xMetersPerPixel;
+    float _yMetersPerPixel;
+    float _borderSizeMeters;
+
+    float pixelsPerInch(UIScreen *screen);
 };
 
 
