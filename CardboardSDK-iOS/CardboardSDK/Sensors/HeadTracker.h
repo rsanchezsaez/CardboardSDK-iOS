@@ -29,6 +29,11 @@ class HeadTracker
     GLKMatrix4 _deviceToDisplay;
     GLKMatrix4 _worldToInertialReferenceFrame;
     NSTimeInterval _lastGyroEventTimestamp;
+    bool _neckModelEnabled;
+    GLKMatrix4 _neckModelTranslation;
+    
+    const float _defaultNeckHorizontalOffset = 0.08f;
+    const float _defaultNeckVerticalOffset = 0.075f;
 };
 
 #endif

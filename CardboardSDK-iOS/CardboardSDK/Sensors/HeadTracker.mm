@@ -85,10 +85,14 @@ HeadTracker::HeadTracker() :
     _deviceToDisplay(GetRotateEulerMatrix(0.f, 0.f, -90.f)),
     // the inertial reference frame has z up and x forward, while the world has z out and x right
     _worldToInertialReferenceFrame(GetRotateEulerMatrix(-90.f, 0.f, 90.f)),
-    _lastGyroEventTimestamp(0)
+    _lastGyroEventTimestamp(0),
+    _neckModelEnabled(false)
 {
     _motionManager = [[CMMotionManager alloc] init];
     _tracker = new OrientationEKF();
+    
+    _neckModelTranslation = GLKMatrix4Identity;
+    _neckModelTranslation = GLKMatrix4Translate(_neckModelTranslation, 0, -_defaultNeckVerticalOffset, _defaultNeckHorizontalOffset);
 }
 
 HeadTracker::~HeadTracker()
@@ -170,6 +174,11 @@ GLKMatrix4 HeadTracker::getLastHeadView()
     GLKMatrix4 worldToDisplay = GLKMatrix4Multiply(_deviceToDisplay, worldToDevice);
     
     // NSLog(@"%@", NSStringFromGLKMatrix4(worldToDisplay));
+    if (_neckModelEnabled)
+    {
+        worldToDisplay = GLKMatrix4Multiply(_neckModelTranslation, worldToDisplay);
+        worldToDisplay = GLKMatrix4Translate(worldToDisplay, 0.0f, _defaultNeckVerticalOffset, 0.0f);
+    }
     
     return worldToDisplay;
 }
