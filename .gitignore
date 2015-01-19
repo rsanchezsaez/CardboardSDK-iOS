@@ -179,3 +179,5 @@ xcuserdata
 # Ignore .history
 .history
 
+# AppCode
+.idea
