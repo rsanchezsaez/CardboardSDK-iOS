@@ -4,8 +4,8 @@
 //
 //
 
-#ifndef __CardboardVR_iOS__MagnetSensor__
-#define __CardboardVR_iOS__MagnetSensor__
+#ifndef __CardboardSDK_iOS__MagnetSensor__
+#define __CardboardSDK_iOS__MagnetSensor__
 
 #import <Foundation/Foundation.h>
 #import <CoreMotion/CoreMotion.h>

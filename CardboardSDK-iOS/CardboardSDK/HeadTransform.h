@@ -4,8 +4,8 @@
 //
 //
 
-#ifndef __CardboardVR_iOS__HeadTransform__
-#define __CardboardVR_iOS__HeadTransform__
+#ifndef __CardboardSDK_iOS__HeadTransform__
+#define __CardboardSDK_iOS__HeadTransform__
 
 #import <GLKit/GLKit.h>
 

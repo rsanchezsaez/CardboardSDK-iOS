@@ -7,7 +7,7 @@
 
 #include "CardboardDeviceParams.h"
 #include "DistortionRenderer.h"
-#include "EyeParams.h"
+#include "Eye.h"
 #include "HeadTracker.h"
 #include "HeadTransform.h"
 #include "HeadMountedDisplay.h"
@@ -52,7 +52,7 @@
     }
 }
 
-- (void)drawFrameWithHeadTransform:(HeadTransform *)headTransform leftEyeParams:(EyeParams *)leftEyeParams rightEyeParams:(EyeParams *)rightEyeParams
+- (void)drawFrameWithHeadTransform:(HeadTransform *)headTransform leftEye:(Eye *)leftEye rightEye:(Eye *)rightEye
 {
     checkGLError();
  
@@ -63,25 +63,23 @@
     checkGLError();
     
     glEnable(GL_SCISSOR_TEST);
-    leftEyeParams->viewport()->setGLViewport();
-    leftEyeParams->viewport()->setGLScissor();
+    leftEye->viewport()->setGLViewport();
+    leftEye->viewport()->setGLScissor();
     
     checkGLError();
     
-    [self.stereoRendererDelegate drawEyeWithTransform:leftEyeParams->transform()
-                                              eyeType:leftEyeParams->type()];
+    [self.stereoRendererDelegate drawEye:leftEye];
 
     checkGLError();
 
-    if (rightEyeParams == nullptr) { return; }
+    if (rightEye == nullptr) { return; }
 
-    rightEyeParams->viewport()->setGLViewport();
-    rightEyeParams->viewport()->setGLScissor();
+    rightEye->viewport()->setGLViewport();
+    rightEye->viewport()->setGLScissor();
 
     checkGLError();
     
-    [self.stereoRendererDelegate drawEyeWithTransform:rightEyeParams->transform()
-                                              eyeType:rightEyeParams->type()];
+    [self.stereoRendererDelegate drawEye:rightEye];
 
     checkGLError();
 }
@@ -107,9 +105,9 @@
 @property (nonatomic, assign) HeadTransform *headTransform;
 @property (nonatomic, assign) HeadMountedDisplay *headMountedDisplay;
 
-@property (nonatomic, assign) EyeParams *monocularParams;
-@property (nonatomic, assign) EyeParams *leftEyeParams;
-@property (nonatomic, assign) EyeParams *rightEyeParams;
+@property (nonatomic, assign) Eye *monocularEye;
+@property (nonatomic, assign) Eye *leftEye;
+@property (nonatomic, assign) Eye *rightEye;
 
 @property (nonatomic, assign) DistortionRenderer *distortionRenderer;
 
@@ -143,9 +141,9 @@
     self.headTransform = new HeadTransform();
     self.headMountedDisplay = new HeadMountedDisplay([UIScreen mainScreen]);
     
-    self.monocularParams = new EyeParams(EyeParamsTypeMonocular);
-    self.leftEyeParams = new EyeParams(EyeParamsTypeLeft);
-    self.rightEyeParams = new EyeParams(EyeParamsTypeRight);
+    self.monocularEye = new Eye(Eye::TypeMonocular);
+    self.leftEye = new Eye(Eye::TypeLeft);
+    self.rightEye = new Eye(Eye::TypeRight);
 
     self.distortionRenderer = new DistortionRenderer();
     
@@ -199,9 +197,9 @@
     if (self.headTransform != nullptr) { delete self.headTransform; }
     if (self.headMountedDisplay != nullptr) { delete self.headMountedDisplay; }
    
-    if (self.monocularParams != nullptr) { delete self.monocularParams; }
-    if (self.leftEyeParams != nullptr) { delete self.leftEyeParams; }
-    if (self.rightEyeParams != nullptr) { delete self.rightEyeParams; }
+    if (self.monocularEye != nullptr) { delete self.monocularEye; }
+    if (self.leftEye != nullptr) { delete self.leftEye; }
+    if (self.rightEye != nullptr) { delete self.rightEye; }
 
     if (self.distortionRenderer != nullptr) { delete self.distortionRenderer; }
 }
@@ -253,19 +251,18 @@
     
 }
 
-- (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
+- (void)calculateFrameParametersWithHeadTransform:(HeadTransform *)headTransform
+                                          leftEye:(Eye *)leftEye
+                                         rightEye:(Eye *)rightEye
+                                     monocularEye:(Eye *)monocularEye
 {
-    // glInsertEventMarkerEXT(0, "com.apple.GPUTools.event.debug-frame");
-
-    checkGLError();
-
     CardboardDeviceParams *cardboardDeviceParams = _headMountedDisplay->getCardboard();
     
-    _headTransform->setHeadView(_headTracker->lastHeadView());
+    headTransform->setHeadView(_headTracker->lastHeadView());
     float halfInterpupillaryDistance = cardboardDeviceParams->interLensDistance() * 0.5f;
     
     // NSLog(@"%@", NSStringFromGLKMatrix4(_headTracker->lastHeadView()));
-
+    
     if (self.isVRModeEnabled)
     {
         GLKMatrix4 leftEyeTranslate = GLKMatrix4Identity;
@@ -274,34 +271,34 @@
         GLKMatrix4Translate(leftEyeTranslate, halfInterpupillaryDistance, 0, 0);
         GLKMatrix4Translate(rightEyeTranslate, -halfInterpupillaryDistance, 0, 0);
         
-        // NSLog(@"%@", NSStringFromGLKMatrix4(_headTransform->getHeadView()));
-
-        _leftEyeParams->transform()->setEyeView( GLKMatrix4Multiply(leftEyeTranslate, _headTransform->headView()));
-        _rightEyeParams->transform()->setEyeView( GLKMatrix4Multiply(rightEyeTranslate, _headTransform->headView()));
+        // NSLog(@"%@", NSStringFromGLKMatrix4(headTransform->getHeadView()));
+        
+        leftEye->setEyeView( GLKMatrix4Multiply(leftEyeTranslate, headTransform->headView()));
+        rightEye->setEyeView( GLKMatrix4Multiply(rightEyeTranslate, headTransform->headView()));
     }
     else
     {
-        _monocularParams->transform()->setEyeView(_headTransform->headView());
+        monocularEye->setEyeView(headTransform->headView());
     }
     
     if (_projectionChanged)
     {
         ScreenParams *screenParams = _headMountedDisplay->getScreen();
-        _monocularParams->viewport()->setViewport(0, 0, screenParams->width(), screenParams->height());
+        monocularEye->viewport()->setViewport(0, 0, screenParams->width(), screenParams->height());
         
         if (!self.isVRModeEnabled)
         {
-            float aspectRatio = screenParams->width() / screenParams->height();
-            _monocularParams->transform()->setPerspective(
-            GLKMatrix4MakePerspective(GLKMathDegreesToRadians(_headMountedDisplay->getCardboard()->fovY()),
-                                      aspectRatio,
-                                      _zNear,
-                                      _zFar));
+            //            float aspectRatio = screenParams->width() / screenParams->height();
+            //            monocularEye->setPerspective(
+            //            GLKMatrix4MakePerspective(GLKMathDegreesToRadians(_headMountedDisplay->getCardboard()->fovY()),
+            //                                      aspectRatio,
+            //                                      _zNear,
+            //                                      _zFar));
         }
         else if (_distortionCorrectionEnabled)
         {
-            [self updateFovsWithLeftEyeFov:_leftEyeParams->fov() rightEyeFov:_rightEyeParams->fov()];
-            _distortionRenderer->onProjectionChanged(_headMountedDisplay, _leftEyeParams, _rightEyeParams, _zNear, _zFar);
+            [self updateFovsWithLeftEyeFov:leftEye->fov() rightEyeFov:rightEye->fov()];
+            _distortionRenderer->onProjectionChanged(_headMountedDisplay, leftEye, rightEye, _zNear, _zFar);
         }
         else
         {
@@ -312,27 +309,38 @@
             float bottom = cardboardDeviceParams->verticalDistanceToLensCenter() - screenParams->borderSizeInMeters();
             float top = screenParams->borderSizeInMeters() + screenParams->heightInMeters() - cardboardDeviceParams->verticalDistanceToLensCenter();
             
-            FieldOfView *leftEyeFov = _leftEyeParams->fov();
+            FieldOfView *leftEyeFov = leftEye->fov();
             leftEyeFov->setLeft(GLKMathRadiansToDegrees(atan2f(left, eyeToScreenDistance)));
             leftEyeFov->setRight(GLKMathRadiansToDegrees(atan2f(right, eyeToScreenDistance)));
             leftEyeFov->setBottom(GLKMathRadiansToDegrees(atan2f(bottom, eyeToScreenDistance)));
             leftEyeFov->setTop(GLKMathRadiansToDegrees(atan2f(top, eyeToScreenDistance)));
-
-            FieldOfView *rightEyeFov = _rightEyeParams->fov();
+            
+            FieldOfView *rightEyeFov = rightEye->fov();
             rightEyeFov->setLeft(leftEyeFov->right());
             rightEyeFov->setRight(leftEyeFov->left());
             rightEyeFov->setBottom(leftEyeFov->bottom());
             rightEyeFov->setTop(leftEyeFov->top());
-
-            _leftEyeParams->transform()->setPerspective( leftEyeFov->toPerspectiveMatrix(_zNear, _zFar));
-            _rightEyeParams->transform()->setPerspective( rightEyeFov->toPerspectiveMatrix(_zNear, _zFar));
-
-            _leftEyeParams->viewport()->setViewport(0, 0, screenParams->width() / 2, screenParams->height());
-            _rightEyeParams->viewport()->setViewport(screenParams->width() / 2, 0, screenParams->width() / 2, screenParams->height());
+            
+            //            leftEye->setPerspective( leftEyeFov->toPerspectiveMatrix(_zNear, _zFar));
+            //            rightEye->setPerspective( rightEyeFov->toPerspectiveMatrix(_zNear, _zFar));
+            
+            leftEye->viewport()->setViewport(0, 0, screenParams->width() / 2, screenParams->height());
+            rightEye->viewport()->setViewport(screenParams->width() / 2, 0, screenParams->width() / 2, screenParams->height());
         }
-        
+        leftEye->setProjectionChanged();
+        rightEye->setProjectionChanged();
+        monocularEye->setProjectionChanged();
         _projectionChanged = NO;
     }
+}
+
+- (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
+{
+    // glInsertEventMarkerEXT(0, "com.apple.GPUTools.event.debug-frame");
+
+    checkGLError();
+    
+    [self calculateFrameParametersWithHeadTransform:_headTransform leftEye:_leftEye rightEye:_rightEye monocularEye:_monocularEye];
     
     if (self.isVRModeEnabled)
     {
@@ -343,36 +351,36 @@
             if (_distortionCorrectionScale == 1.0f)
             {
                 [_stereoRenderer drawFrameWithHeadTransform:_headTransform
-                                              leftEyeParams:_leftEyeParams
-                                             rightEyeParams:_rightEyeParams];
+                                                    leftEye:_leftEye
+                                                   rightEye:_rightEye];
             }
             else
             {
-                int leftX = _leftEyeParams->viewport()->x;
-                int leftY = _leftEyeParams->viewport()->y;
-                int leftWidth = _leftEyeParams->viewport()->width;
-                int leftHeight = _leftEyeParams->viewport()->height;
-                int rightX = _rightEyeParams->viewport()->x;
-                int rightY = _rightEyeParams->viewport()->y;
-                int rightWidth = _rightEyeParams->viewport()->width;
-                int rightHeight = _rightEyeParams->viewport()->height;
+                int leftX = _leftEye->viewport()->x;
+                int leftY = _leftEye->viewport()->y;
+                int leftWidth = _leftEye->viewport()->width;
+                int leftHeight = _leftEye->viewport()->height;
+                int rightX = _rightEye->viewport()->x;
+                int rightY = _rightEye->viewport()->y;
+                int rightWidth = _rightEye->viewport()->width;
+                int rightHeight = _rightEye->viewport()->height;
 
-                _leftEyeParams->viewport()->setViewport((int)(leftX * _distortionCorrectionScale),
+                _leftEye->viewport()->setViewport((int)(leftX * _distortionCorrectionScale),
                                                            (int)(leftY * _distortionCorrectionScale),
                                                            (int)(leftWidth * _distortionCorrectionScale),
                                                            (int)(leftHeight * _distortionCorrectionScale));
 
-                _rightEyeParams->viewport()->setViewport((int)(rightX * _distortionCorrectionScale),
+                _rightEye->viewport()->setViewport((int)(rightX * _distortionCorrectionScale),
                                                             (int)(rightY * _distortionCorrectionScale),
                                                             (int)(rightWidth * _distortionCorrectionScale),
                                                             (int)(rightHeight * _distortionCorrectionScale));
                 
                 [_stereoRenderer drawFrameWithHeadTransform:_headTransform
-                                              leftEyeParams:_leftEyeParams
-                                             rightEyeParams:_rightEyeParams];
+                                                    leftEye:_leftEye
+                                                   rightEye:_rightEye];
 
-                _leftEyeParams->viewport()->setViewport(leftX, leftY, leftWidth, leftHeight);
-                _rightEyeParams->viewport()->setViewport(rightX, rightY, rightWidth, rightHeight);
+                _leftEye->viewport()->setViewport(leftX, leftY, leftWidth, leftHeight);
+                _rightEye->viewport()->setViewport(rightX, rightY, rightWidth, rightHeight);
             }
             
             checkGLError();
@@ -386,18 +394,18 @@
         else
         {
             [_stereoRenderer drawFrameWithHeadTransform:_headTransform
-                                          leftEyeParams:_leftEyeParams
-                                         rightEyeParams:_rightEyeParams];
+                                                leftEye:_leftEye
+                                               rightEye:_rightEye];
         }
     }
     else
     {
         [_stereoRenderer drawFrameWithHeadTransform:_headTransform
-                                      leftEyeParams:_monocularParams
-                                     rightEyeParams:nullptr];
+                                            leftEye:_monocularEye
+                                           rightEye:nullptr];
     }
     
-    [_stereoRenderer finishFrameWithViewPort:_monocularParams->viewport()];
+    [_stereoRenderer finishFrameWithViewPort:_monocularEye->viewport()];
     
     checkGLError();
 }

@@ -3,8 +3,8 @@
 //  CardboardSDK-iOS
 //
 
-#ifndef __CardboardVR_iOS__Vector3d__
-#define __CardboardVR_iOS__Vector3d__
+#ifndef __CardboardSDK_iOS__Vector3d__
+#define __CardboardSDK_iOS__Vector3d__
 
 class Vector3d
 {

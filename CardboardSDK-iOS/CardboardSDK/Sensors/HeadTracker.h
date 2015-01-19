@@ -3,8 +3,8 @@
 //  CardboardSDK-iOS
 //
 
-#ifndef __CardboardVR_iOS__HeadTracker__
-#define __CardboardVR_iOS__HeadTracker__
+#ifndef __CardboardSDK_iOS__HeadTracker__
+#define __CardboardSDK_iOS__HeadTracker__
 
 #import <CoreMotion/CoreMotion.h>
 #import <GLKit/GLKit.h>

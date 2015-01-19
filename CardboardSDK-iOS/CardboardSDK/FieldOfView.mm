@@ -72,10 +72,10 @@ float FieldOfView::top()
 
 GLKMatrix4 FieldOfView::toPerspectiveMatrix(float near, float far)
 {
-    float left = -tanf(_left * (M_PI / 180.0f)) * near;
-    float right = tanf(_right * (M_PI / 180.0f)) * near;
-    float bottom = -tanf(_bottom * (M_PI / 180.0f)) * near;
-    float top = tanf(_top * (M_PI / 180.0f)) * near;
+    float left = -tanf(GLKMathDegreesToRadians(_left)) * near;
+    float right = tanf(GLKMathDegreesToRadians(_right)) * near;
+    float bottom = -tanf(GLKMathDegreesToRadians(_bottom)) * near;
+    float top = tanf(GLKMathDegreesToRadians(_top)) * near;
     GLKMatrix4 frustrum = GLKMatrix4MakeFrustum(left, right, bottom, top, near, far);
     return frustrum;
 }

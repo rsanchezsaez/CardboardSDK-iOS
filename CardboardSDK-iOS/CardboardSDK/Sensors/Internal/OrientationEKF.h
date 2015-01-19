@@ -3,8 +3,8 @@
 //  CardboardSDK-iOS
 //
 
-#ifndef __CardboardVR_iOS__OrientationEKF__
-#define __CardboardVR_iOS__OrientationEKF__
+#ifndef __CardboardSDK_iOS__OrientationEKF__
+#define __CardboardSDK_iOS__OrientationEKF__
 
 #import <GLKit/GLKit.h>
 #include "Vector3d.h"

@@ -4,8 +4,8 @@
 //
 
 
-#ifndef __CardboardVR_iOS__FieldOfView__
-#define __CardboardVR_iOS__FieldOfView__
+#ifndef __CardboardSDK_iOS__FieldOfView__
+#define __CardboardSDK_iOS__FieldOfView__
 
 #import <UIKit/UIKit.h>
 #import <GLKit/GLKit.h>

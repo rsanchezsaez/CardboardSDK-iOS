@@ -4,8 +4,8 @@
 //
 //
 
-#ifndef __CardboardVR_iOS__HeadMountedDisplay__
-#define __CardboardVR_iOS__HeadMountedDisplay__
+#ifndef __CardboardSDK_iOS__HeadMountedDisplay__
+#define __CardboardSDK_iOS__HeadMountedDisplay__
 
 #import <UIKit/UIKit.h>
 #import "ScreenParams.h"

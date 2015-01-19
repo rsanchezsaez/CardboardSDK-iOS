@@ -3,8 +3,8 @@
 //  CardboardSDK-iOS
 //
 
-#ifndef __CardboardVR_iOS__Matrix3x3d__
-#define __CardboardVR_iOS__Matrix3x3d__
+#ifndef __CardboardSDK_iOS__Matrix3x3d__
+#define __CardboardSDK_iOS__Matrix3x3d__
 
 #include "Vector3d.h"
 

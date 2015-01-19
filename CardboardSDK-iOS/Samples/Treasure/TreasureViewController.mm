@@ -492,7 +492,7 @@
     checkGLError();
 }
 
-- (void)drawEyeWithTransform:(EyeTransform *)eyeTransform eyeType:(EyeParamsType)eyeType
+- (void)drawEye:(Eye *)eye
 {
     // NSLog(@"%@", NSStringFromGLKMatrix4(_eyeTransform->eyeView()));
 
@@ -501,13 +501,14 @@
     checkGLError();
     
     // Apply the eye transformation to the camera
-    _view = GLKMatrix4Multiply(eyeTransform->eyeView(), _camera);
+    _view = GLKMatrix4Multiply(eye->eyeView(), _camera);
     
     // Set the position of the light
     _lightPositionInEyeSpace = GLKMatrix4MultiplyVector4(_view, _lightPositionInWorldSpace);
     
-    // float[] perspective = eye.getPerspective(Z_NEAR, Z_FAR);
-    _perspective = eyeTransform->perspective();
+    const float ZNear = 0.1f;
+    const float zFar = 100.0f;
+    _perspective = eye->perspective(ZNear, zFar);
     [self drawCube];
     
     [self drawFloorAndCeiling];

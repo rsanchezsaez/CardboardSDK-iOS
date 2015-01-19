@@ -4,8 +4,8 @@
 //
 
 
-#ifndef __CardboardVR_iOS__ScreenParams__
-#define __CardboardVR_iOS__ScreenParams__
+#ifndef __CardboardSDK_iOS__ScreenParams__
+#define __CardboardSDK_iOS__ScreenParams__
 
 #import <UIKit/UIKit.h>
 

@@ -8,6 +8,6 @@
 #import "GLHelpers.h"
 
 #import "CardboardViewController.h"
-#import "EyeTransform.h"
+#import "Eye.h"
 #import "HeadTransform.h"
 #import "Viewport.h"

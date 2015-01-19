@@ -4,8 +4,8 @@
 //
 //
 
-#ifndef __CardboardVR_iOS__CardboardDeviceParams__
-#define __CardboardVR_iOS__CardboardDeviceParams__
+#ifndef __CardboardSDK_iOS__CardboardDeviceParams__
+#define __CardboardSDK_iOS__CardboardDeviceParams__
 
 #import <UIKit/UIKit.h>
 #include "Distortion.h"

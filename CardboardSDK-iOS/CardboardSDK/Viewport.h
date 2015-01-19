@@ -4,8 +4,8 @@
 //
 
 
-#ifndef __CardboardVR_iOS__Viewport__
-#define __CardboardVR_iOS__Viewport__
+#ifndef __CardboardSDK_iOS__Viewport__
+#define __CardboardSDK_iOS__Viewport__
 
 #import <UIKit/UIKit.h>
 #import <GLKit/GLKit.h>

@@ -4,12 +4,13 @@
 //
 //
 
-#ifndef __CardboardVR_iOS__DistortionRenderer__
-#define __CardboardVR_iOS__DistortionRenderer__
+#ifndef __CardboardSDK_iOS__DistortionRenderer__
+#define __CardboardSDK_iOS__DistortionRenderer__
 
 #import <GLKit/GLKit.h>
+
 #include "HeadMountedDisplay.h"
-#include "EyeParams.h"
+#include "Eye.h"
 #include "Distortion.h"
 #include "FieldOfView.h"
 
@@ -24,8 +25,8 @@ class DistortionRenderer
     void afterDrawFrame();
     void setResolutionScale(float scale);
     void onProjectionChanged(HeadMountedDisplay *hmd,
-                             EyeParams *leftEye,
-                             EyeParams *rightEye,
+                             Eye *leftEye,
+                             Eye *rightEye,
                              float zNear,
                              float zFar);
 
@@ -41,7 +42,7 @@ class DistortionRenderer
         unsigned int _indexData[3158];
       public:
         DistortionMesh();
-        DistortionMesh(EyeParams *eye,
+        DistortionMesh(Eye *eye,
                        Distortion *distortion,
                        float screenWidthM,
                        float screenHeightM,
@@ -97,8 +98,8 @@ class DistortionRenderer
     ProgramHolder *_programHolder;
   
   private:
-    EyeViewport initViewportForEye(EyeParams *eye, float xOffsetM);
-    DistortionMesh* createDistortionMesh(EyeParams *eye,
+    EyeViewport initViewportForEye(Eye *eye, float xOffsetM);
+    DistortionMesh* createDistortionMesh(Eye *eye,
                                          EyeViewport eyeViewport,
                                          float textureWidthM,
                                          float textureHeightM,
