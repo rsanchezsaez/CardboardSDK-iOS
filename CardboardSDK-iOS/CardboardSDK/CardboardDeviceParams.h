@@ -2,8 +2,6 @@
 //  CardboardDeviceParams.h
 //  CardboardSDK-iOS
 //
-//  Created by Peter Tribe on 2014-08-26.
-//  Copyright (c) 2014 Peter Tribe. All rights reserved.
 //
 
 #ifndef __CardboardVR_iOS__CardboardDeviceParams__
@@ -14,44 +12,57 @@
 
 class CardboardDeviceParams
 {
-public:
+  public:
     CardboardDeviceParams();
     CardboardDeviceParams(CardboardDeviceParams* params);
     ~CardboardDeviceParams();
+    
     void setVendor(NSString* vendor);
-    NSString* getVendor();
+    NSString *vendor();
+    
     void setModel(NSString* model);
-    NSString* getModel();
+    NSString *model();
+    
     void setVersion(NSString* version);
-    NSString* getVersion();
+    NSString *version();
+    
     void setInterpupillaryDistance(float interpupillaryDistance);
-    float getInterpupillaryDistance();
+    float interpupillaryDistance();
+    
     void setVerticalDistanceToLensCenter(float verticalDistanceToLensCenter);
-    float getVerticalDistanceToLensCenter();
+    float verticalDistanceToLensCenter();
+    
     void setVisibleViewportSize(float visibleViewportSize);
-    float getVisibleViewportSize();
+    float visibleViewportSize();
+    
     void setFovY(float fovY);
-    float getFovY();
+    float fovY();
+    
     void setLensDiameter(float lensDiameter);
-    float getLensDiameter();
+    float lensDiameter();
+    
     void setScreenToLensDistance(float screenToLensDistance);
-    float getScreenToLensDistance();
+    float screenToLensDistance();
+    
     void setEyeToLensDistance(float eyeToLensDistance);
-    float getEyeToLensDistance();
+    float eyeToLensDistance();
+
     Distortion* getDistortion();
+    
     bool equals(CardboardDeviceParams *other);
+    
 private:
-    NSString *vendor;
-    NSString *model;
-    NSString *version;
-    float interpupillaryDistance;
-    float verticalDistanceToLensCenter;
-    float lensDiameter;
-    float screenToLensDistance;
-    float eyeToLensDistance;
-    float visibleViewportSize;
-    float fovY;
-    Distortion *distortion;
+    NSString *_vendor;
+    NSString *_model;
+    NSString *_version;
+    float _interpupillaryDistance;
+    float _verticalDistanceToLensCenter;
+    float _lensDiameter;
+    float _screenToLensDistance;
+    float _eyeToLensDistance;
+    float _visibleViewportSize;
+    float _fovY;
+    Distortion *_distortion;
 };
 
 #endif

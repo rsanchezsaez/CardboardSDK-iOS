@@ -2,8 +2,6 @@
 //  DistortionRenderer.mm
 //  CardboardSDK-iOS
 //
-//  Created by Peter Tribe on 2014-08-29.
-//  Copyright (c) 2014 Peter Tribe. All rights reserved.
 //
 
 #include "DistortionRenderer.h"
@@ -144,8 +142,8 @@ void DistortionRenderer::onProjectionChanged(HeadMountedDisplay *hmd,
     int textureWidthPx = round(textureWidthM * xPxPerM);
     int textureHeightPx = round(textureHeightM * yPxPerM);
     
-    float xEyeOffsetMScreen = screen->getWidthMeters() / 2.0f - cdp->getInterpupillaryDistance() / 2.0f;
-    float yEyeOffsetMScreen = cdp->getVerticalDistanceToLensCenter() - screen->getBorderSizeMeters();
+    float xEyeOffsetMScreen = screen->getWidthMeters() / 2.0f - cdp->interpupillaryDistance() / 2.0f;
+    float yEyeOffsetMScreen = cdp->verticalDistanceToLensCenter() - screen->getBorderSizeMeters();
     
     this->leftEyeDistortionMesh = this->createDistortionMesh(leftEye, leftEyeViewport, textureWidthM, textureHeightM, xEyeOffsetMScreen, yEyeOffsetMScreen);
     xEyeOffsetMScreen = screen->getWidthMeters() - xEyeOffsetMScreen;
@@ -159,7 +157,7 @@ DistortionRenderer::EyeViewport DistortionRenderer::initViewportForEye(EyeParams
     ScreenParams *screen = hmd->getScreen();
     CardboardDeviceParams *cdp = hmd->getCardboard();
     
-    float eyeToScreenDistanceM = cdp->getEyeToLensDistance() + cdp->getScreenToLensDistance();
+    float eyeToScreenDistanceM = cdp->eyeToLensDistance() + cdp->screenToLensDistance();
     
     float leftM = tanf(eye->getFov()->getLeft() * (M_PI / 180.0f)) * eyeToScreenDistanceM;
     float rightM = tanf(eye->getFov()->getRight() * (M_PI / 180.0f)) * eyeToScreenDistanceM;
@@ -350,7 +348,8 @@ int DistortionRenderer::createProgram(const GLchar *vertexSource, const GLchar *
 DistortionRenderer::ProgramHolder *DistortionRenderer::createProgramHolder()
 {
     ProgramHolder *holder = new ProgramHolder();
-    holder->program = this->createProgram("attribute vec2 aPosition;\nattribute float aVignette;\nattribute vec2 aTextureCoord;\nvarying vec2 vTextureCoord;\nvarying float vVignette;\nuniform float uTextureCoordScale;\nvoid main() {\n    gl_Position = vec4(aPosition, 0.0, 1.0);\n    vTextureCoord = aTextureCoord.xy * uTextureCoordScale;\n    vVignette = aVignette;\n}\n", "precision mediump float;\nvarying vec2 vTextureCoord;\nvarying float vVignette;\nuniform sampler2D uTextureSampler;\nvoid main() {\n    gl_FragColor = vVignette * texture2D(uTextureSampler, vTextureCoord);\n}\n");
+    holder->program = this->createProgram("attribute vec2 aPosition;\nattribute float aVignette;\nattribute vec2 aTextureCoord;\nvarying vec2 vTextureCoord;\nvarying float vVignette;\nuniform float uTextureCoordScale;\nvoid main() {\n    gl_Position = vec4(aPosition, 0.0, 1.0);\n    vTextureCoord = aTextureCoord.xy * uTextureCoordScale;\n    vVignette = aVignette;\n}\n",
+                                          "precision mediump float;\nvarying vec2 vTextureCoord;\nvarying float vVignette;\nuniform sampler2D uTextureSampler;\nvoid main() {\n    gl_FragColor = vVignette * texture2D(uTextureSampler, vTextureCoord);\n}\n");
     if (holder->program == 0) {
         [NSException raise:@"DistortionRenderer" format:@"Could not create program"];
     }

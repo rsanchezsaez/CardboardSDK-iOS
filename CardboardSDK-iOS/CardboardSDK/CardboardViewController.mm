@@ -2,9 +2,6 @@
 //  CardboardViewController.mm
 //  CardboardSDK-iOS
 //
-//  Created by Peter Tribe on 2014-09-04.
-//  Copyright (c) 2014 Peter Tribe. All rights reserved.
-//
 
 #import "CardboardViewController.h"
 
@@ -264,10 +261,10 @@
 
     CardboardDeviceParams *cardboardDeviceParams = _headMountedDisplay->getCardboard();
     
-    _headTransform->setHeadView(_headTracker->getLastHeadView());
-    float halfInterpupillaryDistance = cardboardDeviceParams->getInterpupillaryDistance() * 0.5f;
+    _headTransform->setHeadView(_headTracker->lastHeadView());
+    float halfInterpupillaryDistance = cardboardDeviceParams->interpupillaryDistance() * 0.5f;
     
-    // NSLog(@"%@", NSStringFromGLKMatrix4(_headTracker->getLastHeadView()));
+    // NSLog(@"%@", NSStringFromGLKMatrix4(_headTracker->lastHeadView()));
 
     if (self.isVRModeEnabled)
     {
@@ -296,7 +293,7 @@
         {
             float aspectRatio = screenParams->getWidth() / screenParams->getHeight();
             _monocularParams->getTransform()->setPerspective(
-            GLKMatrix4MakePerspective(GLKMathDegreesToRadians(_headMountedDisplay->getCardboard()->getFovY()),
+            GLKMatrix4MakePerspective(GLKMathDegreesToRadians(_headMountedDisplay->getCardboard()->fovY()),
                                       aspectRatio,
                                       _zNear,
                                       _zFar));
@@ -308,12 +305,12 @@
         }
         else
         {
-            float eyeToScreenDistance = cardboardDeviceParams->getVisibleViewportSize() / 2.0f / tanf(GLKMathDegreesToRadians(cardboardDeviceParams->getFovY()) / 2.0f );
+            float eyeToScreenDistance = cardboardDeviceParams->visibleViewportSize() / 2.0f / tanf(GLKMathDegreesToRadians(cardboardDeviceParams->fovY()) / 2.0f );
             
             float left = screenParams->getWidthMeters() / 2.0f - halfInterpupillaryDistance;
             float right = halfInterpupillaryDistance;
-            float bottom = cardboardDeviceParams->getVerticalDistanceToLensCenter() - screenParams->getBorderSizeMeters();
-            float top = screenParams->getBorderSizeMeters() + screenParams->getHeightMeters() - cardboardDeviceParams->getVerticalDistanceToLensCenter();
+            float bottom = cardboardDeviceParams->verticalDistanceToLensCenter() - screenParams->getBorderSizeMeters();
+            float top = screenParams->getBorderSizeMeters() + screenParams->getHeightMeters() - cardboardDeviceParams->verticalDistanceToLensCenter();
             
             FieldOfView *leftEyeFov = _leftEyeParams->getFov();
             leftEyeFov->setLeft(GLKMathRadiansToDegrees(atan2f(left, eyeToScreenDistance)));
@@ -411,13 +408,13 @@
     ScreenParams *screenParams = _headMountedDisplay->getScreen();
     Distortion *distortion = cardboardDeviceParams->getDistortion();
     
-    float idealFovAngle = GLKMathRadiansToDegrees(atan2f(cardboardDeviceParams->getLensDiameter() / 2.0f,
-                                                        cardboardDeviceParams->getEyeToLensDistance()));
-    float eyeToScreenDistance = cardboardDeviceParams->getEyeToLensDistance() + cardboardDeviceParams->getScreenToLensDistance();
-    float outerDistance = ( screenParams->getWidthMeters() - cardboardDeviceParams->getInterpupillaryDistance() ) / 2.0f;
-    float innerDistance = cardboardDeviceParams->getInterpupillaryDistance() / 2.0f;
-    float bottomDistance = cardboardDeviceParams->getVerticalDistanceToLensCenter() - screenParams->getBorderSizeMeters();
-    float topDistance = screenParams->getHeightMeters() + screenParams->getBorderSizeMeters() - cardboardDeviceParams->getVerticalDistanceToLensCenter();
+    float idealFovAngle = GLKMathRadiansToDegrees(atan2f(cardboardDeviceParams->lensDiameter() / 2.0f,
+            cardboardDeviceParams->eyeToLensDistance()));
+    float eyeToScreenDistance = cardboardDeviceParams->eyeToLensDistance() + cardboardDeviceParams->screenToLensDistance();
+    float outerDistance = ( screenParams->getWidthMeters() - cardboardDeviceParams->interpupillaryDistance() ) / 2.0f;
+    float innerDistance = cardboardDeviceParams->interpupillaryDistance() / 2.0f;
+    float bottomDistance = cardboardDeviceParams->verticalDistanceToLensCenter() - screenParams->getBorderSizeMeters();
+    float topDistance = screenParams->getHeightMeters() + screenParams->getBorderSizeMeters() - cardboardDeviceParams->verticalDistanceToLensCenter();
  
     float outerAngle = GLKMathRadiansToDegrees(atan2f(distortion->distort(outerDistance), eyeToScreenDistance));
     float innerAngle = GLKMathRadiansToDegrees(atan2f(distortion->distort(innerDistance), eyeToScreenDistance));

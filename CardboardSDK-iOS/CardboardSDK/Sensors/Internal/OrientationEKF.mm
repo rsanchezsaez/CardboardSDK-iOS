@@ -58,20 +58,20 @@ void OrientationEKF::reset()
     _mQ.setSameDiagonal(1.0);
     _mR.setZero();
     _mR.setSameDiagonal(0.0625);
-    _mRaccel.setZero();
-    _mRaccel.setSameDiagonal(0.5625);
+    _mRAcceleration.setZero();
+    _mRAcceleration.setSameDiagonal(0.5625);
     _mS.setZero();
     _mH.setZero();
     _mK.setZero();
-    _mNu.setZero();
-    _mz.setZero();
-    _mh.setZero();
-    _mu.setZero();
-    _mx.setZero();
+    _vNu.setZero();
+    _vZ.setZero();
+    _vH.setZero();
+    _vU.setZero();
+    _vX.setZero();
     // Flipped from Android so it uses the same convention as CoreMotion
-    // was: _down.set(0.0, 0.0, 9.81);
-    _down.set(0.0, 0.0, -9.81);
-    _north.set(0.0, 1.0, 0.0);
+    // was: _vDown.set(0.0, 0.0, 9.81);
+    _vDown.set(0.0, 0.0, -9.81);
+    _vNorth.set(0.0, 1.0, 0.0);
     _alignedToGravity = false;
     _alignedToNorth = false;
 }
@@ -136,8 +136,8 @@ void OrientationEKF::processGyro(GLKVector3 gyro, double sensorTimeStamp)
             filterGyroTimestep(dT);
         }
         
-        _mu.set(gyro.x * -dT, gyro.y * -dT, gyro.z * -dT);
-        SO3Util::so3FromMu(&_mu, &_so3LastMotion);
+        _vU.set(gyro.x * -dT, gyro.y * -dT, gyro.z * -dT);
+        SO3Util::so3FromMu(&_vU, &_so3LastMotion);
         Matrix3x3d::mult(&_so3LastMotion, &_so3SensorFromWorld, &_so3SensorFromWorld);
         updateCovariancesAfterMotion();
         Matrix3x3d temp;
@@ -150,13 +150,13 @@ void OrientationEKF::processGyro(GLKVector3 gyro, double sensorTimeStamp)
     _lastGyro = gyro;
 }
 
-void OrientationEKF::processAcc(GLKVector3 acc, double sensorTimeStamp)
+void OrientationEKF::processAcceleration(GLKVector3 acc, double sensorTimeStamp)
 {
-    _mz.set(acc.x, acc.y, acc.z);
-    updateAccelCovariance(_mz.length());
+    _vZ.set(acc.x, acc.y, acc.z);
+    updateAccelerationCovariance(_vZ.length());
     if (_alignedToGravity)
     {
-        accObservationFunctionForNumericalJacobian(&_so3SensorFromWorld, &_mNu);
+        accelerationObservationFunctionForNumericalJacobian(&_so3SensorFromWorld, &_vNu);
         const double eps = 1.0E-7;
         for (int dof = 0; dof < 3; dof++)
         {
@@ -167,8 +167,8 @@ void OrientationEKF::processAcc(GLKVector3 acc, double sensorTimeStamp)
             SO3Util::so3FromMu(&delta, &tempM);
             Matrix3x3d::mult(&tempM, &_so3SensorFromWorld, &tempM);
             Vector3d tempV;
-            accObservationFunctionForNumericalJacobian(&tempM, &tempV);
-            Vector3d::sub(&_mNu, &tempV, &tempV);
+            accelerationObservationFunctionForNumericalJacobian(&tempM, &tempV);
+            Vector3d::sub(&_vNu, &tempV, &tempV);
             tempV.scale(1.0/eps);
             _mH.setColumn(dof, &tempV);
         }
@@ -179,23 +179,23 @@ void OrientationEKF::processAcc(GLKVector3 acc, double sensorTimeStamp)
         Matrix3x3d temp;
         Matrix3x3d::mult(&_mP, &mHt, &temp);
         Matrix3x3d::mult(&_mH, &temp, &temp);
-        Matrix3x3d::add(&temp, &_mRaccel, &_mS);
+        Matrix3x3d::add(&temp, &_mRAcceleration, &_mS);
         _mS.invert(&temp);
         Matrix3x3d::mult(&mHt, &temp, &temp);
         Matrix3x3d::mult(&_mP, &temp, &_mK);
-        Matrix3x3d::mult(&_mK, &_mNu, &_mx);
+        Matrix3x3d::mult(&_mK, &_vNu, &_vX);
         Matrix3x3d::mult(&_mK, &_mH, &temp);
         Matrix3x3d temp2;
         temp2.setIdentity();
         temp2.minusEquals(&temp);
         Matrix3x3d::mult(&temp2, &_mP, &_mP);
-        SO3Util::so3FromMu(&_mx, &_so3LastMotion);
+        SO3Util::so3FromMu(&_vX, &_so3LastMotion);
         Matrix3x3d::mult(&_so3LastMotion, &_so3SensorFromWorld, &_so3SensorFromWorld);
         updateCovariancesAfterMotion();
     }
     else
     {
-        SO3Util::so3FromTwoVecN(&_down, &_mz, &_so3SensorFromWorld);
+        SO3Util::so3FromTwoVecN(&_vDown, &_vZ, &_so3SensorFromWorld);
         _alignedToGravity = true;
     }
 }
@@ -226,7 +226,7 @@ void OrientationEKF::updateCovariancesAfterMotion()
     _so3LastMotion.setIdentity();
 }
 
-void OrientationEKF::updateAccelCovariance(double currentAccelNorm)
+void OrientationEKF::updateAccelerationCovariance(double currentAccelNorm)
 {
     double currentAccelNormChange = fabs(currentAccelNorm - _previousAccelNorm);
     _previousAccelNorm = currentAccelNorm;
@@ -237,14 +237,14 @@ void OrientationEKF::updateAccelCovariance(double currentAccelNorm)
     const double kMaxAccelNoiseSigma = 7.0;
     double normChangeRatio = _movingAverageAccelNormChange / kMaxAccelNormChange;
     double accelNoiseSigma = std::min(kMaxAccelNoiseSigma, kMinAccelNoiseSigma + normChangeRatio * (kMaxAccelNoiseSigma-kMinAccelNoiseSigma));
-    _mRaccel.setSameDiagonal(accelNoiseSigma * accelNoiseSigma);
+    _mRAcceleration.setSameDiagonal(accelNoiseSigma * accelNoiseSigma);
 }
 
-void OrientationEKF::accObservationFunctionForNumericalJacobian(Matrix3x3d *so3SensorFromWorldPred, Vector3d *result)
+void OrientationEKF::accelerationObservationFunctionForNumericalJacobian(Matrix3x3d *so3SensorFromWorldPred, Vector3d *result)
 {
-    Matrix3x3d::mult(so3SensorFromWorldPred, &_down, &_mh);
+    Matrix3x3d::mult(so3SensorFromWorldPred, &_vDown, &_vH);
     Matrix3x3d temp;
-    SO3Util::so3FromTwoVecN(&_mh, &_mz, &temp);
+    SO3Util::so3FromTwoVecN(&_vH, &_vZ, &temp);
     SO3Util::muFromSO3(&temp, result);
 }
 

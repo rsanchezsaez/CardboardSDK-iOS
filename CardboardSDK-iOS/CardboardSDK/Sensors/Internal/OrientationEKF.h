@@ -21,7 +21,7 @@ class OrientationEKF
     bool isReady();
     
     void processGyro(GLKVector3 gyro, double sensorTimeStamp);
-    void processAcc(GLKVector3 acc, double sensorTimeStamp);
+    void processAcceleration(GLKVector3 acc, double sensorTimeStamp);
     
     double getHeadingDegrees();
     void setHeadingDegrees(double heading);
@@ -36,17 +36,17 @@ class OrientationEKF
     Matrix3x3d _mP;
     Matrix3x3d _mQ;
     Matrix3x3d _mR;
-    Matrix3x3d _mRaccel;
+    Matrix3x3d _mRAcceleration;
     Matrix3x3d _mS;
     Matrix3x3d _mH;
     Matrix3x3d _mK;
-    Vector3d _mNu;
-    Vector3d _mz;
-    Vector3d _mh;
-    Vector3d _mu;
-    Vector3d _mx;
-    Vector3d _down;
-    Vector3d _north;
+    Vector3d _vNu;
+    Vector3d _vZ;
+    Vector3d _vH;
+    Vector3d _vU;
+    Vector3d _vX;
+    Vector3d _vDown;
+    Vector3d _vNorth;
     double _sensorTimeStampGyro;
     GLKVector3 _lastGyro;
     double _previousAccelNorm;
@@ -60,8 +60,8 @@ class OrientationEKF
     
     void filterGyroTimestep(double timestep);
     void updateCovariancesAfterMotion();
-    void updateAccelCovariance(double currentAccelNorm);
-    void accObservationFunctionForNumericalJacobian(Matrix3x3d* so3SensorFromWorldPred, Vector3d* result);
+    void updateAccelerationCovariance(double currentAccelNorm);
+    void accelerationObservationFunctionForNumericalJacobian(Matrix3x3d *so3SensorFromWorldPred, Vector3d *result);
 };
 
 #endif

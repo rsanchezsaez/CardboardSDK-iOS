@@ -2,156 +2,151 @@
 //  CardboardDeviceParams.mm
 //  CardboardSDK-iOS
 //
-//  Created by Peter Tribe on 2014-08-26.
-//  Copyright (c) 2014 Peter Tribe. All rights reserved.
 //
 
 #include "CardboardDeviceParams.h"
 
-CardboardDeviceParams::CardboardDeviceParams()
+CardboardDeviceParams::CardboardDeviceParams() :
+    _vendor(@"com.google"),
+    _model(@"cardboard"),
+    _version(@"1.0"),
+    _interpupillaryDistance(0.06f),
+    _verticalDistanceToLensCenter(0.035f),
+    _lensDiameter(0.025f),
+    _screenToLensDistance(0.037f),
+    _eyeToLensDistance(0.011f),
+    _visibleViewportSize(0.06f),
+    _fovY(65.0f)
 {
-    this->vendor = @"com.google";
-    this->model = @"cardboard";
-    this->version = @"1.0";
-    
-    this->interpupillaryDistance = 0.06F;
-    this->verticalDistanceToLensCenter = 0.035F;
-    this->lensDiameter = 0.025F;
-    this->screenToLensDistance = 0.037F;
-    this->eyeToLensDistance = 0.011F;
-    
-    this->visibleViewportSize = 0.06F;
-    this->fovY = 65.0F;
-    
-    this->distortion = new Distortion();
+    _distortion = new Distortion();
 }
 
 CardboardDeviceParams::CardboardDeviceParams(CardboardDeviceParams* params)
 {
-    this->vendor = params->vendor;
-    this->model = params->model;
-    this->version = params->version;
+    _vendor = params->_vendor;
+    _model = params->_model;
+    _version = params->_version;
     
-    this->interpupillaryDistance = params->interpupillaryDistance;
-    this->verticalDistanceToLensCenter = params->verticalDistanceToLensCenter;
-    this->lensDiameter = params->lensDiameter;
-    this->screenToLensDistance = params->screenToLensDistance;
-    this->eyeToLensDistance = params->eyeToLensDistance;
+    _interpupillaryDistance = params->_interpupillaryDistance;
+    _verticalDistanceToLensCenter = params->_verticalDistanceToLensCenter;
+    _lensDiameter = params->_lensDiameter;
+    _screenToLensDistance = params->_screenToLensDistance;
+    _eyeToLensDistance = params->_eyeToLensDistance;
     
-    this->visibleViewportSize = params->visibleViewportSize;
-    this->fovY = params->fovY;
+    _visibleViewportSize = params->_visibleViewportSize;
+    _fovY = params->_fovY;
     
-    this->distortion = new Distortion(params->distortion);
+    _distortion = new Distortion(params->_distortion);
 }
 
 CardboardDeviceParams::~CardboardDeviceParams()
 {
-    delete this->distortion;
+    delete _distortion;
 }
 
 void CardboardDeviceParams::setVendor(NSString* vendor)
 {
-    this->vendor = vendor;
+    _vendor = vendor;
 }
 
-NSString* CardboardDeviceParams::getVendor()
+NSString* CardboardDeviceParams::vendor()
 {
-    return this->vendor;
+    return _vendor;
 }
 
 void CardboardDeviceParams::setModel(NSString* model)
 {
-    this->model = model;
+    _model = model;
 }
 
-NSString* CardboardDeviceParams::getModel()
+NSString* CardboardDeviceParams::model()
 {
-    return this->model;
+    return _model;
 }
 
 void CardboardDeviceParams::setVersion(NSString* version)
 {
-    this->version = version;
+    _version = version;
 }
 
-NSString* CardboardDeviceParams::getVersion()
+NSString* CardboardDeviceParams::version()
 {
-    return this->version;
+    return _version;
 }
 
 void CardboardDeviceParams::setInterpupillaryDistance(float interpupillaryDistance)
 {
-    this->interpupillaryDistance = interpupillaryDistance;
+    _interpupillaryDistance = interpupillaryDistance;
 }
 
-float CardboardDeviceParams::getInterpupillaryDistance()
+float CardboardDeviceParams::interpupillaryDistance()
 {
-    return this->interpupillaryDistance;
+    return _interpupillaryDistance;
 }
 
 void CardboardDeviceParams::setVerticalDistanceToLensCenter(float verticalDistanceToLensCenter)
 {
-    this->verticalDistanceToLensCenter = verticalDistanceToLensCenter;
+    _verticalDistanceToLensCenter = verticalDistanceToLensCenter;
 }
 
-float CardboardDeviceParams::getVerticalDistanceToLensCenter()
+float CardboardDeviceParams::verticalDistanceToLensCenter()
 {
-    return this->verticalDistanceToLensCenter;
+    return _verticalDistanceToLensCenter;
 }
 
 void CardboardDeviceParams::setVisibleViewportSize(float visibleViewportSize)
 {
-    this->visibleViewportSize = visibleViewportSize;
+    _visibleViewportSize = visibleViewportSize;
 }
 
-float CardboardDeviceParams::getVisibleViewportSize()
+float CardboardDeviceParams::visibleViewportSize()
 {
-    return this->visibleViewportSize;
+    return _visibleViewportSize;
 }
 
 void CardboardDeviceParams::setFovY(float fovY)
 {
-    this->fovY = fovY;
+    _fovY = fovY;
 }
 
-float CardboardDeviceParams::getFovY()
+float CardboardDeviceParams::fovY()
 {
-    return this->fovY;
+    return _fovY;
 }
 
 void CardboardDeviceParams::setLensDiameter(float lensDiameter)
 {
-    this->lensDiameter = lensDiameter;
+    _lensDiameter = lensDiameter;
 }
 
-float CardboardDeviceParams::getLensDiameter()
+float CardboardDeviceParams::lensDiameter()
 {
-    return this->lensDiameter;
+    return _lensDiameter;
 }
 
 void CardboardDeviceParams::setScreenToLensDistance(float screenToLensDistance)
 {
-    this->screenToLensDistance = screenToLensDistance;
+    _screenToLensDistance = screenToLensDistance;
 }
 
-float CardboardDeviceParams::getScreenToLensDistance()
+float CardboardDeviceParams::screenToLensDistance()
 {
-    return this->screenToLensDistance;
+    return _screenToLensDistance;
 }
 
 void CardboardDeviceParams::setEyeToLensDistance(float eyeToLensDistance)
 {
-    this->eyeToLensDistance = eyeToLensDistance;
+    _eyeToLensDistance = eyeToLensDistance;
 }
 
-float CardboardDeviceParams::getEyeToLensDistance()
+float CardboardDeviceParams::eyeToLensDistance()
 {
-    return this->eyeToLensDistance;
+    return _eyeToLensDistance;
 }
 
 Distortion* CardboardDeviceParams::getDistortion()
 {
-    return this->distortion;
+    return _distortion;
 }
 
 bool CardboardDeviceParams::equals(CardboardDeviceParams *other)
@@ -160,9 +155,20 @@ bool CardboardDeviceParams::equals(CardboardDeviceParams *other)
     {
         return false;
     }
-    if (other == this)
+    else if (other == this)
     {
         return true;
     }
-    return (this->getVendor() == other->getVendor()) && (this->getModel() == other->getModel()) && (this->getVersion() == other->getVersion()) && (this->getInterpupillaryDistance() == other->getInterpupillaryDistance()) && (this->getVerticalDistanceToLensCenter() == other->getVerticalDistanceToLensCenter()) && (this->getLensDiameter() == other->getLensDiameter()) && (this->getScreenToLensDistance() == other->getScreenToLensDistance()) && (this->getEyeToLensDistance() == other->getEyeToLensDistance()) && (this->getVisibleViewportSize() == other->getVisibleViewportSize()) && (this->getFovY() == other->getFovY()) && (this->getDistortion()->equals(other->getDistortion()));
+    return
+    ([vendor() isEqualToString:other->vendor()])
+    && ([model() isEqualToString:other->model()])
+    && ([version() isEqualToString:other->version()])
+    && (interpupillaryDistance() == other->interpupillaryDistance())
+    && (verticalDistanceToLensCenter() == other->verticalDistanceToLensCenter())
+    && (lensDiameter() == other->lensDiameter())
+    && (screenToLensDistance() == other->screenToLensDistance())
+    && (eyeToLensDistance() == other->eyeToLensDistance())
+    && (visibleViewportSize() == other->visibleViewportSize())
+    && (fovY() == other->fovY())
+    && (getDistortion()->equals(other->getDistortion()));
 }

@@ -2,9 +2,6 @@
 //  HeadTracker.mm
 //  CardboardSDK-iOS
 //
-//  Created by Peter Tribe on 2014-08-25.
-//  Copyright (c) 2014 Peter Tribe. All rights reserved.
-//
 
 #include "HeadTracker.h"
 
@@ -116,7 +113,7 @@ void HeadTracker::startTracking()
         CMAcceleration acceleration = accelerometerData.acceleration;
         // note core motion uses units of G while the EKF uses ms^-2
         const float kG = 9.81f;
-        _tracker->processAcc(GLKVector3Make(kG*acceleration.x, kG*acceleration.y, kG*acceleration.z), accelerometerData.timestamp);
+        _tracker->processAcceleration(GLKVector3Make(kG*acceleration.x, kG*acceleration.y, kG*acceleration.z), accelerometerData.timestamp);
     }];
     
     _motionManager.gyroUpdateInterval = 1.0/100.0;
@@ -138,7 +135,7 @@ void HeadTracker::startTracking()
         CMRotationRate rotationRate = motion.rotationRate;
         // note core motion uses units of G while the EKF uses ms^-2
         const float kG = 9.81f;
-        _tracker->processAcc(GLKVector3Make(kG*acceleration.x, kG*acceleration.y, kG*acceleration.z), motion.timestamp);
+        _tracker->processAcceleration(GLKVector3Make(kG*acceleration.x, kG*acceleration.y, kG*acceleration.z), motion.timestamp);
         _tracker->processGyro(GLKVector3Make(rotationRate.x, rotationRate.y, rotationRate.z), motion.timestamp);
         _lastGyroEventTimestamp = motion.timestamp;
     }];
@@ -156,7 +153,7 @@ void HeadTracker::stopTracking()
   #endif
 }
 
-GLKMatrix4 HeadTracker::getLastHeadView()
+GLKMatrix4 HeadTracker::lastHeadView()
 {
   #if HEAD_TRACKER_MODE == HEAD_TRACKER_MODE_EKF || HEAD_TRACKER_MODE == HEAD_TRACKER_MODE_CORE_MOTION_EKF
     NSTimeInterval currentTimestamp = CACurrentMediaTime();

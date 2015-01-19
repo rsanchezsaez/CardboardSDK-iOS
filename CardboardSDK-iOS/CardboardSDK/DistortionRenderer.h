@@ -2,8 +2,6 @@
 //  DistortionRenderer.h
 //  CardboardSDK-iOS
 //
-//  Created by Peter Tribe on 2014-08-29.
-//  Copyright (c) 2014 Peter Tribe. All rights reserved.
 //
 
 #ifndef __CardboardVR_iOS__DistortionRenderer__
@@ -17,9 +15,11 @@
 
 class DistortionRenderer
 {
-public:
+    
+  public:
     DistortionRenderer();
     ~DistortionRenderer();
+    
     void beforeDrawFrame();
     void afterDrawFrame();
     void setResolutionScale(float scale);
@@ -28,17 +28,18 @@ public:
                              EyeParams *rightEye,
                              float zNear,
                              float zFar);
-private:
+
+  private:
     
     class DistortionMesh
     {
-    public:
+      public:
         int indices;
         int arrayBufferId;
         int elementBufferId;
         float vertexData[8000];
         unsigned int indexData[3158];
-    public:
+      public:
         DistortionMesh();
         DistortionMesh(EyeParams *eye,
                        Distortion *distortion,
@@ -58,20 +59,20 @@ private:
     
     class EyeViewport
     {
-    public:
+      public:
         float x;
         float y;
         float width;
         float height;
         float eyeX;
         float eyeY;
-    public:
+      public:
         NSString* toString();
     };
     
     class ProgramHolder
     {
-    public:
+      public:
         int program;
         int aPosition;
         int aVignette;
@@ -94,7 +95,8 @@ private:
     FieldOfView *leftEyeFov;
     FieldOfView *rightEyeFov;
     ProgramHolder *programHolder;
-private:
+  
+  private:
     EyeViewport initViewportForEye(EyeParams *eye, float xOffsetM);
     DistortionMesh* createDistortionMesh(EyeParams *eye,
                                          EyeViewport eyeViewport,
