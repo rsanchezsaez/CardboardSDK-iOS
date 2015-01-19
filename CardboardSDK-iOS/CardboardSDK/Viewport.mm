@@ -2,7 +2,7 @@
 //  Viewport.mm
 //  CardboardSDK-iOS
 //
-//
+
 
 #include "Viewport.h"
 
@@ -26,5 +26,5 @@ void Viewport::setGLScissor()
 
 NSString* Viewport::toString()
 {
-    return [NSString stringWithFormat:@"Viewport {x:%d y:%d width:%d height:%d}", this->x, this->y, this->width, this->height];
+    return [NSString stringWithFormat:@"{x:%d y:%d width:%d height:%d}", this->x, this->y, this->width, this->height];
 }

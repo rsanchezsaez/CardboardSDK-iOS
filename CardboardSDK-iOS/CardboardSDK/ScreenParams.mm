@@ -2,10 +2,11 @@
 //  ScreenParams.mm
 //  CardboardSDK-iOS
 //
-//
+
 
 #include "ScreenParams.h"
 #include <sys/utsname.h>
+
 
 @interface UIScreen (OrientationAware)
 
@@ -27,6 +28,7 @@
 }
 
 @end
+
 
 ScreenParams::ScreenParams(UIScreen *screen)
 {

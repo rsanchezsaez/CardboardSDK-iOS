@@ -10,7 +10,7 @@ CardboardDeviceParams::CardboardDeviceParams() :
     _vendor(@"com.google"),
     _model(@"cardboard"),
     _version(@"1.0"),
-    _interpupillaryDistance(0.06f),
+    _interLensDistance(0.06f),
     _verticalDistanceToLensCenter(0.035f),
     _lensDiameter(0.025f),
     _screenToLensDistance(0.037f),
@@ -27,7 +27,7 @@ CardboardDeviceParams::CardboardDeviceParams(CardboardDeviceParams* params)
     _model = params->_model;
     _version = params->_version;
     
-    _interpupillaryDistance = params->_interpupillaryDistance;
+    _interLensDistance = params->_interLensDistance;
     _verticalDistanceToLensCenter = params->_verticalDistanceToLensCenter;
     _lensDiameter = params->_lensDiameter;
     _screenToLensDistance = params->_screenToLensDistance;
@@ -74,14 +74,14 @@ NSString* CardboardDeviceParams::version()
     return _version;
 }
 
-void CardboardDeviceParams::setInterpupillaryDistance(float interpupillaryDistance)
+void CardboardDeviceParams::setInterLensDistance(float interLensDistance)
 {
-    _interpupillaryDistance = interpupillaryDistance;
+    _interLensDistance = interLensDistance;
 }
 
-float CardboardDeviceParams::interpupillaryDistance()
+float CardboardDeviceParams::interLensDistance()
 {
-    return _interpupillaryDistance;
+    return _interLensDistance;
 }
 
 void CardboardDeviceParams::setVerticalDistanceToLensCenter(float verticalDistanceToLensCenter)
@@ -163,7 +163,7 @@ bool CardboardDeviceParams::equals(CardboardDeviceParams *other)
     ([vendor() isEqualToString:other->vendor()])
     && ([model() isEqualToString:other->model()])
     && ([version() isEqualToString:other->version()])
-    && (interpupillaryDistance() == other->interpupillaryDistance())
+    && (interLensDistance() == other->interLensDistance())
     && (verticalDistanceToLensCenter() == other->verticalDistanceToLensCenter())
     && (lensDiameter() == other->lensDiameter())
     && (screenToLensDistance() == other->screenToLensDistance())

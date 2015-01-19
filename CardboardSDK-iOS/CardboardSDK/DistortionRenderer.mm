@@ -142,7 +142,7 @@ void DistortionRenderer::onProjectionChanged(HeadMountedDisplay *hmd,
     int textureWidthPx = round(textureWidthM * xPxPerM);
     int textureHeightPx = round(textureHeightM * yPxPerM);
     
-    float xEyeOffsetMScreen = screen->widthInMeters() / 2.0f - cdp->interpupillaryDistance() / 2.0f;
+    float xEyeOffsetMScreen = screen->widthInMeters() / 2.0f - cdp->interLensDistance() / 2.0f;
     float yEyeOffsetMScreen = cdp->verticalDistanceToLensCenter() - screen->borderSizeInMeters();
     
     _leftEyeDistortionMesh = createDistortionMesh(leftEye, leftEyeViewport, textureWidthM, textureHeightM, xEyeOffsetMScreen, yEyeOffsetMScreen);

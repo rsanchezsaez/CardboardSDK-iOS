@@ -26,8 +26,8 @@ class CardboardDeviceParams
     void setVersion(NSString* version);
     NSString *version();
     
-    void setInterpupillaryDistance(float interpupillaryDistance);
-    float interpupillaryDistance();
+    void setInterLensDistance(float interLensDistance);
+    float interLensDistance();
     
     void setVerticalDistanceToLensCenter(float verticalDistanceToLensCenter);
     float verticalDistanceToLensCenter();
@@ -55,7 +55,7 @@ private:
     NSString *_vendor;
     NSString *_model;
     NSString *_version;
-    float _interpupillaryDistance;
+    float _interLensDistance;
     float _verticalDistanceToLensCenter;
     float _lensDiameter;
     float _screenToLensDistance;

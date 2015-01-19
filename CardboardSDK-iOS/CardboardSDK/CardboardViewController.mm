@@ -262,7 +262,7 @@
     CardboardDeviceParams *cardboardDeviceParams = _headMountedDisplay->getCardboard();
     
     _headTransform->setHeadView(_headTracker->lastHeadView());
-    float halfInterpupillaryDistance = cardboardDeviceParams->interpupillaryDistance() * 0.5f;
+    float halfInterpupillaryDistance = cardboardDeviceParams->interLensDistance() * 0.5f;
     
     // NSLog(@"%@", NSStringFromGLKMatrix4(_headTracker->lastHeadView()));
 
@@ -411,8 +411,8 @@
     float idealFovAngle = GLKMathRadiansToDegrees(atan2f(cardboardDeviceParams->lensDiameter() / 2.0f,
             cardboardDeviceParams->eyeToLensDistance()));
     float eyeToScreenDistance = cardboardDeviceParams->eyeToLensDistance() + cardboardDeviceParams->screenToLensDistance();
-    float outerDistance = (screenParams->widthInMeters() - cardboardDeviceParams->interpupillaryDistance() ) / 2.0f;
-    float innerDistance = cardboardDeviceParams->interpupillaryDistance() / 2.0f;
+    float outerDistance = (screenParams->widthInMeters() - cardboardDeviceParams->interLensDistance() ) / 2.0f;
+    float innerDistance = cardboardDeviceParams->interLensDistance() / 2.0f;
     float bottomDistance = cardboardDeviceParams->verticalDistanceToLensCenter() - screenParams->borderSizeInMeters();
     float topDistance = screenParams->heightInMeters() + screenParams->borderSizeInMeters() - cardboardDeviceParams->verticalDistanceToLensCenter();
  

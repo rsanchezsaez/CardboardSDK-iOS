@@ -2,7 +2,7 @@
 //  Viewport.h
 //  CardboardSDK-iOS
 //
-//
+
 
 #ifndef __CardboardVR_iOS__Viewport__
 #define __CardboardVR_iOS__Viewport__

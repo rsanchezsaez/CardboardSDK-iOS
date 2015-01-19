@@ -2,7 +2,7 @@
 //  FieldOfView.h
 //  CardboardSDK-iOS
 //
-//
+
 
 #ifndef __CardboardVR_iOS__FieldOfView__
 #define __CardboardVR_iOS__FieldOfView__
@@ -32,15 +32,13 @@ class FieldOfView
     GLKMatrix4 toPerspectiveMatrix(float near, float far);
 
     bool equals(FieldOfView *other);
-    NSString* toString();
+    NSString *toString();
 
   private:
     float _left;
     float _right;
     float _bottom;
     float _top;
-
-    GLKMatrix4 frustumM(float left, float right, float bottom, float top, float near, float far);
 };
 
 #endif 

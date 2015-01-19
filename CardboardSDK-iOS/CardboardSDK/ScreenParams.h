@@ -2,12 +2,13 @@
 //  ScreenParams.h
 //  CardboardSDK-iOS
 //
-//
+
 
 #ifndef __CardboardVR_iOS__ScreenParams__
 #define __CardboardVR_iOS__ScreenParams__
 
 #import <UIKit/UIKit.h>
+
 
 class ScreenParams
 {
