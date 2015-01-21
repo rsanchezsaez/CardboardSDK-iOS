@@ -7,12 +7,8 @@
 #ifndef __CardboardSDK_iOS__Distortion__
 #define __CardboardSDK_iOS__Distortion__
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
-struct DistortionCoeffients
-{
-    float c[2];
-};
 
 class Distortion
 {
@@ -28,10 +24,11 @@ class Distortion
     float distortInverse(float radius);
     bool equals(Distortion *other);
     
-    NSString* toString();
+    NSString *toString();
     
   private:
-    float _coefficients[2];
+    constexpr static int s_numberOfCoefficients = 2;
+    float _coefficients[s_numberOfCoefficients];
 };
 
 #endif

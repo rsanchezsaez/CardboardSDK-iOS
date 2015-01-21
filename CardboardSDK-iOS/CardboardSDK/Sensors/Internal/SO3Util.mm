@@ -4,7 +4,7 @@
 //
 
 #include "SO3Util.h"
-#include <cmath>
+
 
 void SO3Util::so3FromTwoVecN(Vector3d *a, Vector3d *b, Matrix3x3d *result)
 {

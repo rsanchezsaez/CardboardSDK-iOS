@@ -6,6 +6,30 @@
 
 #include "GLStateBackup.h"
 
+
+GLStateBackup::VertexAttributeState::VertexAttributeState(GLuint attributeId) :
+    _attributeId(attributeId),
+    _enabled(false)
+{
+}
+
+void GLStateBackup::VertexAttributeState::readFromGL()
+{
+    glGetVertexAttribiv(_attributeId, GL_VERTEX_ATTRIB_ARRAY_ENABLED, &_enabled);
+}
+
+void GLStateBackup::VertexAttributeState::writeToGL() {
+    if (_enabled == false)
+    {
+        glDisableVertexAttribArray(_attributeId);
+    }
+    else
+    {
+        glEnableVertexAttribArray(_attributeId);
+    }
+}
+
+
 GLStateBackup::GLStateBackup() :
     _cullFaceEnabled(false),
     _scissorTestEnabled(false),

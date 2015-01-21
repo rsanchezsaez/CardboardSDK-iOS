@@ -2,17 +2,22 @@
 //  DistortionRenderer.h
 //  CardboardSDK-iOS
 //
-//
+
 
 #ifndef __CardboardSDK_iOS__DistortionRenderer__
 #define __CardboardSDK_iOS__DistortionRenderer__
 
-#import <GLKit/GLKit.h>
+#import <Foundation/Foundation.h>
+#import <OpenGLES/ES2/gl.h>
 
-#include "HeadMountedDisplay.h"
-#include "Eye.h"
-#include "Distortion.h"
-#include "FieldOfView.h"
+
+class Distortion;
+class Eye;
+class FieldOfView;
+class GLStateBackup;
+class HeadMountedDisplay;
+class Viewport;
+
 
 class DistortionRenderer
 {
@@ -23,39 +28,48 @@ class DistortionRenderer
     
     void beforeDrawFrame();
     void afterDrawFrame();
-    void setResolutionScale(float scale);
-    void onProjectionChanged(HeadMountedDisplay *hmd,
-                             Eye *leftEye,
-                             Eye *rightEye,
-                             float zNear,
-                             float zFar);
-
-  private:
     
+    void setResolutionScale(float scale);
+    
+    bool restoreGLStateEnabled();
+    void setRestoreGLStateEnabled(bool enabled);
+    
+    bool chromaticAberrationEnabled();
+    void setChromaticAberrationEnabled(bool enabled);
+    
+    bool vignetteEnabled();
+    void setVignetteEnabled(bool enabled);
+    
+    bool viewportsChanged();
+    void updateViewports(Viewport *leftViewport,
+                         Viewport *rightViewport);
+
+    void fovDidChange(HeadMountedDisplay *hmd,
+                      FieldOfView *leftEyeFov,
+                      FieldOfView *rightEyeFov,
+                      float virtualEyeToScreenDistance);
+
+    
+  private:
     class DistortionMesh
     {
       public:
         int _indices;
         int _arrayBufferID;
         int _elementBufferID;
-        float _vertexData[8000];
-        unsigned int _indexData[3158];
-      public:
+
         DistortionMesh();
-        DistortionMesh(Eye *eye,
-                       Distortion *distortion,
-                       float screenWidthM,
-                       float screenHeightM,
-                       float xEyeOffsetMScreen,
-                       float yEyeOffsetMScreen,
-                       float textureWidthM,
-                       float textureHeightM,
-                       float xEyeOffsetMTexture,
-                       float yEyeOffsetMTexture,
-                       float viewportXMTexture,
-                       float viewportYMTexture,
-                       float viewportWidthMTexture,
-                       float viewportHeightMTexture);
+        DistortionMesh(Distortion *distortionRed,
+                       Distortion *distortionGreen,
+                       Distortion *distortionBlue,
+                       float screenWidth, float screenHeight,
+                       float xEyeOffsetScreen, float yEyeOffsetScreen,
+                       float textureWidth, float textureHeight,
+                       float xEyeOffsetTexture, float yEyeOffsetTexture,
+                       float viewportXTexture, float viewportYTexture,
+                       float viewportWidthTexture,
+                       float viewportHeightTexture,
+                       bool vignetteEnabled);
     };
     
     struct EyeViewport
@@ -68,55 +82,81 @@ class DistortionRenderer
         float eyeX;
         float eyeY;
 
-        NSString* toString();
+        NSString *toString();
     };
     
     struct ProgramHolder
     {
       public:
-        int program;
-        int positionLocation;
-        int vignetteLocation;
-        int textureCoordLocation;
-        int uTextureCoordScaleLocation;
-        int uTextureSamplerLocation;
+        ProgramHolder() :
+        program(-1),
+        positionLocation(-1),
+        vignetteLocation(-1),
+        redTextureCoordLocation(-1),
+        greenTextureCoordLocation(-1),
+        blueTextureCoordLocation(-1),
+        uTextureCoordScaleLocation(-1),
+        uTextureSamplerLocation(-1) {}
+        
+        GLint program;
+        GLint positionLocation;
+        GLint vignetteLocation;
+        GLint redTextureCoordLocation;
+        GLint greenTextureCoordLocation;
+        GLint blueTextureCoordLocation;
+        GLint uTextureCoordScaleLocation;
+        GLint uTextureSamplerLocation;
     };
     
-    // int _originalFramebufferID;
-    GLuint _framebufferID;
     GLuint _textureID;
     GLuint _renderbufferID;
-    GLboolean _cullFaceEnabled;
-    GLboolean _scissorTestEnabled;
-    int _viewport[4];
+    GLuint _framebufferID;
+    // int _originalFramebufferID;
+    GLenum _textureFormat;
+    GLenum _textureType;
     float _resolutionScale;
+    bool _restoreGLStateEnabled;
+    bool _chromaticAberrationCorrectionEnabled;
+    bool _vignetteEnabled;
     DistortionMesh *_leftEyeDistortionMesh;
     DistortionMesh *_rightEyeDistortionMesh;
+    GLStateBackup *_glStateBackup;
+    GLStateBackup *_glStateBackupAberration;
     HeadMountedDisplay *_headMountedDisplay;
-    FieldOfView *_leftEyeFov;
-    FieldOfView *_rightEyeFov;
+    EyeViewport *_leftEyeViewport;
+    EyeViewport *_rightEyeViewport;
+    bool _fovsChanged;
+    bool _viewportsChanged;
+    bool _textureFormatChanged;
+    bool _drawingFrame;
+    float _xPxPerTanAngle;
+    float _yPxPerTanAngle;
+    float _metersPerTanAngle;
+    
     ProgramHolder *_programHolder;
-  
-  private:
-    EyeViewport initViewportForEye(Eye *eye, float xOffsetM);
-    DistortionMesh* createDistortionMesh(Eye *eye,
-                                         EyeViewport eyeViewport,
-                                         float textureWidthM,
-                                         float textureHeightM,
-                                         float xEyeOffsetMScreen,
-                                         float yEyeOffsetMScreen);
-    void renderDistortionMesh(DistortionMesh *mesh);
+    ProgramHolder *_programHolderAberration;
+    
+    EyeViewport *initViewportForEye(FieldOfView *eyeFieldOfView, float xOffsetM);
+    
+    void setTextureFormat(GLint textureFormat, GLint textureType);
+    void updateTextureAndDistortionMesh();
+    void undistortTexture(GLint textureID);
+
+    DistortionMesh *createDistortionMesh(EyeViewport *eyeViewport,
+                                         float textureWidthTanAngle,
+                                         float textureHeightTanAngle,
+                                         float xEyeOffsetTanAngleScreen,
+                                         float yEyeOffsetTanAngleScreen);
+    void renderDistortionMesh(DistortionMesh *mesh, GLint textureID);
     float computeDistortionScale(Distortion *distortion,
                                  float screenWidthM,
                                  float interpupillaryDistanceM);
-    int createTexture(int width, int height);
+    int createTexture(GLint width, GLint height, GLint textureFormat, GLint textureType);
     int setupRenderTextureAndRenderbuffer(int width, int height);
     int loadShader(GLenum shaderType, const GLchar *source);
     int createProgram(const GLchar *vertexSource,
                       const GLchar *fragmentSource);
-    ProgramHolder* createProgramHolder();
-    static float clamp(float val, float min, float max);
-    
+    ProgramHolder *createProgramHolder(bool aberrationCorrected);
 };
 
 #endif

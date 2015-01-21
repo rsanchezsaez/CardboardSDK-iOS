@@ -6,9 +6,10 @@
 
 #import "TreasureViewController.h"
 
-#import "CardboardSDK.h"
+#include "CardboardSDK.h"
 
 #import <AudioToolbox/AudioServices.h>
+#import <OpenGLES/ES2/glext.h>
 
 
 @interface TreasureRenderer : NSObject <StereoRendererDelegate>

@@ -2,12 +2,13 @@
 //  HeadTransform.h
 //  CardboardSDK-iOS
 //
-//
+
 
 #ifndef __CardboardSDK_iOS__HeadTransform__
 #define __CardboardSDK_iOS__HeadTransform__
 
 #import <GLKit/GLKit.h>
+
 
 class HeadTransform
 {

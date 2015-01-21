@@ -6,9 +6,11 @@
 #ifndef __CardboardSDK_iOS__HeadTracker__
 #define __CardboardSDK_iOS__HeadTracker__
 
+#include "OrientationEKF.h"
+
 #import <CoreMotion/CoreMotion.h>
 #import <GLKit/GLKit.h>
-#include "OrientationEKF.h"
+
 
 class HeadTracker
 {
@@ -19,6 +21,9 @@ class HeadTracker
     void startTracking();
     void stopTracking();
     GLKMatrix4 lastHeadView();
+    
+    bool neckModelEnabled();
+    void setNeckModelEnabled(bool enabled);
     
   private:
     CMMotionManager *_motionManager;

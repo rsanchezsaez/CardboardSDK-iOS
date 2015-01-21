@@ -4,34 +4,40 @@
 //
 
 #include "OrientationEKF.h"
+
 #include "SO3Util.h"
+
 #include <cmath>
 #include <algorithm>
+
 
 static const double DEG_TO_RAD = M_PI / 180.0;
 static const double RAD_TO_DEG = 180.0 / M_PI;
 
-namespace {
 
-GLKMatrix4 glMatrixFromSo3(Matrix3x3d *so3)
+namespace
 {
-    GLKMatrix4 rotationMatrix;
-    for (int r = 0; r < 3; r++) {
-        for (int c = 0; c < 3; c++) {
-            rotationMatrix.m[(4 * c + r)] = so3->get(r, c);
+    GLKMatrix4 glMatrixFromSo3(Matrix3x3d *so3)
+    {
+        GLKMatrix4 rotationMatrix;
+        for (int r = 0; r < 3; r++)
+        {
+            for (int c = 0; c < 3; c++)
+            {
+                rotationMatrix.m[(4 * c + r)] = so3->get(r, c);
+            }
         }
+        rotationMatrix.m[3] = 0.0;
+        rotationMatrix.m[7] = 0.0;
+        rotationMatrix.m[11] = 0.0;
+        rotationMatrix.m[12] = 0.0;
+        rotationMatrix.m[13] = 0.0;
+        rotationMatrix.m[14] = 0.0;
+        rotationMatrix.m[15] = 1.0;
+        return rotationMatrix;
     }
-    rotationMatrix.m[3] = 0.0;
-    rotationMatrix.m[7] = 0.0;
-    rotationMatrix.m[11] = 0.0;
-    rotationMatrix.m[12] = 0.0;
-    rotationMatrix.m[13] = 0.0;
-    rotationMatrix.m[14] = 0.0;
-    rotationMatrix.m[15] = 1.0;
-    return rotationMatrix;
-}
 
-} // namespace
+}
 
 OrientationEKF::OrientationEKF() :
     _previousAccelNorm(0.0),

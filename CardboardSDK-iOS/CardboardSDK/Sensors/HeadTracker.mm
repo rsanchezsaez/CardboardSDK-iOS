@@ -179,3 +179,13 @@ GLKMatrix4 HeadTracker::lastHeadView()
     
     return worldToDisplay;
 }
+
+bool HeadTracker::neckModelEnabled()
+{
+    return _neckModelEnabled;
+}
+
+void HeadTracker::setNeckModelEnabled(bool enabled)
+{
+    _neckModelEnabled = enabled;
+}

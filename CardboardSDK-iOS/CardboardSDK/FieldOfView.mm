@@ -6,11 +6,12 @@
 
 #include "FieldOfView.h"
 
+
 FieldOfView::FieldOfView() :
-    _left(40.0f),
-    _right(40.0f),
-    _bottom(40.0f),
-    _top(40.0f)
+    _left(s_defaultViewAngle),
+    _right(s_defaultViewAngle),
+    _bottom(s_defaultViewAngle),
+    _top(s_defaultViewAngle)
 {
 }
 

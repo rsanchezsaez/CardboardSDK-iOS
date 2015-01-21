@@ -33,7 +33,6 @@
 		BC763B2E1A655D1E00463823 /* passthrough_fragment.shader in Resources */ = {isa = PBXBuildFile; fileRef = BC763B2B1A655D1E00463823 /* passthrough_fragment.shader */; };
 		BC763B311A655D7600463823 /* GLHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = BC763B301A655D7600463823 /* GLHelpers.m */; };
 		BC763B341A655EB700463823 /* TreasureViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC763B331A655EB700463823 /* TreasureViewController.mm */; };
-		BC763B371A66A1D100463823 /* DebugUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = BC763B351A66A1D100463823 /* DebugUtils.m */; };
 		BC763B391A66BBBC00463823 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC763B381A66BBBC00463823 /* Images.xcassets */; };
 		BC763B3B1A66D13300463823 /* highlight_fragment.shader in Resources */ = {isa = PBXBuildFile; fileRef = BC763B3A1A66D13300463823 /* highlight_fragment.shader */; };
 		BC763B3D1A6828DA00463823 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC763B3C1A6828DA00463823 /* AudioToolbox.framework */; };
@@ -89,7 +88,6 @@
 		BC763B301A655D7600463823 /* GLHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLHelpers.m; sourceTree = "<group>"; };
 		BC763B321A655EB700463823 /* TreasureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TreasureViewController.h; sourceTree = "<group>"; };
 		BC763B331A655EB700463823 /* TreasureViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TreasureViewController.mm; sourceTree = "<group>"; };
-		BC763B351A66A1D100463823 /* DebugUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebugUtils.m; sourceTree = "<group>"; };
 		BC763B361A66A1D100463823 /* DebugUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugUtils.h; sourceTree = "<group>"; };
 		BC763B381A66BBBC00463823 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		BC763B3A1A66D13300463823 /* highlight_fragment.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = highlight_fragment.shader; sourceTree = "<group>"; };
@@ -177,8 +175,8 @@
 				BC67334D1A5D90C700C6D79B /* ScreenParams.mm */,
 				BC67335D1A5D90C700C6D79B /* Viewport.h */,
 				BC67335E1A5D90C700C6D79B /* Viewport.mm */,
-				BC0B3DF51A6E795D00ADD925 /* GLStateBackup.mm */,
 				BC0B3DF61A6E795D00ADD925 /* GLStateBackup.h */,
+				BC0B3DF51A6E795D00ADD925 /* GLStateBackup.mm */,
 			);
 			path = CardboardSDK;
 			sourceTree = "<group>";
@@ -213,7 +211,6 @@
 		BC763B241A655C6E00463823 /* Misc */ = {
 			isa = PBXGroup;
 			children = (
-				BC763B351A66A1D100463823 /* DebugUtils.m */,
 				BC763B361A66A1D100463823 /* DebugUtils.h */,
 				BC763B2F1A655D7600463823 /* GLHelpers.h */,
 				BC763B301A655D7600463823 /* GLHelpers.m */,
@@ -345,7 +342,6 @@
 				BC67336D1A5D90C700C6D79B /* OrientationEKF.mm in Sources */,
 				BC6733621A5D90C700C6D79B /* CardboardViewController.mm in Sources */,
 				BC6733701A5D90C700C6D79B /* MagnetSensor.mm in Sources */,
-				BC763B371A66A1D100463823 /* DebugUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -5,6 +5,7 @@
 
 
 #include "ScreenParams.h"
+
 #include <sys/utsname.h>
 
 
@@ -123,7 +124,7 @@ bool ScreenParams::equals(ScreenParams *other)
     && (borderSizeInMeters() == other->borderSizeInMeters());
 }
 
-float ScreenParams::pixelsPerInch(UIScreen* screen)
+float ScreenParams::pixelsPerInch(UIScreen *screen)
 {
     // Default iPhone retina pixels per inch
     float pixelsPerInch = 163.0f * 2;

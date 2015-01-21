@@ -32,6 +32,11 @@ class Viewport;
 @interface CardboardViewController : GLKViewController
 
 @property (nonatomic) id <StereoRendererDelegate> stereoRendererDelegate;
-@property (nonatomic) BOOL isVRModeEnabled;
+@property (nonatomic) BOOL VRModeEnabled;
+@property (nonatomic) BOOL distortionCorrectionEnabled;
+@property (nonatomic) BOOL vignetteEnabled;
+@property (nonatomic) BOOL chromaticAberrationCorrectionEnabled;
+@property (nonatomic) BOOL restoreGLStateEnabled;
+@property (nonatomic) BOOL neckModelEnabled;
 
 @end

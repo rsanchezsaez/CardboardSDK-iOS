@@ -7,11 +7,12 @@
 #ifndef __CardboardSDK_iOS__MagnetSensor__
 #define __CardboardSDK_iOS__MagnetSensor__
 
-#import <Foundation/Foundation.h>
 #import <CoreMotion/CoreMotion.h>
 #import <GLKit/GLKit.h>
+
 #include <vector>
- 
+
+
 NSString *const CBTriggerPressedNotification = @"CBTriggerPressedNotification";
 
 class MagnetSensor

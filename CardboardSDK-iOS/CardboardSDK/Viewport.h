@@ -7,8 +7,8 @@
 #ifndef __CardboardSDK_iOS__Viewport__
 #define __CardboardSDK_iOS__Viewport__
 
-#import <UIKit/UIKit.h>
-#import <GLKit/GLKit.h>
+#import <Foundation/Foundation.h>
+
 
 struct Viewport
 {
@@ -23,7 +23,7 @@ struct Viewport
     void setGLViewport();
     void setGLScissor();
 
-    NSString* toString();
+    NSString *toString();
 };
 
 #endif 

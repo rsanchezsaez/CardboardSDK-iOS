@@ -6,9 +6,10 @@
 #ifndef __CardboardSDK_iOS__OrientationEKF__
 #define __CardboardSDK_iOS__OrientationEKF__
 
-#import <GLKit/GLKit.h>
 #include "Vector3d.h"
 #include "Matrix3x3d.h"
+
+#import <GLKit/GLKit.h>
 
 
 class OrientationEKF

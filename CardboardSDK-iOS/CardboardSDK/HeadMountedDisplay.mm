@@ -2,9 +2,13 @@
 //  HeadMountedDisplay.cpp
 //  CardboardSDK-iOS
 //
-//
+
 
 #include "HeadMountedDisplay.h"
+
+#include "CardboardDeviceParams.h"
+#include "ScreenParams.h"
+
 
 HeadMountedDisplay::HeadMountedDisplay(UIScreen *screen)
 {
@@ -20,13 +24,14 @@ HeadMountedDisplay::HeadMountedDisplay(HeadMountedDisplay *hmd)
 
 HeadMountedDisplay::~HeadMountedDisplay()
 {
-    delete _screen;
-    delete _cardboard;
+    if (_screen != nullptr) { delete _screen; }
+    if (_cardboard != nullptr) { delete _cardboard; }
 }
 
 void HeadMountedDisplay::setScreen(ScreenParams* screen)
 {
-    if (_screen != nullptr) {
+    if (_screen != nullptr)
+    {
         delete _screen;
     }
     _screen = new ScreenParams(screen);
@@ -39,7 +44,8 @@ ScreenParams* HeadMountedDisplay::getScreen()
 
 void HeadMountedDisplay::setCardboard(CardboardDeviceParams *cardboard)
 {
-    if (_cardboard != nullptr) {
+    if (_cardboard != nullptr)
+    {
         delete _cardboard;
     }
     _cardboard = new CardboardDeviceParams(cardboard);
@@ -52,11 +58,13 @@ CardboardDeviceParams* HeadMountedDisplay::getCardboard()
 
 bool HeadMountedDisplay::equals(HeadMountedDisplay *other)
 {
-    if (other == nullptr) {
+    if (other == nullptr)
+    {
         return false;
     }
-    if (other == this) {
+    else if (other == this)
+    {
         return true;
     }
-    return getScreen()->equals(other->getScreen()) && _cardboard->equals(other->_cardboard);
+    return _screen->equals(other->_screen) && _cardboard->equals(other->_cardboard);
 }

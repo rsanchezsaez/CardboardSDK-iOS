@@ -8,7 +8,9 @@
 #define __CardboardSDK_iOS__GLStateBackup__
 
 #include <vector>
-#import <OpenGLES/ES2/glext.h>
+
+#import <OpenGLES/ES2/gl.h>
+
 
 class GLStateBackup
 {
@@ -22,29 +24,13 @@ class GLStateBackup
   private:
     class VertexAttributeState
     {
-    public:
-        VertexAttributeState(GLuint attributeId) :
-        _attributeId(attributeId),
-        _enabled(false)
-        {
-        }
+      public:
+        VertexAttributeState(GLuint attributeId);
         
-        void readFromGL()
-        {
-            glGetVertexAttribiv(_attributeId, GL_VERTEX_ATTRIB_ARRAY_ENABLED, &_enabled);
-        }
+        void readFromGL();
+        void writeToGL();
         
-        void writeToGL() {
-            if (_enabled == false) {
-                glDisableVertexAttribArray(_attributeId);
-            }
-            else
-            {
-                glEnableVertexAttribArray(_attributeId);
-            }
-        }
-        
-    private:
+      private:
         GLuint _attributeId;
         GLint _enabled;
     };

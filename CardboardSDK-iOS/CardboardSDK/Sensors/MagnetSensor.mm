@@ -6,6 +6,7 @@
 
 #include "MagnetSensor.h"
 
+
 MagnetSensor::MagnetSensor()
 {
     _manager = [[CMMotionManager alloc] init];

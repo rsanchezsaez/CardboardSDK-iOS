@@ -2,13 +2,14 @@
 //  HeadTransform.mm
 //  CardboardSDK-iOS
 //
-//
+
 
 #include "HeadTransform.h"
 
-HeadTransform::HeadTransform()
+
+HeadTransform::HeadTransform() :
+    _headView(GLKMatrix4Identity)
 {
-    _headView = GLKMatrix4Identity;
 }
 
 void HeadTransform::setHeadView(GLKMatrix4 headview)
@@ -54,9 +55,7 @@ GLKQuaternion HeadTransform::quaternion()
         y = (_headView.m[2] - _headView.m[8]) * s;
         z = (_headView.m[4] - _headView.m[1]) * s;
     }
-    else
-    {
-        if ((_headView.m[0] > _headView.m[5]) && (_headView.m[0] > _headView.m[10]))
+    else if ((_headView.m[0] > _headView.m[5]) && (_headView.m[0] > _headView.m[10]))
         {
             s = sqrtf(1.0f + _headView.m[0] - _headView.m[5] - _headView.m[10]);
             x = s * 0.5f;
@@ -65,34 +64,33 @@ GLKQuaternion HeadTransform::quaternion()
             z = (_headView.m[2] + _headView.m[8]) * s;
             w = (_headView.m[9] - _headView.m[6]) * s;
         }
-        else
-        {
-            if (_headView.m[5] > _headView.m[10])
-            {
-                s = sqrtf(1.0f + _headView.m[5] - _headView.m[0] - _headView.m[10]);
-                y = s * 0.5f;
-                s = 0.5f / s;
-                x = (_headView.m[4] + _headView.m[1]) * s;
-                z = (_headView.m[9] + _headView.m[6]) * s;
-                w = (_headView.m[2] - _headView.m[8]) * s;
-            }
-            else
-            {
-                s = sqrtf(1.0f + _headView.m[10] - _headView.m[0] - _headView.m[5]);
-                z = s * 0.5f;
-                s = 0.5f / s;
-                x = (_headView.m[2] + _headView.m[8]) * s;
-                y = (_headView.m[9] + _headView.m[6]) * s;
-                w = (_headView.m[4] - _headView.m[1]) * s;
-            }
-        }
+    else if (_headView.m[5] > _headView.m[10])
+    {
+        s = sqrtf(1.0f + _headView.m[5] - _headView.m[0] - _headView.m[10]);
+        y = s * 0.5f;
+        s = 0.5f / s;
+        x = (_headView.m[4] + _headView.m[1]) * s;
+        z = (_headView.m[9] + _headView.m[6]) * s;
+        w = (_headView.m[2] - _headView.m[8]) * s;
     }
+    else
+    {
+        s = sqrtf(1.0f + _headView.m[10] - _headView.m[0] - _headView.m[5]);
+        z = s * 0.5f;
+        s = 0.5f / s;
+        x = (_headView.m[2] + _headView.m[8]) * s;
+        y = (_headView.m[9] + _headView.m[6]) * s;
+        w = (_headView.m[4] - _headView.m[1]) * s;
+    }
+    
     return GLKQuaternionMake(x, y, z, w);
 }
 
 GLKVector3 HeadTransform::eulerAngles()
 {
-    float yaw, roll, pitch = asinf(_headView.m[6]);
+    float yaw = 0;
+    float roll = 0;
+    float pitch = asinf(_headView.m[6]);
     if (sqrtf(1.0f - _headView.m[6] * _headView.m[6]) >= 0.01f)
     {
         yaw = atan2f(-_headView.m[2], _headView.m[10]);

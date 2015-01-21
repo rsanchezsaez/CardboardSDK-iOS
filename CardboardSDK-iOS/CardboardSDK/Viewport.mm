@@ -6,6 +6,9 @@
 
 #include "Viewport.h"
 
+#import <OpenGLES/ES2/gl.h>
+
+
 void Viewport::setViewport(int x, int y, int width, int height)
 {
     this->x = x;
@@ -24,7 +27,7 @@ void Viewport::setGLScissor()
     glScissor(x, y, width, height);
 }
 
-NSString* Viewport::toString()
+NSString *Viewport::toString()
 {
     return [NSString stringWithFormat:@"{x:%d y:%d width:%d height:%d}", this->x, this->y, this->width, this->height];
 }

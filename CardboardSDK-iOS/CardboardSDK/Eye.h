@@ -7,11 +7,12 @@
 #ifndef __CardboardSDK_iOS__Eye__
 #define __CardboardSDK_iOS__Eye__
 
-#import <UIKit/UIKit.h>
 #import <GLKit/GLKit.h>
+
 
 class FieldOfView;
 class Viewport;
+
 
 class Eye
 {

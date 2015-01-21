@@ -3,11 +3,10 @@
 //  CardboardSDK-iOS
 //
 
-#import "DebugUtils.h"
+#include "DebugUtils.h"
 
-#import "GLHelpers.h"
+#include "GLHelpers.h"
 
-#import "CardboardViewController.h"
-#import "Eye.h"
-#import "HeadTransform.h"
-#import "Viewport.h"
+#include "CardboardViewController.h"
+#include "Eye.h"
+#include "HeadTransform.h"

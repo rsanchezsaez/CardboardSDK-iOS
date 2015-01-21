@@ -7,8 +7,9 @@
 #ifndef __CardboardSDK_iOS__FieldOfView__
 #define __CardboardSDK_iOS__FieldOfView__
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 #import <GLKit/GLKit.h>
+
 
 class FieldOfView
 {
@@ -35,6 +36,8 @@ class FieldOfView
     NSString *toString();
 
   private:
+    constexpr static float s_defaultViewAngle = 40.0f;
+
     float _left;
     float _right;
     float _bottom;

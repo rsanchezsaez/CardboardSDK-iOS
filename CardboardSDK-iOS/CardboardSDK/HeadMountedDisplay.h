@@ -2,14 +2,17 @@
 //  HeadMountedDisplay.h
 //  CardboardSDK-iOS
 //
-//
+
 
 #ifndef __CardboardSDK_iOS__HeadMountedDisplay__
 #define __CardboardSDK_iOS__HeadMountedDisplay__
 
 #import <UIKit/UIKit.h>
-#import "ScreenParams.h"
-#import "CardboardDeviceParams.h"
+
+
+class CardboardDeviceParams;
+class ScreenParams;
+
 
 class HeadMountedDisplay
 {
@@ -19,10 +22,10 @@ class HeadMountedDisplay
     ~HeadMountedDisplay();
     
     void setScreen(ScreenParams* screen);
-    ScreenParams* getScreen();
+    ScreenParams *getScreen();
     
     void setCardboard(CardboardDeviceParams *cardboard);
-    CardboardDeviceParams* getCardboard();
+    CardboardDeviceParams *getCardboard();
     
     bool equals(HeadMountedDisplay *other);
 

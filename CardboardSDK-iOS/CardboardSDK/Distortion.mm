@@ -5,24 +5,28 @@
 
 
 #include "Distortion.h"
-#include <cmath>
+
 
 Distortion::Distortion()
 {
-    _coefficients[0] = 250.0f;
-    _coefficients[1] = 50000.0f;
+    _coefficients[0] = 0.441f;
+    _coefficients[1] = 0.156f;
 }
 
 Distortion::Distortion(Distortion *other)
 {
-    _coefficients[0] = other->_coefficients[0];
-    _coefficients[1] = other->_coefficients[1];
+    for (int i = 0; i < s_numberOfCoefficients; i++)
+    {
+        _coefficients[i] = other->_coefficients[i];
+    }
 }
 
 void Distortion::setCoefficients(float *coefficients)
 {
-    _coefficients[0] = coefficients[0];
-    _coefficients[1] = coefficients[1];
+    for (int i = 0; i < s_numberOfCoefficients; i++)
+    {
+        _coefficients[i] = coefficients[i];
+    }
 }
 
 float *Distortion::coefficients()
@@ -32,8 +36,15 @@ float *Distortion::coefficients()
 
 float Distortion::distortionFactor(float radius)
 {
+    float result = 1.0f;
+    float rFactor = 1.0f;
     float squaredRadius = radius * radius;
-    return 1.0f + _coefficients[0] * squaredRadius + _coefficients[1] * squaredRadius * squaredRadius;
+    for (int i = 0; i < s_numberOfCoefficients; i++)
+    {
+        rFactor *= squaredRadius;
+        result += _coefficients[i] * rFactor;
+    }
+    return result;
 }
 
 float Distortion::distort(float radius)
@@ -44,17 +55,17 @@ float Distortion::distort(float radius)
 float Distortion::distortInverse(float radius)
 {
     float r0 = radius / 0.9f;
-    float r1 = radius * 0.9f;
+    float r = radius * 0.9f;
     float dr0 = radius - distort(r0);
-    while (fabsf(r1 - r0) > 0.0001f)
+    while (fabsf(r - r0) > 0.0001f)
     {
-        float dr1 = radius - distort(r1);
-        float r2 = r1 - dr1 * ((r1 - r0) / (dr1 - dr0));
-        r0 = r1;
-        r1 = r2;
-        dr0 = dr1;
+        float dr = radius - distort(r);
+        float r2 = r - dr * ((r - r0) / (dr - dr0));
+        r0 = r;
+        r = r2;
+        dr0 = dr;
     }
-    return r1;
+    return r;
 }
 
 bool Distortion::equals(Distortion *other)
@@ -67,10 +78,19 @@ bool Distortion::equals(Distortion *other)
     {
         return true;
     }
-    return (_coefficients[0] == other->_coefficients[0]) && (_coefficients[1] == other->_coefficients[1]);
+
+    for (int i = 0; i < s_numberOfCoefficients; i++)
+    {
+        if (_coefficients[i] != other->_coefficients[i])
+        {
+            return false;
+        }
+    }
+
+    return true;
 }
 
-NSString* Distortion::toString()
+NSString *Distortion::toString()
 {
-    return [NSString stringWithFormat:@"Distortion {%f, %f}", _coefficients[0], _coefficients[1]];
+    return [NSString stringWithFormat:@"{%f, %f}", _coefficients[0], _coefficients[1]];
 }
