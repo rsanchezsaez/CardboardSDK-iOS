@@ -2,6 +2,7 @@
 
 ##### Contributors
 - [Google](https://developers.google.com/)
+- [Seene](https://seene.co/)
 - [Peter Tribe](https://github.com/raasun/)
 - [Ricardo Sánchez-Sáez](https://www.twitter.com/rsanchezsaez)
 - [Sam Hare](http://www.samhare.net/)

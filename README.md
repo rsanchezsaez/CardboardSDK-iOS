@@ -11,7 +11,7 @@ It (mostly) has feature parity with *Android's CardboardSDK v0.5.1*.
 
 - Text overlay messages (`CardboardOverlayView`, part of  *Treasure* example).
 - Replace `Matrix3x3d` and `Vector3d` by [eigen3](http://eigen.tuxfamily.org/).
-- Provide easy way of configuring Update Cardboard devices.
+- Provide easy way of configuring custom Cardboard devices.
 - Additional examples.
 
 ### Issues
@@ -23,7 +23,7 @@ It (mostly) has feature parity with *Android's CardboardSDK v0.5.1*.
  The `HeadTracker` can either use:
 
 - Google's `OrientationEKF` class with raw gyro and accelerometer data. Has very low latency but suffers from gyro drift (slight continuous rotation movement when stationary). This is the current *Android*'s *CardboardSDK* approach.
- - *CoreMotion*'s `CMDeviceMotion.attitude` improves the gyro drift, but very noticeably worsens the latency (*CoreMotion* does its own *EKF*-like internal *IMU*-fusion algorithm).
+- *CoreMotion*'s `CMDeviceMotion.attitude`. Improves the gyro drift, but very noticeably worsens the latency (*CoreMotion* does its own *EKF*-like internal *IMU*-fusion algorithm).
 - *CoreMotion*'s `CMDeviceMotion.attitude` data with Google's `OrientationEKF`. Best of both worlds: low latency and low gyro drift, but uses more CPU (basically it does the *IMU* integration twice).
 
 In general using `HEAD_TRACKER_MODE_CORE_MOTION_EKF` is recommended. 
