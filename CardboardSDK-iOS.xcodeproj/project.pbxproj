@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		35B1883D19ABEF58005A9930 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 35B1883C19ABEF58005A9930 /* AppDelegate.mm */; };
+		35B1883D19ABEF58005A9930 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 35B1883C19ABEF58005A9930 /* AppDelegate.m */; };
 		35B1886119ABF053005A9930 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35B1886019ABF053005A9930 /* CoreMotion.framework */; };
 		35B1886319ABF059005A9930 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35B1886219ABF059005A9930 /* GLKit.framework */; };
 		BC0B3DF41A6D7C7C00ADD925 /* Eye.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC0B3DF31A6D7C7C00ADD925 /* Eye.mm */; };
@@ -31,8 +31,8 @@
 		BC763B2C1A655D1E00463823 /* grid_fragment.shader in Resources */ = {isa = PBXBuildFile; fileRef = BC763B291A655D1E00463823 /* grid_fragment.shader */; };
 		BC763B2D1A655D1E00463823 /* light_vertex.shader in Resources */ = {isa = PBXBuildFile; fileRef = BC763B2A1A655D1E00463823 /* light_vertex.shader */; };
 		BC763B2E1A655D1E00463823 /* passthrough_fragment.shader in Resources */ = {isa = PBXBuildFile; fileRef = BC763B2B1A655D1E00463823 /* passthrough_fragment.shader */; };
-		BC763B311A655D7600463823 /* GLHelpers.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC763B301A655D7600463823 /* GLHelpers.mm */; };
-		BC763B341A655EB700463823 /* TreasureViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC763B331A655EB700463823 /* TreasureViewController.mm */; };
+		BC763B311A655D7600463823 /* GLHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = BC763B301A655D7600463823 /* GLHelpers.m */; };
+		BC763B341A655EB700463823 /* TreasureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC763B331A655EB700463823 /* TreasureViewController.m */; };
 		BC763B391A66BBBC00463823 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC763B381A66BBBC00463823 /* Images.xcassets */; };
 		BC763B3B1A66D13300463823 /* highlight_fragment.shader in Resources */ = {isa = PBXBuildFile; fileRef = BC763B3A1A66D13300463823 /* highlight_fragment.shader */; };
 		BC763B3D1A6828DA00463823 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC763B3C1A6828DA00463823 /* AudioToolbox.framework */; };
@@ -41,7 +41,7 @@
 /* Begin PBXFileReference section */
 		35B1883419ABEF58005A9930 /* CardboardSDK-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CardboardSDK-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		35B1883B19ABEF58005A9930 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		35B1883C19ABEF58005A9930 /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
+		35B1883C19ABEF58005A9930 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		35B1886019ABF053005A9930 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		35B1886219ABF059005A9930 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		BC0B3DF21A6D7C7C00ADD925 /* Eye.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Eye.h; sourceTree = "<group>"; };
@@ -85,9 +85,9 @@
 		BC763B2A1A655D1E00463823 /* light_vertex.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = light_vertex.shader; sourceTree = "<group>"; };
 		BC763B2B1A655D1E00463823 /* passthrough_fragment.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = passthrough_fragment.shader; sourceTree = "<group>"; };
 		BC763B2F1A655D7600463823 /* GLHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLHelpers.h; sourceTree = "<group>"; };
-		BC763B301A655D7600463823 /* GLHelpers.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GLHelpers.mm; sourceTree = "<group>"; };
+		BC763B301A655D7600463823 /* GLHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLHelpers.m; sourceTree = "<group>"; };
 		BC763B321A655EB700463823 /* TreasureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TreasureViewController.h; sourceTree = "<group>"; };
-		BC763B331A655EB700463823 /* TreasureViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TreasureViewController.mm; sourceTree = "<group>"; };
+		BC763B331A655EB700463823 /* TreasureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TreasureViewController.m; sourceTree = "<group>"; };
 		BC763B361A66A1D100463823 /* DebugUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugUtils.h; sourceTree = "<group>"; };
 		BC763B381A66BBBC00463823 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		BC763B3A1A66D13300463823 /* highlight_fragment.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = highlight_fragment.shader; sourceTree = "<group>"; };
@@ -133,7 +133,7 @@
 				BCCBC5841A5D94100093F31A /* Samples */,
 				BC6733361A5D90C700C6D79B /* Supporting Files */,
 				35B1883B19ABEF58005A9930 /* AppDelegate.h */,
-				35B1883C19ABEF58005A9930 /* AppDelegate.mm */,
+				35B1883C19ABEF58005A9930 /* AppDelegate.m */,
 				BC763B381A66BBBC00463823 /* Images.xcassets */,
 			);
 			path = "CardboardSDK-iOS";
@@ -213,7 +213,7 @@
 			children = (
 				BC763B361A66A1D100463823 /* DebugUtils.h */,
 				BC763B2F1A655D7600463823 /* GLHelpers.h */,
-				BC763B301A655D7600463823 /* GLHelpers.mm */,
+				BC763B301A655D7600463823 /* GLHelpers.m */,
 			);
 			path = Misc;
 			sourceTree = "<group>";
@@ -226,7 +226,7 @@
 				BC763B2A1A655D1E00463823 /* light_vertex.shader */,
 				BC763B2B1A655D1E00463823 /* passthrough_fragment.shader */,
 				BC763B321A655EB700463823 /* TreasureViewController.h */,
-				BC763B331A655EB700463823 /* TreasureViewController.mm */,
+				BC763B331A655EB700463823 /* TreasureViewController.m */,
 			);
 			path = Treasure;
 			sourceTree = "<group>";
@@ -323,16 +323,16 @@
 			files = (
 				BC67336B1A5D90C700C6D79B /* HeadTracker.mm in Sources */,
 				BC67336F1A5D90C700C6D79B /* Vector3d.mm in Sources */,
-				BC763B341A655EB700463823 /* TreasureViewController.mm in Sources */,
+				BC763B341A655EB700463823 /* TreasureViewController.m in Sources */,
 				BC6733601A5D90C700C6D79B /* main.m in Sources */,
 				BC0B3DF41A6D7C7C00ADD925 /* Eye.mm in Sources */,
-				BC763B311A655D7600463823 /* GLHelpers.mm in Sources */,
+				BC763B311A655D7600463823 /* GLHelpers.m in Sources */,
 				BC67336C1A5D90C700C6D79B /* Matrix3x3d.mm in Sources */,
 				BC6733711A5D90C700C6D79B /* Viewport.mm in Sources */,
 				BC6733641A5D90C700C6D79B /* DistortionRenderer.mm in Sources */,
 				BC67336E1A5D90C700C6D79B /* SO3Util.mm in Sources */,
 				BC6733681A5D90C700C6D79B /* HeadMountedDisplay.mm in Sources */,
-				35B1883D19ABEF58005A9930 /* AppDelegate.mm in Sources */,
+				35B1883D19ABEF58005A9930 /* AppDelegate.m in Sources */,
 				BC0B3DF71A6E795D00ADD925 /* GLStateBackup.mm in Sources */,
 				BC6733611A5D90C700C6D79B /* CardboardDeviceParams.mm in Sources */,
 				BC6733631A5D90C700C6D79B /* Distortion.mm in Sources */,

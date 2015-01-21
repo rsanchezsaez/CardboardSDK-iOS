@@ -27,6 +27,11 @@ void Viewport::setGLScissor()
     glScissor(x, y, width, height);
 }
 
+CGRect Viewport::toCGRect()
+{
+    return CGRectMake(x, y, width, height);
+}
+
 NSString *Viewport::toString()
 {
     return [NSString stringWithFormat:@"{x:%d y:%d width:%d height:%d}", this->x, this->y, this->width, this->height];

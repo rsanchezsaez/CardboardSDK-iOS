@@ -21,10 +21,61 @@
 #include "GLHelpers.h"
 
 
+@interface EyeWrapper ()
+
+@property (nonatomic) Eye *eye;
+
+- (instancetype)initWithEye:(Eye *)eye;
+
+@end
+
+
+@implementation EyeWrapper
+
+- (instancetype)init
+{
+    return [self initWithEye:nullptr];
+}
+
+- (instancetype)initWithEye:(Eye *)eye
+{
+    self = [super init];
+    if (!self) { return nil; }
+    
+    _eye = eye;
+    
+    return self;
+}
+
+- (GLKMatrix4)eyeViewMatrix
+{
+    if (_eye != nullptr)
+    {
+        return _eye->eyeView();
+    }
+    return GLKMatrix4Identity;
+}
+
+- (GLKMatrix4)perspectiveMatrixWithZNear:(float)zNear
+                                    zFar:(float)zFar
+{
+    if (_eye != nullptr)
+    {
+        return _eye->perspective(zNear, zFar);
+    }
+    return GLKMatrix4Identity;
+}
+
+@end
+
+
 @interface StereoRenderer : NSObject
 
 @property (nonatomic) id <StereoRendererDelegate> stereoRendererDelegate;
 @property (nonatomic) BOOL VRModeEnabled;
+
+@property (nonatomic) EyeWrapper *leftEyeWrapper;
+@property (nonatomic) EyeWrapper *rightEyeWrapper;
 
 @end
 
@@ -33,6 +84,8 @@
 
 - (void)setupRendererWithView:(GLKView *)GLView
 {
+    _leftEyeWrapper = [EyeWrapper new];
+    _rightEyeWrapper = [EyeWrapper new];
     [self.stereoRendererDelegate setupRendererWithView:GLView];
 }
 
@@ -55,41 +108,43 @@
 
 - (void)drawFrameWithHeadTransform:(HeadTransform *)headTransform leftEye:(Eye *)leftEye rightEye:(Eye *)rightEye
 {
-    checkGLError();
+    GLCheckForError();
  
     // NSLog(@"%@", NSStringFromGLKMatrix4(leftEyeParams->transform()->eyeView()));
 
-    [self.stereoRendererDelegate prepareNewFrameWithHeadTransform:headTransform];
+    [self.stereoRendererDelegate prepareNewFrameWithHeadViewMatrix:headTransform->headView()];
     
-    checkGLError();
+    GLCheckForError();
     
     glEnable(GL_SCISSOR_TEST);
     leftEye->viewport()->setGLViewport();
     leftEye->viewport()->setGLScissor();
     
-    checkGLError();
+    GLCheckForError();
     
-    [self.stereoRendererDelegate drawEye:leftEye];
+    _leftEyeWrapper.eye = leftEye;
+    [self.stereoRendererDelegate drawEyeWithEye:_leftEyeWrapper];
 
-    checkGLError();
+    GLCheckForError();
 
     if (rightEye == nullptr) { return; }
 
     rightEye->viewport()->setGLViewport();
     rightEye->viewport()->setGLScissor();
 
-    checkGLError();
+    GLCheckForError();
     
-    [self.stereoRendererDelegate drawEye:rightEye];
+    _rightEyeWrapper.eye = rightEye;
+    [self.stereoRendererDelegate drawEyeWithEye:_rightEyeWrapper];
 
-    checkGLError();
+    GLCheckForError();
 }
 
 - (void)finishFrameWithViewPort:(Viewport *)viewport
 {
     viewport->setGLViewport();
     viewport->setGLScissor();
-    [self.stereoRendererDelegate finishFrameWithViewport:viewport];
+    [self.stereoRendererDelegate finishFrameWithViewportRect:viewport->toCGRect()];
 }
 
 @end
@@ -183,7 +238,7 @@
     }
     self.view.drawableDepthFormat = GLKViewDrawableDepthFormat16;
     
-    [self.stereoRendererDelegate setupRendererWithView:self.view];
+    [self.stereoRenderer setupRendererWithView:self.view];
 }
 
 - (void)dealloc
@@ -295,7 +350,7 @@
 {
     // glInsertEventMarkerEXT(0, "com.apple.GPUTools.event.debug-frame");
 
-    checkGLError();
+    GLCheckForError();
     
     [self calculateFrameParametersWithHeadTransform:_headTransform leftEye:_leftEye rightEye:_rightEye monocularEye:_monocularEye];
     
@@ -309,13 +364,13 @@
                                                 leftEye:_leftEye
                                                rightEye:_rightEye];
             
-            checkGLError();
+            GLCheckForError();
 
             // Rebind original framebuffer
             [self.view bindDrawable];
             _distortionRenderer->afterDrawFrame();
             
-            checkGLError();
+            GLCheckForError();
         }
         else
         {
@@ -333,7 +388,7 @@
     
     [_stereoRenderer finishFrameWithViewPort:_monocularEye->viewport()];
     
-    checkGLError();
+    GLCheckForError();
 }
 
 - (void)calculateFrameParametersWithHeadTransform:(HeadTransform *)headTransform

@@ -132,7 +132,7 @@
     _modelCeiling = GLKMatrix4Identity;
     _modelCeiling = GLKMatrix4Translate(_modelFloor, 0, _floorDepth * 2.0, 0); // Ceiling appears above user.
 
-    checkGLError();
+    GLCheckForError();
 }
 
 - (BOOL)setupPrograms
@@ -140,25 +140,25 @@
     GLuint vertexShader, gridShader, passthroughShader, highlightShader;
     
     NSString *vertexShaderPath = [[NSBundle mainBundle] pathForResource:@"light_vertex" ofType:@"shader"];
-    if (!GLHelpers::compileShader(&vertexShader, GL_VERTEX_SHADER, vertexShaderPath)) {
+    if (!GLCompileShader(&vertexShader, GL_VERTEX_SHADER, vertexShaderPath)) {
         NSLog(@"Failed to compile light_vertex shader");
         return NO;
     }
 
     NSString *gridShaderPath = [[NSBundle mainBundle] pathForResource:@"grid_fragment" ofType:@"shader"];
-    if (!GLHelpers::compileShader(&gridShader, GL_FRAGMENT_SHADER, gridShaderPath)) {
+    if (!GLCompileShader(&gridShader, GL_FRAGMENT_SHADER, gridShaderPath)) {
         NSLog(@"Failed to compile grid_fragment shader");
         return NO;
     }
 
     NSString *passthroughShaderPath = [[NSBundle mainBundle] pathForResource:@"passthrough_fragment" ofType:@"shader"];
-    if (!GLHelpers::compileShader(&passthroughShader, GL_FRAGMENT_SHADER, passthroughShaderPath)) {
+    if (!GLCompileShader(&passthroughShader, GL_FRAGMENT_SHADER, passthroughShaderPath)) {
         NSLog(@"Failed to compile passthrough_fragment shader");
         return NO;
     }
 
     NSString *highlightShaderPath = [[NSBundle mainBundle] pathForResource:@"highlight_fragment" ofType:@"shader"];
-    if (!GLHelpers::compileShader(&highlightShader, GL_FRAGMENT_SHADER, highlightShaderPath)) {
+    if (!GLCompileShader(&highlightShader, GL_FRAGMENT_SHADER, highlightShaderPath)) {
         NSLog(@"Failed to compile passthrough_fragment shader");
         return NO;
     }
@@ -169,7 +169,7 @@
     glLinkProgram(_cubeProgram);
     glUseProgram(_cubeProgram);
     
-    checkGLError();
+    GLCheckForError();
 
     _highlightedCubeProgram = glCreateProgram();
     glAttachShader(_highlightedCubeProgram, vertexShader);
@@ -177,7 +177,7 @@
     glLinkProgram(_highlightedCubeProgram);
     glUseProgram(_highlightedCubeProgram);
     
-    checkGLError();
+    GLCheckForError();
 
     _floorProgram = glCreateProgram();
     glAttachShader(_floorProgram, vertexShader);
@@ -185,7 +185,7 @@
     glLinkProgram(_floorProgram);
     glUseProgram(_floorProgram);
     
-    checkGLError();
+    GLCheckForError();
     
     return YES;
 }
@@ -422,7 +422,7 @@
     
     glVertexAttribPointer(_cubeColorLocation, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
     
-    checkGLError();
+    GLCheckForError();
     
     glBindVertexArrayOES(0);
     
@@ -466,7 +466,7 @@
     glBindBuffer(GL_ARRAY_BUFFER, _ceilingColorBuffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(ceilingColors), ceilingColors, GL_STATIC_DRAW);
 
-    checkGLError();
+    GLCheckForError();
     
     glBindVertexArrayOES(0);
 }
@@ -479,7 +479,7 @@
 {
 }
 
-- (void)prepareNewFrameWithHeadTransform:(HeadTransform *)headTransform
+- (void)prepareNewFrameWithHeadViewMatrix:(GLKMatrix4)headViewMatrix
 {
     // Build the Model part of the ModelView matrix
     _modelCube = GLKMatrix4Rotate(_modelCube, GLKMathDegreesToRadians(_timeDelta), 0.5f, 0.5f, 1.0f);
@@ -488,34 +488,34 @@
     _camera = GLKMatrix4MakeLookAt(0, 0, _cameraZ,
                                    0, 0, 0,
                                    0, 1.0f, 0);
-    _headView = headTransform->headView();
+    _headView = headViewMatrix;
     
-    checkGLError();
+    GLCheckForError();
 }
 
-- (void)drawEye:(Eye *)eye
+- (void)drawEyeWithEye:(EyeWrapper *)eye
 {
     // NSLog(@"%@", NSStringFromGLKMatrix4(_eyeTransform->eyeView()));
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-    checkGLError();
+    GLCheckForError();
     
     // Apply the eye transformation to the camera
-    _view = GLKMatrix4Multiply(eye->eyeView(), _camera);
+    _view = GLKMatrix4Multiply([eye eyeViewMatrix], _camera);
     
     // Set the position of the light
     _lightPositionInEyeSpace = GLKMatrix4MultiplyVector4(_view, _lightPositionInWorldSpace);
     
-    const float ZNear = 0.1f;
+    const float zNear = 0.1f;
     const float zFar = 100.0f;
-    _perspective = eye->perspective(ZNear, zFar);
+    _perspective = [eye perspectiveMatrixWithZNear:zNear zFar:zFar];
     [self drawCube];
     
     [self drawFloorAndCeiling];
 }
 
-- (void)finishFrameWithViewport:(Viewport *)viewPort
+- (void)finishFrameWithViewportRect:(CGRect)viewPort
 {
 }
 
@@ -555,7 +555,7 @@
     
     glDrawArrays(GL_TRIANGLES, 0, 36);
     
-    checkGLError();
+    GLCheckForError();
     
     glBindVertexArrayOES(0);
     glUseProgram(0);
@@ -590,7 +590,7 @@
 
     glDrawArrays(GL_TRIANGLES, 0, 6);
     
-    checkGLError();
+    GLCheckForError();
 
     
     // Ceiling
@@ -604,7 +604,7 @@
 
     glDrawArrays(GL_TRIANGLES, 0, 6);
     
-    checkGLError();
+    GLCheckForError();
     
     
     glBindVertexArrayOES(0);
@@ -633,7 +633,7 @@
 
 #define ARC4RANDOM_MAX 0x100000000
 // Return a random float in the range [0.0, 1.0]
-inline float randomFloat()
+float randomFloat()
 {
     return ((double)arc4random() / ARC4RANDOM_MAX);
 }

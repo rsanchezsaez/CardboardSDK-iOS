@@ -13,7 +13,7 @@
 
 #ifdef DEBUG
 
-    inline void checkGLError()
+    static inline void GLCheckForError()
     {
         GLenum err = glGetError();
         if (err != GL_NO_ERROR)
@@ -25,18 +25,14 @@
 
 #else
 
-    #define checkGLError() ;
+    #define GLCheckForError() (;)
 
 #endif
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
-class GLHelpers
-{
-  public:
-    static BOOL compileShader(GLuint *shader, GLenum type, NSString *file);
-    static BOOL linkProgram(GLuint program);
-    static BOOL validateProgram(GLuint program);
-};
+BOOL GLCompileShader(GLuint *shader, GLenum type, NSString *file);
+BOOL GLLinkProgram(GLuint program);
+BOOL GLValidateProgram(GLuint program);
 
 #endif

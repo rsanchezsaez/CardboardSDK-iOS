@@ -6,8 +6,7 @@
 #import "GLHelpers.h"
 
 
-
-BOOL GLHelpers::compileShader(GLuint *shader, GLenum type, NSString *file)
+BOOL GLCompileShader(GLuint *shader, GLenum type, NSString *file)
 {
     GLint status;
     const GLchar *source;
@@ -42,7 +41,7 @@ BOOL GLHelpers::compileShader(GLuint *shader, GLenum type, NSString *file)
     return YES;
 }
 
-BOOL GLHelpers::linkProgram(GLuint program)
+BOOL GLLinkProgram(GLuint program)
 {
     GLint status;
     glLinkProgram(program);
@@ -67,7 +66,7 @@ BOOL GLHelpers::linkProgram(GLuint program)
     return YES;
 }
 
-BOOL GLHelpers::validateProgram(GLuint program)
+BOOL GLValidateProgram(GLuint program)
 {
     GLint logLength, status;
     

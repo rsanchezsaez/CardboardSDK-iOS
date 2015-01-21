@@ -7,9 +7,12 @@
 #import <GLKit/GLKit.h>
 
 
-class Eye;
-class HeadTransform;
-class Viewport;
+@interface EyeWrapper : NSObject
+
+- (GLKMatrix4)eyeViewMatrix;
+- (GLKMatrix4)perspectiveMatrixWithZNear:(float)zNear zFar:(float)zFar;
+
+@end
 
 
 @protocol StereoRendererDelegate <NSObject>
@@ -18,9 +21,9 @@ class Viewport;
 - (void)shutdownRendererWithView:(GLKView *)GLView;
 - (void)renderViewDidChangeSize:(CGSize)size;
 
-- (void)prepareNewFrameWithHeadTransform:(HeadTransform *)headTransform;
-- (void)drawEye:(Eye *)eye;
-- (void)finishFrameWithViewport:(Viewport *)viewPort;
+- (void)prepareNewFrameWithHeadViewMatrix:(GLKMatrix4)headViewMatrix;
+- (void)drawEyeWithEye:(EyeWrapper *)eye;
+- (void)finishFrameWithViewportRect:(CGRect)viewPort;
 
 @optional
 

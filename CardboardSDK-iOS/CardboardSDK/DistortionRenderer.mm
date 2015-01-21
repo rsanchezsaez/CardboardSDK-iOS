@@ -163,7 +163,7 @@ void DistortionRenderer::undistortTexture(GLint textureID)
         }
     }
     
-    checkGLError();
+    GLCheckForError();
 }
 
 void DistortionRenderer::setResolutionScale(float scale)
@@ -360,7 +360,7 @@ void DistortionRenderer::renderDistortionMesh(DistortionMesh *mesh, GLint textur
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->_elementBufferID);
     glDrawElements(GL_TRIANGLE_STRIP, mesh->_indices, GL_UNSIGNED_SHORT, 0);
     
-    checkGLError();
+    GLCheckForError();
 }
 
 float DistortionRenderer::computeDistortionScale(Distortion *distortion, float screenWidthM, float interpupillaryDistanceM)
@@ -379,7 +379,7 @@ int DistortionRenderer::createTexture(GLint width, GLint height, GLint textureFo
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, width, height, 0, textureFormat, textureType, nil);
     
-    checkGLError();
+    GLCheckForError();
 
     return textureID;
 }
@@ -401,12 +401,12 @@ int DistortionRenderer::setupRenderTextureAndRenderbuffer(int width, int height)
     
     _textureID = createTexture(width, height, _textureFormat, _textureType);
     _textureFormatChanged = false;
-    checkGLError();
+    GLCheckForError();
     
     glGenRenderbuffers(1, &_renderbufferID);
     glBindRenderbuffer(GL_RENDERBUFFER, _renderbufferID);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, width, height);
-    checkGLError();
+    GLCheckForError();
     
     glGenFramebuffers(1, &_framebufferID);
     glBindFramebuffer(GL_FRAMEBUFFER, _framebufferID);
@@ -423,7 +423,7 @@ int DistortionRenderer::setupRenderTextureAndRenderbuffer(int width, int height)
     
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     
-    checkGLError();
+    GLCheckForError();
 
     return _framebufferID;
 }
@@ -447,7 +447,7 @@ int DistortionRenderer::loadShader(GLenum shaderType, const GLchar *source)
         }
     }
     
-    checkGLError();
+    GLCheckForError();
 
     return shader;
 }
@@ -468,9 +468,9 @@ int DistortionRenderer::createProgram(const GLchar *vertexSource, const GLchar *
     if (program != 0)
     {
         glAttachShader(program, vertexShader);
-        checkGLError();
+        GLCheckForError();
         glAttachShader(program, pixelShader);
-        checkGLError();
+        GLCheckForError();
         glLinkProgram(program);
         GLint status;
         glGetProgramiv(program, GL_LINK_STATUS, &status);
@@ -484,7 +484,7 @@ int DistortionRenderer::createProgram(const GLchar *vertexSource, const GLchar *
         }
     }
     
-    checkGLError();
+    GLCheckForError();
 
     return program;
 }
@@ -569,7 +569,7 @@ void main() {\n\
     }
     
     holder->positionLocation = glGetAttribLocation(holder->program, "aPosition");
-    checkGLError();
+    GLCheckForError();
     if (holder->positionLocation == -1)
     {
         [NSException raise:@"DistortionRenderer" format:@"Could not get attrib location for aPosition"];
@@ -577,7 +577,7 @@ void main() {\n\
     state->addTrackedVertexAttribute(holder->positionLocation);
     
     holder->vignetteLocation = glGetAttribLocation(holder->program, "aVignette");
-    checkGLError();
+    GLCheckForError();
     if (holder->vignetteLocation == -1)
     {
         [NSException raise:@"DistortionRenderer" format:@"Could not get attrib location for aVignette"];
@@ -587,7 +587,7 @@ void main() {\n\
     if (aberrationCorrected)
     {
         holder->redTextureCoordLocation = glGetAttribLocation(holder->program, "aRedTextureCoord");
-        checkGLError();
+        GLCheckForError();
         if (holder->redTextureCoordLocation == -1)
         {
             [NSException raise:@"DistortionRenderer" format:@"Could not get attrib location for aRedTextureCoord"];
@@ -595,7 +595,7 @@ void main() {\n\
         state->addTrackedVertexAttribute(holder->redTextureCoordLocation);
         
         holder->greenTextureCoordLocation = glGetAttribLocation(holder->program, "aGreenTextureCoord");
-        checkGLError();
+        GLCheckForError();
         if (holder->greenTextureCoordLocation == -1)
         {
             [NSException raise:@"DistortionRenderer" format:@"Could not get attrib location for aGreenTextureCoord"];
@@ -604,7 +604,7 @@ void main() {\n\
     }
     
     holder->blueTextureCoordLocation = glGetAttribLocation(holder->program, "aBlueTextureCoord");
-    checkGLError();
+    GLCheckForError();
     if (holder->blueTextureCoordLocation == -1)
     {
         [NSException raise:@"DistortionRenderer" format:@"Could not get attrib location for aBlueTextureCoord"];
@@ -612,14 +612,14 @@ void main() {\n\
     state->addTrackedVertexAttribute(holder->blueTextureCoordLocation);
     
     holder->uTextureCoordScaleLocation = glGetUniformLocation(holder->program, "uTextureCoordScale");
-    checkGLError();
+    GLCheckForError();
     if (holder->uTextureCoordScaleLocation == -1)
     {
         [NSException raise:@"DistortionRenderer" format:@"Could not get attrib location for uTextureCoordScale"];
     }
     
     holder->uTextureSamplerLocation = glGetUniformLocation(holder->program, "uTextureSampler");
-    checkGLError();
+    GLCheckForError();
     if (holder->uTextureSamplerLocation == -1)
     {
         [NSException raise:@"DistortionRenderer" format:@"Could not get attrib location for uTextureSampler"];
@@ -756,7 +756,7 @@ DistortionRenderer::DistortionMesh::DistortionMesh(Distortion *distortionRed,
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-    checkGLError();
+    GLCheckForError();
 }
 
 // EyeViewport
