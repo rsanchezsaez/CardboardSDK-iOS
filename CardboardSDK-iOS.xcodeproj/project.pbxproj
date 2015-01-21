@@ -31,7 +31,7 @@
 		BC763B2C1A655D1E00463823 /* grid_fragment.shader in Resources */ = {isa = PBXBuildFile; fileRef = BC763B291A655D1E00463823 /* grid_fragment.shader */; };
 		BC763B2D1A655D1E00463823 /* light_vertex.shader in Resources */ = {isa = PBXBuildFile; fileRef = BC763B2A1A655D1E00463823 /* light_vertex.shader */; };
 		BC763B2E1A655D1E00463823 /* passthrough_fragment.shader in Resources */ = {isa = PBXBuildFile; fileRef = BC763B2B1A655D1E00463823 /* passthrough_fragment.shader */; };
-		BC763B311A655D7600463823 /* GLHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = BC763B301A655D7600463823 /* GLHelpers.m */; };
+		BC763B311A655D7600463823 /* GLHelpers.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC763B301A655D7600463823 /* GLHelpers.mm */; };
 		BC763B341A655EB700463823 /* TreasureViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC763B331A655EB700463823 /* TreasureViewController.mm */; };
 		BC763B391A66BBBC00463823 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC763B381A66BBBC00463823 /* Images.xcassets */; };
 		BC763B3B1A66D13300463823 /* highlight_fragment.shader in Resources */ = {isa = PBXBuildFile; fileRef = BC763B3A1A66D13300463823 /* highlight_fragment.shader */; };
@@ -85,7 +85,7 @@
 		BC763B2A1A655D1E00463823 /* light_vertex.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = light_vertex.shader; sourceTree = "<group>"; };
 		BC763B2B1A655D1E00463823 /* passthrough_fragment.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = passthrough_fragment.shader; sourceTree = "<group>"; };
 		BC763B2F1A655D7600463823 /* GLHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLHelpers.h; sourceTree = "<group>"; };
-		BC763B301A655D7600463823 /* GLHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLHelpers.m; sourceTree = "<group>"; };
+		BC763B301A655D7600463823 /* GLHelpers.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GLHelpers.mm; sourceTree = "<group>"; };
 		BC763B321A655EB700463823 /* TreasureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TreasureViewController.h; sourceTree = "<group>"; };
 		BC763B331A655EB700463823 /* TreasureViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TreasureViewController.mm; sourceTree = "<group>"; };
 		BC763B361A66A1D100463823 /* DebugUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugUtils.h; sourceTree = "<group>"; };
@@ -213,7 +213,7 @@
 			children = (
 				BC763B361A66A1D100463823 /* DebugUtils.h */,
 				BC763B2F1A655D7600463823 /* GLHelpers.h */,
-				BC763B301A655D7600463823 /* GLHelpers.m */,
+				BC763B301A655D7600463823 /* GLHelpers.mm */,
 			);
 			path = Misc;
 			sourceTree = "<group>";
@@ -326,7 +326,7 @@
 				BC763B341A655EB700463823 /* TreasureViewController.mm in Sources */,
 				BC6733601A5D90C700C6D79B /* main.m in Sources */,
 				BC0B3DF41A6D7C7C00ADD925 /* Eye.mm in Sources */,
-				BC763B311A655D7600463823 /* GLHelpers.m in Sources */,
+				BC763B311A655D7600463823 /* GLHelpers.mm in Sources */,
 				BC67336C1A5D90C700C6D79B /* Matrix3x3d.mm in Sources */,
 				BC6733711A5D90C700C6D79B /* Viewport.mm in Sources */,
 				BC6733641A5D90C700C6D79B /* DistortionRenderer.mm in Sources */,

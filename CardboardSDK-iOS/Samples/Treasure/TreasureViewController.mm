@@ -140,25 +140,25 @@
     GLuint vertexShader, gridShader, passthroughShader, highlightShader;
     
     NSString *vertexShaderPath = [[NSBundle mainBundle] pathForResource:@"light_vertex" ofType:@"shader"];
-    if (![GLHelpers compileShader:&vertexShader type:GL_VERTEX_SHADER file:vertexShaderPath]) {
+    if (!GLHelpers::compileShader(&vertexShader, GL_VERTEX_SHADER, vertexShaderPath)) {
         NSLog(@"Failed to compile light_vertex shader");
         return NO;
     }
 
     NSString *gridShaderPath = [[NSBundle mainBundle] pathForResource:@"grid_fragment" ofType:@"shader"];
-    if (![GLHelpers compileShader:&gridShader type:GL_FRAGMENT_SHADER file:gridShaderPath]) {
+    if (!GLHelpers::compileShader(&gridShader, GL_FRAGMENT_SHADER, gridShaderPath)) {
         NSLog(@"Failed to compile grid_fragment shader");
         return NO;
     }
 
     NSString *passthroughShaderPath = [[NSBundle mainBundle] pathForResource:@"passthrough_fragment" ofType:@"shader"];
-    if (![GLHelpers compileShader:&passthroughShader type:GL_FRAGMENT_SHADER file:passthroughShaderPath]) {
+    if (!GLHelpers::compileShader(&passthroughShader, GL_FRAGMENT_SHADER, passthroughShaderPath)) {
         NSLog(@"Failed to compile passthrough_fragment shader");
         return NO;
     }
 
     NSString *highlightShaderPath = [[NSBundle mainBundle] pathForResource:@"highlight_fragment" ofType:@"shader"];
-    if (![GLHelpers compileShader:&highlightShader type:GL_FRAGMENT_SHADER file:highlightShaderPath]) {
+    if (!GLHelpers::compileShader(&highlightShader, GL_FRAGMENT_SHADER, highlightShaderPath)) {
         NSLog(@"Failed to compile passthrough_fragment shader");
         return NO;
     }

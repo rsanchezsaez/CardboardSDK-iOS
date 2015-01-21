@@ -6,9 +6,8 @@
 #import "GLHelpers.h"
 
 
-@implementation GLHelpers
 
-+ (BOOL)compileShader:(GLuint *)shader type:(GLenum)type file:(NSString *)file
+BOOL GLHelpers::compileShader(GLuint *shader, GLenum type, NSString *file)
 {
     GLint status;
     const GLchar *source;
@@ -43,49 +42,49 @@
     return YES;
 }
 
-+ (BOOL)linkProgram:(GLuint)prog
+BOOL GLHelpers::linkProgram(GLuint program)
 {
     GLint status;
-    glLinkProgram(prog);
+    glLinkProgram(program);
     
 #if defined(DEBUG)
     GLint logLength;
-    glGetProgramiv(prog, GL_INFO_LOG_LENGTH, &logLength);
+    glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLength);
     if (logLength > 0) {
         GLchar *log = (GLchar *)malloc(logLength);
-        glGetProgramInfoLog(prog, logLength, &logLength, log);
+        glGetProgramInfoLog(program, logLength, &logLength, log);
         NSLog(@"Program link log:\n%s", log);
         free(log);
     }
 #endif
     
-    glGetProgramiv(prog, GL_LINK_STATUS, &status);
-    if (status == 0) {
+    glGetProgramiv(program, GL_LINK_STATUS, &status);
+    if (status == 0)
+    {
         return NO;
     }
     
     return YES;
 }
 
-+ (BOOL)validateProgram:(GLuint)prog
+BOOL GLHelpers::validateProgram(GLuint program)
 {
     GLint logLength, status;
     
-    glValidateProgram(prog);
-    glGetProgramiv(prog, GL_INFO_LOG_LENGTH, &logLength);
+    glValidateProgram(program);
+    glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLength);
     if (logLength > 0) {
         GLchar *log = (GLchar *)malloc(logLength);
-        glGetProgramInfoLog(prog, logLength, &logLength, log);
+        glGetProgramInfoLog(program, logLength, &logLength, log);
         NSLog(@"Program validate log:\n%s", log);
         free(log);
     }
     
-    glGetProgramiv(prog, GL_VALIDATE_STATUS, &status);
-    if (status == 0) {
+    glGetProgramiv(program, GL_VALIDATE_STATUS, &status);
+    if (status == 0)
+    {
         return NO;
     }
     
     return YES;
 }
-
-@end
