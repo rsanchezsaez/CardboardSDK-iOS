@@ -5,15 +5,18 @@ iOS port of  [Google's CardboardSDK](https://github.com/rsanchezsaez/cardboard-j
 
 *Treasure* example fully running with magnetic trigger detection. Successfully tested on an iPhone 6 running iOS 8 and on a iPhone 5 running iOS 7.
 
+It (mostly) has feature parity with *Android's CardboardSDK v0.5.1*.
+
 ### Todo
 
 - Text overlay messages (`CardboardOverlayView`, part of  *Treasure* example).
-- Match latest CardboardSDK functionality (some refactoring which moved some transformations from CardboardView into EyeParams and the such; adding optional neck support on the HeadTracker; optional vignetting on the distortion renderer; etc).
-- Having additional examples would be nice.
+- Replace `Matrix3x3d` and `Vector3d` by [eigen3](http://eigen.tuxfamily.org/).
+- Provide easy way of configuring Update Cardboard devices.
+- Additional examples.
 
 ### Issues
 
-- NFC doesn't work, as there's no NFC API available on iOS 8. (Hopefully Apple will provide one on iOS 9. But then, only the iPhone 6/6+ or higher have NFC).
+- Reading the Cardboard configuration from NFC has not been implemented, as there's no public NFC API available on iOS 8. Hopefully Apple will provide one on iOS 9 (only the iPhone 6/6+ or higher have NFC).
 
 ### Discusion
 
