@@ -64,7 +64,7 @@ void MagnetSensor::evaluateModel()
         
     if (minimums[0] < 30.0f && maximums[1] > 130.0f)
     {
-        _sensorData.clear();
+        _sampleIndex = 0;
         [[NSNotificationCenter defaultCenter] postNotificationName:CBTriggerPressedNotification object:nil];
     }
 }
