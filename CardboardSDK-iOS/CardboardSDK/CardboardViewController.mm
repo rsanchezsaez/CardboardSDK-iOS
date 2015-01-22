@@ -150,8 +150,6 @@
 @end
 
 
-
-
 @interface CardboardViewController () <GLKViewControllerDelegate>
 
 @property (nonatomic) GLKView *view;
@@ -524,6 +522,12 @@
 - (float)virtualEyeToScreenDistance
 {
     return _headMountedDisplay->getCardboard()->screenToLensDistance();
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    [self.stereoRenderer updateRenderViewSize:self.view.bounds.size];
 }
 
 @end
