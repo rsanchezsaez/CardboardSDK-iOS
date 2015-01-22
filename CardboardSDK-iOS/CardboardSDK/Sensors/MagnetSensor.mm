@@ -6,8 +6,14 @@
 
 #include "MagnetSensor.h"
 
+#include <algorithm>
 
-MagnetSensor::MagnetSensor()
+static const size_t kNumSamples = 20;
+
+MagnetSensor::MagnetSensor() :
+    _sampleIndex(0),
+    _sensorData(2*kNumSamples),
+    _offsets(kNumSamples)
 {
     _manager = [[CMMotionManager alloc] init];
 }
@@ -34,30 +40,27 @@ void MagnetSensor::stop()
 
 void MagnetSensor::addData(GLKVector3 value)
 {
-    if (_sensorData.size() > 40)
-    {
-        _sensorData.erase(_sensorData.begin());
-    }
-    _sensorData.push_back(value);
+    _sensorData[_sampleIndex % (2*kNumSamples)] = value;
+    _baseline = value;
+    ++_sampleIndex;
     evaluateModel();
 }
 
 void MagnetSensor::evaluateModel()
 {
-    if (_sensorData.size() < 40)
+    if (_sampleIndex < (2*kNumSamples))
     {
         return;
     }
     float minimums[2];
     float maximums[2];
-    GLKVector3 baseline = _sensorData.back();
     for (int i = 0; i < 2; i++)
     {
-        std::vector<float> offsets = computeOffsets(20 * i, baseline);
-        minimums[i] = computeMinimum(offsets);
-        maximums[i] = computeMaximum(offsets);
+        computeOffsets(kNumSamples * i, _baseline);
+        minimums[i] = *std::min_element(_offsets.begin(), _offsets.end());
+        maximums[i] = *std::max_element(_offsets.begin(), _offsets.end());
     }
-
+        
     if (minimums[0] < 30.0f && maximums[1] > 130.0f)
     {
         _sensorData.clear();
@@ -65,36 +68,15 @@ void MagnetSensor::evaluateModel()
     }
 }
 
-std::vector<float> MagnetSensor::computeOffsets(int start, GLKVector3 baseline)
+void MagnetSensor::computeOffsets(int start, GLKVector3 baseline)
 {
-    std::vector<float> offsets;
-    for (int i = 0; i < 20; i++)
+    size_t frontIndex = _sampleIndex % (2*kNumSamples); // currently the oldest sample
+    for (int i = 0; i < kNumSamples; i++)
     {
-        GLKVector3 point = _sensorData[start + i];
+        GLKVector3 point = _sensorData[(frontIndex + start + i) % (2*kNumSamples)];
         float o[] = {point.x - baseline.x, point.y - baseline.y, point.z - baseline.z};
         float magnitude = (float)sqrt(o[0] * o[0] + o[1] * o[1] + o[2] * o[2]);
-        offsets.push_back(magnitude);
+        _offsets[i] = magnitude;
     }
-    return offsets;
-}
-
-float MagnetSensor::computeMinimum(std::vector<float> offsets)
-{
-    float min = FLT_MAX;
-    for (int i = 0; i < offsets.size(); i++)
-    {
-        min = MIN(offsets[i], min);
-    }
-    return min;
-}
-
-float MagnetSensor::computeMaximum(std::vector<float> offsets)
-{
-    float max = FLT_MIN;
-    for (int i = 0; i < offsets.size(); i++)
-    {
-        max = MAX(offsets[i], max);
-    }
-    return max;
 }
 

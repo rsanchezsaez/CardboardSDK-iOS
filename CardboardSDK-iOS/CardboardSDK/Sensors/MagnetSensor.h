@@ -12,25 +12,27 @@
 
 #include <vector>
 
-
 NSString *const CBTriggerPressedNotification = @"CBTriggerPressedNotification";
 
 class MagnetSensor
 {
   public:
     MagnetSensor();
+    virtual ~MagnetSensor() {}
     void start();
     void stop();
     
   private:
     CMMotionManager *_manager;
+    size_t _sampleIndex;
+    GLKVector3 _baseline;
     std::vector<GLKVector3> _sensorData;
+    std::vector<float> _offsets;
+    
 
     void addData(GLKVector3 value);
     void evaluateModel();
-    std::vector<float> computeOffsets(int start, GLKVector3 baseline);
-    float computeMinimum(std::vector<float> offsets);
-    float computeMaximum(std::vector<float> offsets);
+    void computeOffsets(int start, GLKVector3 baseline);
 };
 
 #endif
