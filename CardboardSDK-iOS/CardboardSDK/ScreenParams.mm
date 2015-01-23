@@ -19,7 +19,7 @@
 
 - (CGSize)orientationAwareSize
 {
-    CGSize screenSize = [UIScreen mainScreen].bounds.size;
+    CGSize screenSize = self.bounds.size;
     if ((NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_7_1)
         && UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
     {
@@ -33,6 +33,7 @@
 
 ScreenParams::ScreenParams(UIScreen *screen)
 {
+    _screen = screen;
     if ([screen respondsToSelector:@selector(nativeScale)])
     {
         _scale = screen.nativeScale;
@@ -42,9 +43,6 @@ ScreenParams::ScreenParams(UIScreen *screen)
         _scale = screen.scale;
     }
     
-    CGSize screenSize = [screen orientationAwareSize];
-    _width = screenSize.width * _scale;
-    _height = screenSize.height  * _scale;
     float screenPixelsPerInch = pixelsPerInch(screen);
     
     const float metersPerInch = 0.0254f;
@@ -57,42 +55,30 @@ ScreenParams::ScreenParams(UIScreen *screen)
 ScreenParams::ScreenParams(ScreenParams *screenParams)
 {
     _scale = screenParams->_scale;
-    _width = screenParams->_width;
-    _height = screenParams->_height;
     _xMetersPerPixel = screenParams->_xMetersPerPixel;
     _yMetersPerPixel = screenParams->_yMetersPerPixel;
     _borderSizeMeters = screenParams->_borderSizeMeters;
 }
 
-void ScreenParams::setWidth(int width)
-{
-    _width = width;
-}
-
 int ScreenParams::width()
 {
-    return _width;
-}
-
-void ScreenParams::setHeight(int height)
-{
-    _height = height;
+    return [_screen orientationAwareSize].width * _scale;
 }
 
 int ScreenParams::height()
 {
-    return _height;
+    return [_screen orientationAwareSize].height * _scale;
 }
 
 float ScreenParams::widthInMeters()
 {
-    float meters = _width * _xMetersPerPixel;
+    float meters = width() * _xMetersPerPixel;
     return meters;
 }
 
 float ScreenParams::heightInMeters()
 {
-    float meters = _height * _yMetersPerPixel;
+    float meters = height() * _yMetersPerPixel;
     return meters;
 }
 

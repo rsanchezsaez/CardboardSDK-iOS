@@ -16,10 +16,7 @@ class ScreenParams
     ScreenParams(UIScreen *screen);
     ScreenParams(ScreenParams *screenParams);
 
-    void setWidth(int width);
     int width();
-
-    void setHeight(int height);
     int height();
 
     float widthInMeters();
@@ -31,9 +28,8 @@ class ScreenParams
     bool equals(ScreenParams *other);
 
   private:
+    UIScreen *_screen;
     CGFloat _scale;
-    int _width;
-    int _height;
     float _xMetersPerPixel;
     float _yMetersPerPixel;
     float _borderSizeMeters;
