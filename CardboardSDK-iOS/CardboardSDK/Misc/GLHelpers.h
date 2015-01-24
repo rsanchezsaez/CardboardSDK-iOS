@@ -25,7 +25,7 @@
 
 #else
 
-    #define GLCheckForError() (;)
+    #define GLCheckForError()
 
 #endif
 
