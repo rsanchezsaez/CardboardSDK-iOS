@@ -174,6 +174,8 @@
 
 @property (nonatomic, strong) StereoRenderer *stereoRenderer;
 
+@property (nonatomic, assign) UIDeviceOrientation currentOrientation;
+
 @end
 
 
@@ -212,11 +214,28 @@
     self.projectionChanged = YES;
 
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(magneticTriggerPressed)
+                                             selector:@selector(magneticTriggerPressed:)
                                                  name:CBTriggerPressedNotification
                                                object:nil];
-    
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(orientationDidChange:)
+                                                 name:UIDeviceOrientationDidChangeNotification
+                                               object:nil];
+
     return self;
+}
+
+- (void)orientationDidChange:(NSNotification *)notification
+{
+    UIDeviceOrientation newOrientation = [UIDevice currentDevice].orientation;
+    if (newOrientation != self.currentOrientation
+        && (newOrientation == UIDeviceOrientationLandscapeRight
+            || newOrientation == UIDeviceOrientationLandscapeLeft))
+    {
+        self.currentOrientation = newOrientation;
+        _headTracker->updateDeviceOrientation(newOrientation);
+    }
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -317,7 +336,7 @@
     self.headTracker->setNeckModelEnabled(neckModelEnabled);
 }
 
-- (void)magneticTriggerPressed
+- (void)magneticTriggerPressed:(NSNotification *)notification
 {
     if ([self.stereoRendererDelegate respondsToSelector:@selector(magneticTriggerPressed)])
     {

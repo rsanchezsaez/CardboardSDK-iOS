@@ -22,6 +22,8 @@ class HeadTracker
     void stopTracking();
     GLKMatrix4 lastHeadView();
     
+    void updateDeviceOrientation(UIDeviceOrientation orientation);
+
     bool neckModelEnabled();
     void setNeckModelEnabled(bool enabled);
     

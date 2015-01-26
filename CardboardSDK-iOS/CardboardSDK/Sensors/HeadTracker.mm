@@ -180,6 +180,18 @@ GLKMatrix4 HeadTracker::lastHeadView()
     return worldToDisplay;
 }
 
+void HeadTracker::updateDeviceOrientation(UIDeviceOrientation orientation)
+{
+    if (orientation == UIDeviceOrientationLandscapeLeft)
+    {
+        _deviceToDisplay = GetRotateEulerMatrix(0.f, 0.f, -90.f);
+    }
+    else if (orientation == UIDeviceOrientationLandscapeRight)
+    {
+        _deviceToDisplay = GetRotateEulerMatrix(0.f, 0.f, 90.f);
+    }
+}
+
 bool HeadTracker::neckModelEnabled()
 {
     return _neckModelEnabled;
