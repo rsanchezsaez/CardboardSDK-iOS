@@ -365,6 +365,8 @@
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 {
+    if (self.paused) { return; }
+    
     // glInsertEventMarkerEXT(0, "com.apple.GPUTools.event.debug-frame");
 
     GLCheckForError();
