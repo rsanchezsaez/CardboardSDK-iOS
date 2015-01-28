@@ -28,6 +28,10 @@ class Vector3d
     static void cross(Vector3d *a, Vector3d *b, Vector3d *result);
     static void ortho(Vector3d *v, Vector3d *result);
     static int largestAbsComponent(Vector3d *v);
+    
+    inline double x() const { return _x; }
+    inline double y() const { return _y; }
+    inline double z() const { return _z; }
 
   private:
     double _x;

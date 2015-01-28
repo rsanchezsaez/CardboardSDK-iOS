@@ -29,6 +29,7 @@ class HeadTracker
     
   private:
     CMMotionManager *_motionManager;
+    size_t _sampleCount;
     OrientationEKF *_tracker;
     GLKMatrix4 _deviceToDisplay;
     GLKMatrix4 _worldToInertialReferenceFrame;
