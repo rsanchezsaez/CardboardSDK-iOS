@@ -213,7 +213,7 @@ void OrientationEKF::processAcceleration(GLKVector3 acc, double sensorTimeStamp)
         Vector3d sensorForwardWorld;
         Matrix3x3d::mult(&worldFromSensor, &sensorForward, &sensorForwardWorld);
         
-        if (sensorForwardWorld.z() < 0.99)
+        if (fabs(sensorForwardWorld.z()) < 0.99)
         {
             sensorForwardWorld.setComponent(2, 0.0);  // project onto ground plane
             
