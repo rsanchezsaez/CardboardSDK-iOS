@@ -34,7 +34,7 @@
 
 @interface CardboardViewController : GLKViewController
 
-@property (nonatomic) id <StereoRendererDelegate> stereoRendererDelegate;
+@property (nonatomic, weak) id <StereoRendererDelegate> stereoRendererDelegate;
 @property (nonatomic) BOOL VRModeEnabled;
 @property (nonatomic) BOOL distortionCorrectionEnabled;
 @property (nonatomic) BOOL vignetteEnabled;

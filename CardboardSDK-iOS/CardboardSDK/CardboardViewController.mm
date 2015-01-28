@@ -71,7 +71,7 @@
 
 @interface StereoRenderer : NSObject
 
-@property (nonatomic) id <StereoRendererDelegate> stereoRendererDelegate;
+@property (nonatomic, weak) id <StereoRendererDelegate> stereoRendererDelegate;
 @property (nonatomic) BOOL VRModeEnabled;
 
 @property (nonatomic) EyeWrapper *leftEyeWrapper;
