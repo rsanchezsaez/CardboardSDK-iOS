@@ -78,11 +78,12 @@ GLKMatrix4 GLMatrixFromRotationMatrix(CMRotationMatrix rotationMatrix)
 } // namespace
 
 HeadTracker::HeadTracker() :
-    // this assumes the device is landscape with the home button on the right
+    // this assumes the device is landscape with the home button on the right (UIDeviceOrientationLandscapeLeft)
     _deviceToDisplay(GetRotateEulerMatrix(0.f, 0.f, -90.f)),
     // the inertial reference frame has z up and x forward, while the world has z out and x right
     _worldToInertialReferenceFrame(GetRotateEulerMatrix(-90.f, 0.f, 90.f)),
     _lastGyroEventTimestamp(0),
+    _orientationCorrectionAngle(0),
     _neckModelEnabled(false)
 {
     _motionManager = [[CMMotionManager alloc] init];
@@ -155,21 +156,82 @@ void HeadTracker::stopTracking()
 
 GLKMatrix4 HeadTracker::lastHeadView()
 {
+    bool isTrackerReady = false;
+    
   #if HEAD_TRACKER_MODE == HEAD_TRACKER_MODE_EKF || HEAD_TRACKER_MODE == HEAD_TRACKER_MODE_CORE_MOTION_EKF
+    
     NSTimeInterval currentTimestamp = CACurrentMediaTime();
     double secondsSinceLastGyroEvent = currentTimestamp - _lastGyroEventTimestamp;
     // 1/30 of a second prediction (shoud it be 1/60?)
     double secondsToPredictForward = secondsSinceLastGyroEvent + 1.0/30;
     GLKMatrix4 inertialReferenceFrameToDevice = _tracker->getPredictedGLMatrix(secondsToPredictForward);
+    
+    isTrackerReady = _tracker->isReady();
+    
   #elif HEAD_TRACKER_MODE == HEAD_TRACKER_MODE_CORE_MOTION
+    
     CMDeviceMotion *motion = _motionManager.deviceMotion;
     CMRotationMatrix rotationMatrix = motion.attitude.rotationMatrix;
     GLKMatrix4 inertialReferenceFrameToDevice = GLKMatrix4Transpose(GLMatrixFromRotationMatrix(rotationMatrix)); // note the matrix inversion
+    
+    isTrackerReady = (motion != nil);
+    
   #endif
     
     GLKMatrix4 worldToDevice = GLKMatrix4Multiply(inertialReferenceFrameToDevice, _worldToInertialReferenceFrame);
     GLKMatrix4 worldToDisplay = GLKMatrix4Multiply(_deviceToDisplay, worldToDevice);
     
+    if (_orientationCorrectionAngle == 0 && worldToDisplay.m00 != 0 && isTrackerReady)
+    {
+
+    GLKQuaternion worldToDisplayQuaternion = GLKQuaternionMakeWithMatrix4(worldToDisplay);
+        float q0 = worldToDisplayQuaternion.q[0];
+        float q1 = worldToDisplayQuaternion.q[1];
+        float q2 = worldToDisplayQuaternion.q[2];
+        float q3 = worldToDisplayQuaternion.q[3];
+        
+        // CGFloat phi = atan2f(2*(q0 * q1 + q2 * q3), 1 - 2 * (q1*q1 + q2*q2));
+        CGFloat theta = asinf(2*(q0 * q2 - q3 * q1));
+        CGFloat psi = atan2f(2*(q0 * q3 + q1 * q2), 1 - 2 * (q2*q2 + q3*q3));
+
+//        float angleX = atan2f(worldToDisplay.m21, worldToDisplay.m22);
+//        float angleY = atan2f(- worldToDisplay.m20,
+//                              sqrtf(worldToDisplay.m21 * worldToDisplay.m21 + worldToDisplay.m22 * worldToDisplay.m22));
+//        float angleZ = atan2f(worldToDisplay.m10, worldToDisplay.m00);
+
+        _orientationCorrectionAngle = (fabsf(psi) < M_PI_2) ? M_PI - theta : theta;
+
+//        GLKMatrix4 desiredViewDirection = GLKMatrix4MakeTranslation(0, 0, -1);
+//        GLKVector4 initVector = { 0, 0, 0, 1.0f };
+//        desiredViewDirection = GLKMatrix4Multiply(worldToDisplay, desiredViewDirection);
+//        GLKVector4 desiredVector = GLKMatrix4MultiplyVector4(desiredViewDirection, initVector);
+//        float pitch = atan2f(desiredVector.y, -desiredVector.z);
+//        float yaw = atan2f(desiredVector.x, -desiredVector.z);
+//        
+//        NSLog(@"%f   ( %f | %f | %f )",
+//              theta,
+//              (worldQuaternion.x * worldQuaternion.z - worldQuaternion.y * worldQuaternion.w),
+//              (worldQuaternion.x * worldQuaternion.y - worldQuaternion.z * worldQuaternion.w),
+//              (worldQuaternion.y * worldQuaternion.z - worldQuaternion.x * worldQuaternion.w));
+//        _orientationCorrectionAngle = yaw;
+//        
+//        NSLog(@"%f %f %f", pitch, yaw, _orientationCorrectionAngle);
+//        
+//        GLKMatrix4 worldToDisplayP = GLKMatrix4Rotate(worldToDisplay, angleX, 1, 0, 0);
+//        worldToDisplayP = GLKMatrix4Rotate(worldToDisplayP, angleZ, 0, 0, 1);
+//        
+//        float angleYP = atan2f(- worldToDisplayP.m20,
+//                               sqrtf(worldToDisplayP.m21 * worldToDisplayP.m21 + worldToDisplayP.m22 * worldToDisplayP.m22));
+//        
+//        NSLog(@"  %6.2f %6.2f %6.2f", phi, theta, psi);
+//        NSLog(@"  %6.2f", _orientationCorrectionAngle);
+//        NSLog(@"%6.2f %6.2f %6.2f    |    %6.2f %6.2f %6.2f    |    %6.2f %6.2f", angleX, angleY, angleZ, phi, theta, psi, pitch, yaw);
+//        NSLog(@"%6.2f %6.2f %6.2f", phi, theta, psi);
+//        NSLog(@"%d - %6.2f %6.2f", _tracker->isReady(), theta, psi);
+    }
+
+    worldToDisplay = GLKMatrix4Rotate(worldToDisplay, _orientationCorrectionAngle, 0, 1, 0);
+
     // NSLog(@"%@", NSStringFromGLKMatrix4(worldToDisplay));
     if (_neckModelEnabled)
     {

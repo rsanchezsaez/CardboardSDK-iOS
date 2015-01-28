@@ -620,7 +620,6 @@
     // Convert object space to camera space. Use the headView from onNewFrame.
     _modelView = GLKMatrix4Multiply(_headView, _modelCube);
     GLKVector4 objectPositionVector = GLKMatrix4MultiplyVector4(_modelView, initVector);
-    //Matrix.multiplyMV(objPositionVec, 0, mModelView, 0, initVec, 0);
     
     float pitch = atan2f(objectPositionVector.y, -objectPositionVector.z);
     float yaw = atan2f(objectPositionVector.x, -objectPositionVector.z);

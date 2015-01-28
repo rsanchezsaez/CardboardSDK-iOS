@@ -35,7 +35,8 @@ class HeadTracker
     NSTimeInterval _lastGyroEventTimestamp;
     bool _neckModelEnabled;
     GLKMatrix4 _neckModelTranslation;
-    
+    float _orientationCorrectionAngle;
+
     const float _defaultNeckHorizontalOffset = 0.08f;
     const float _defaultNeckVerticalOffset = 0.075f;
 };
