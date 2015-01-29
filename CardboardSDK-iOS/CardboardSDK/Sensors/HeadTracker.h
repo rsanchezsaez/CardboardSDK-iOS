@@ -18,11 +18,11 @@ class HeadTracker
     HeadTracker();
     virtual ~HeadTracker();
     
-    void startTracking();
+    void startTracking(UIInterfaceOrientation orientation);
     void stopTracking();
     GLKMatrix4 lastHeadView();
     
-    void updateDeviceOrientation(UIDeviceOrientation orientation);
+    void updateDeviceOrientation(UIInterfaceOrientation orientation);
 
     bool neckModelEnabled();
     void setNeckModelEnabled(bool enabled);

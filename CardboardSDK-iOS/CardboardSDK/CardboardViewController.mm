@@ -89,8 +89,6 @@
 
 @property (nonatomic, assign) BOOL projectionChanged;
 
-@property (nonatomic, assign) UIDeviceOrientation currentOrientation;
-
 @property (nonatomic) EyeWrapper *leftEyeWrapper;
 @property (nonatomic) EyeWrapper *rightEyeWrapper;
 
@@ -140,7 +138,7 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(orientationDidChange:)
-                                                 name:UIDeviceOrientationDidChangeNotification
+                                                 name:UIApplicationDidChangeStatusBarOrientationNotification
                                                object:nil];
 
     return self;
@@ -148,14 +146,7 @@
 
 - (void)orientationDidChange:(NSNotification *)notification
 {
-    UIDeviceOrientation newOrientation = [UIDevice currentDevice].orientation;
-    if (newOrientation != self.currentOrientation
-        && (newOrientation == UIDeviceOrientationLandscapeRight
-            || newOrientation == UIDeviceOrientationLandscapeLeft))
-    {
-        self.currentOrientation = newOrientation;
-        _headTracker->updateDeviceOrientation(newOrientation);
-    }
+    _headTracker->updateDeviceOrientation([UIApplication sharedApplication].statusBarOrientation);
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -253,7 +244,7 @@
     }
     else
     {
-        self.headTracker->startTracking();
+        self.headTracker->startTracking([UIApplication sharedApplication].statusBarOrientation);
         self.magnetSensor->start();
     }
 }

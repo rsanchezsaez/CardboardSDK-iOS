@@ -80,7 +80,7 @@ GLKMatrix4 GLMatrixFromRotationMatrix(CMRotationMatrix rotationMatrix)
 } // namespace
 
 HeadTracker::HeadTracker() :
-    // this assumes the device is landscape with the home button on the right (UIDeviceOrientationLandscapeLeft)
+    // this assumes the device is landscape with the home button on the right (UIInterfaceOrientationLandscapeRight)
     _displayFromDevice(GetRotateEulerMatrix(0.f, 0.f, -90.f)),
     // the inertial reference frame has z up and x forward, while the world has -z forward and x right
     _inertialReferenceFrameFromWorld(GetRotateEulerMatrix(-90.f, 0.f, 90.f)),
@@ -102,8 +102,10 @@ HeadTracker::~HeadTracker()
     delete _tracker;
 }
 
-void HeadTracker::startTracking()
+void HeadTracker::startTracking(UIInterfaceOrientation orientation)
 {
+    updateDeviceOrientation(orientation);
+    
     _tracker->reset();
     
     _headingCorrectionComputed = false;
@@ -257,15 +259,15 @@ GLKMatrix4 HeadTracker::lastHeadView()
     return _lastHeadView;
 }
 
-void HeadTracker::updateDeviceOrientation(UIDeviceOrientation orientation)
+void HeadTracker::updateDeviceOrientation(UIInterfaceOrientation orientation)
 {
-    if (orientation == UIDeviceOrientationLandscapeLeft)
-    {
-        _displayFromDevice = GetRotateEulerMatrix(0.f, 0.f, -90.f);
-    }
-    else if (orientation == UIDeviceOrientationLandscapeRight)
+    if (orientation == UIInterfaceOrientationLandscapeLeft)
     {
         _displayFromDevice = GetRotateEulerMatrix(0.f, 0.f, 90.f);
+    }
+    else if (orientation == UIInterfaceOrientationLandscapeRight)
+    {
+        _displayFromDevice = GetRotateEulerMatrix(0.f, 0.f, -90.f);
     }
 }
 
