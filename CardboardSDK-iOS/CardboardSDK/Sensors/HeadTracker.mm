@@ -222,15 +222,17 @@ GLKMatrix4 HeadTracker::lastHeadView()
             
             float c = -deviceForwardWorld.z;
             float s = -deviceForwardWorld.x;
-            GLKMatrix4 R = GLKMatrix4Make(
-                  c, 0.f,   s, 0.f,
+            // note we actually want to use the inverse, so
+            // transpose when building
+            GLKMatrix4 Rt = GLKMatrix4Make(
+                  c, 0.f,  -s, 0.f,
                 0.f, 1.f, 0.f, 0.f,
-                 -s, 0.f,   c, 0.f,
+                  s, 0.f,   c, 0.f,
                 0.f, 0.f, 0.f, 1.f );
             
             _correctedInertialReferenceFrameFromWorld = GLKMatrix4Multiply(
                 _inertialReferenceFrameFromWorld,
-                GLKMatrix4Transpose(R));
+                Rt);
         }
         _headingCorrectionComputed = true;
     }
