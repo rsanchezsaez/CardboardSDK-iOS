@@ -365,7 +365,7 @@
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 {
-    if (self.paused) { return; }
+    if (self.paused || !_headTracker->isReady()) { return; }
     
     // glInsertEventMarkerEXT(0, "com.apple.GPUTools.event.debug-frame");
 

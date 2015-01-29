@@ -27,6 +27,8 @@ class HeadTracker
     bool neckModelEnabled();
     void setNeckModelEnabled(bool enabled);
     
+    bool isReady();
+    
   private:
     CMMotionManager *_motionManager;
     size_t _sampleCount;

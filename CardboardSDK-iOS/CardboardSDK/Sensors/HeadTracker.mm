@@ -119,7 +119,7 @@ void HeadTracker::startTracking()
     [_motionManager startAccelerometerUpdatesToQueue:accelerometerQueue withHandler:^(CMAccelerometerData *accelerometerData, NSError *error)
     {
         ++_sampleCount;
-        if (_sampleCount <= kInitialSamplesToSkip) return;
+        if (_sampleCount <= kInitialSamplesToSkip) { return; }
         CMAcceleration acceleration = accelerometerData.acceleration;
         // note core motion uses units of G while the EKF uses ms^-2
         const float kG = 9.81f;
@@ -128,7 +128,7 @@ void HeadTracker::startTracking()
     
     _motionManager.gyroUpdateInterval = 1.0/100.0;
     [_motionManager startGyroUpdatesToQueue:gyroQueue withHandler:^(CMGyroData *gyroData, NSError *error) {
-        if (_sampleCount <= kInitialSamplesToSkip) return;
+        if (_sampleCount <= kInitialSamplesToSkip) { return; }
         CMRotationRate rotationRate = gyroData.rotationRate;
         _tracker->processGyro(GLKVector3Make(rotationRate.x, rotationRate.y, rotationRate.z), gyroData.timestamp);
         _lastGyroEventTimestamp = gyroData.timestamp;
@@ -143,7 +143,7 @@ void HeadTracker::startTracking()
     _motionManager.deviceMotionUpdateInterval = 1.0/100.0;
     [_motionManager startDeviceMotionUpdatesUsingReferenceFrame:CMAttitudeReferenceFrameXArbitraryZVertical toQueue:deviceMotionQueue withHandler:^(CMDeviceMotion *motion, NSError *error) {
         ++_sampleCount;
-        if (_sampleCount <= kInitialSamplesToSkip) return;
+        if (_sampleCount <= kInitialSamplesToSkip) { return; }
         CMAcceleration acceleration = motion.gravity;
         CMRotationRate rotationRate = motion.rotationRate;
         // note core motion uses units of G while the EKF uses ms^-2
@@ -166,10 +166,17 @@ void HeadTracker::stopTracking()
   #endif
 }
 
+bool HeadTracker::isReady()
+{
+    bool isTrackerReady = (_sampleCount > kInitialSamplesToSkip);
+  #if HEAD_TRACKER_MODE == HEAD_TRACKER_MODE_EKF || HEAD_TRACKER_MODE == HEAD_TRACKER_MODE_CORE_MOTION_EKF
+    isTrackerReady = isTrackerReady && _tracker->isReady();
+  #endif
+    return isTrackerReady;
+}
+
 GLKMatrix4 HeadTracker::lastHeadView()
 {
-    bool isTrackerReady = false;
-    
   #if HEAD_TRACKER_MODE == HEAD_TRACKER_MODE_EKF || HEAD_TRACKER_MODE == HEAD_TRACKER_MODE_CORE_MOTION_EKF
     
     NSTimeInterval currentTimestamp = CACurrentMediaTime();
@@ -178,8 +185,6 @@ GLKMatrix4 HeadTracker::lastHeadView()
     double secondsToPredictForward = secondsSinceLastGyroEvent + 1.0/30;
     GLKMatrix4 deviceFromInertialReferenceFrame = _tracker->getPredictedGLMatrix(secondsToPredictForward);
     
-    isTrackerReady = _tracker->isReady();
-    
   #elif HEAD_TRACKER_MODE == HEAD_TRACKER_MODE_CORE_MOTION
     
     CMDeviceMotion *motion = _motionManager.deviceMotion;
@@ -187,11 +192,10 @@ GLKMatrix4 HeadTracker::lastHeadView()
     GLKMatrix4 deviceFromInertialReferenceFrame = GLKMatrix4Transpose(GLMatrixFromRotationMatrix(rotationMatrix)); // note the matrix inversion
     
     ++_sampleCount;
-    isTrackerReady = (motion != nil) && (_sampleCount > kInitialSamplesToSkip);
     
   #endif
   
-    if (!isTrackerReady)
+    if (!isReady())
     {
         return _lastHeadView;
     }
