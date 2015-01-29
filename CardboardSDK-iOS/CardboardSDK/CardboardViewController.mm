@@ -69,90 +69,7 @@
 @end
 
 
-@interface StereoRenderer : NSObject
-
-@property (nonatomic, weak) id <StereoRendererDelegate> stereoRendererDelegate;
-@property (nonatomic) BOOL VRModeEnabled;
-
-@property (nonatomic) EyeWrapper *leftEyeWrapper;
-@property (nonatomic) EyeWrapper *rightEyeWrapper;
-
-@end
-
-
-@implementation StereoRenderer
-
-- (void)setupRendererWithView:(GLKView *)GLView
-{
-    _leftEyeWrapper = [EyeWrapper new];
-    _rightEyeWrapper = [EyeWrapper new];
-    [self.stereoRendererDelegate setupRendererWithView:GLView];
-}
-
-- (void)shutdownRendererWithView:(GLKView *)GLView
-{
-    [self.stereoRendererDelegate shutdownRendererWithView:GLView];
-}
-
-- (void)updateRenderViewSize:(CGSize)size
-{
-    if (self.VRModeEnabled)
-    {
-        [self.stereoRendererDelegate renderViewDidChangeSize:CGSizeMake(size.width / 2, size.height)];
-    }
-    else
-    {
-        [self.stereoRendererDelegate renderViewDidChangeSize:CGSizeMake(size.width, size.height)];
-    }
-}
-
-- (void)drawFrameWithHeadTransform:(HeadTransform *)headTransform leftEye:(Eye *)leftEye rightEye:(Eye *)rightEye
-{
-    GLCheckForError();
- 
-    // NSLog(@"%@", NSStringFromGLKMatrix4(leftEyeParams->transform()->eyeView()));
-
-    [self.stereoRendererDelegate prepareNewFrameWithHeadViewMatrix:headTransform->headView()];
-    
-    GLCheckForError();
-    
-    glEnable(GL_SCISSOR_TEST);
-    leftEye->viewport()->setGLViewport();
-    leftEye->viewport()->setGLScissor();
-    
-    GLCheckForError();
-    
-    _leftEyeWrapper.eye = leftEye;
-    [self.stereoRendererDelegate drawEyeWithEye:_leftEyeWrapper];
-
-    GLCheckForError();
-
-    if (rightEye == nullptr) { return; }
-
-    rightEye->viewport()->setGLViewport();
-    rightEye->viewport()->setGLScissor();
-
-    GLCheckForError();
-    
-    _rightEyeWrapper.eye = rightEye;
-    [self.stereoRendererDelegate drawEyeWithEye:_rightEyeWrapper];
-
-    GLCheckForError();
-}
-
-- (void)finishFrameWithViewPort:(Viewport *)viewport
-{
-    viewport->setGLViewport();
-    viewport->setGLScissor();
-    [self.stereoRendererDelegate finishFrameWithViewportRect:viewport->toCGRect()];
-}
-
-@end
-
-
 @interface CardboardViewController () <GLKViewControllerDelegate>
-
-@property (nonatomic) GLKView *view;
 
 @property (nonatomic, assign) MagnetSensor *magnetSensor;
 @property (nonatomic, assign) HeadTracker *headTracker;
@@ -172,9 +89,10 @@
 
 @property (nonatomic, assign) BOOL projectionChanged;
 
-@property (nonatomic, strong) StereoRenderer *stereoRenderer;
-
 @property (nonatomic, assign) UIDeviceOrientation currentOrientation;
+
+@property (nonatomic) EyeWrapper *leftEyeWrapper;
+@property (nonatomic) EyeWrapper *rightEyeWrapper;
 
 @end
 
@@ -191,27 +109,29 @@
 
     self.delegate = self;
 
-    self.magnetSensor = new MagnetSensor();
-    self.headTracker = new HeadTracker();
-    self.headTransform = new HeadTransform();
-    self.headMountedDisplay = new HeadMountedDisplay([UIScreen mainScreen]);
+    _magnetSensor = new MagnetSensor();
+    _headTracker = new HeadTracker();
+    _headTransform = new HeadTransform();
+    _headMountedDisplay = new HeadMountedDisplay([UIScreen mainScreen]);
     
-    self.monocularEye = new Eye(Eye::TypeMonocular);
-    self.leftEye = new Eye(Eye::TypeLeft);
-    self.rightEye = new Eye(Eye::TypeRight);
+    _monocularEye = new Eye(Eye::TypeMonocular);
+    _leftEye = new Eye(Eye::TypeLeft);
+    _rightEye = new Eye(Eye::TypeRight);
 
-    self.distortionRenderer = new DistortionRenderer();
+    _distortionRenderer = new DistortionRenderer();
     
-    self.stereoRenderer = [StereoRenderer new];
     self.distortionCorrectionScale = 1.0f;
 
-    self.VRModeEnabled = YES;
+    self.vrModeEnabled = YES;
     self.distortionCorrectionEnabled = YES;
 
     self.zNear = 0.1f;
     self.zFar = 100.0f;
 
     self.projectionChanged = YES;
+
+    self.leftEyeWrapper = [EyeWrapper new];
+    self.rightEyeWrapper = [EyeWrapper new];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(magneticTriggerPressed:)
@@ -255,7 +175,7 @@
     }
     self.view.drawableDepthFormat = GLKViewDrawableDepthFormat16;
     
-    [self.stereoRenderer setupRendererWithView:self.view];
+    [self.stereoRendererDelegate setupRendererWithView:self.view];
 }
 
 - (void)dealloc
@@ -274,26 +194,6 @@
     if (self.rightEye != nullptr) { delete self.rightEye; }
 
     if (self.distortionRenderer != nullptr) { delete self.distortionRenderer; }
-}
-
-- (id<StereoRendererDelegate>)stereoRendererDelegate
-{
-    return self.stereoRenderer.stereoRendererDelegate;
-}
-
-- (void)setStereoRendererDelegate:(id<StereoRendererDelegate>)stereoRenderer
-{
-    self.stereoRenderer.stereoRendererDelegate = stereoRenderer;
-}
-
-- (BOOL)VRModeEnabled
-{
-    return self.stereoRenderer.VRModeEnabled;
-}
-
-- (void)setVRModeEnabled:(BOOL)VRModeEnabled
-{
-    self.stereoRenderer.VRModeEnabled = VRModeEnabled;
 }
 
 - (BOOL)vignetteEnabled
@@ -373,15 +273,15 @@
     
     [self calculateFrameParametersWithHeadTransform:_headTransform leftEye:_leftEye rightEye:_rightEye monocularEye:_monocularEye];
     
-    if (self.VRModeEnabled)
+    if (self.vrModeEnabled)
     {
         if (_distortionCorrectionEnabled)
         {
             _distortionRenderer->beforeDrawFrame();
             
-            [_stereoRenderer drawFrameWithHeadTransform:_headTransform
-                                                leftEye:_leftEye
-                                               rightEye:_rightEye];
+            [self drawFrameWithHeadTransform:_headTransform
+                                     leftEye:_leftEye
+                                    rightEye:_rightEye];
             
             GLCheckForError();
 
@@ -393,19 +293,19 @@
         }
         else
         {
-            [_stereoRenderer drawFrameWithHeadTransform:_headTransform
-                                                leftEye:_leftEye
-                                               rightEye:_rightEye];
+            [self drawFrameWithHeadTransform:_headTransform
+                                     leftEye:_leftEye
+                                    rightEye:_rightEye];
         }
     }
     else
     {
-        [_stereoRenderer drawFrameWithHeadTransform:_headTransform
-                                            leftEye:_monocularEye
-                                           rightEye:nullptr];
+        [self drawFrameWithHeadTransform:_headTransform
+                                 leftEye:_monocularEye
+                                rightEye:nullptr];
     }
     
-    [_stereoRenderer finishFrameWithViewPort:_monocularEye->viewport()];
+    [self finishFrameWithViewPort:_monocularEye->viewport()];
     
     GLCheckForError();
 }
@@ -422,7 +322,7 @@
     
     // NSLog(@"%@", NSStringFromGLKMatrix4(_headTracker->lastHeadView()));
     
-    if (self.VRModeEnabled)
+    if (self.vrModeEnabled)
     {
         GLKMatrix4 leftEyeTranslate = GLKMatrix4Identity;
         GLKMatrix4 rightEyeTranslate = GLKMatrix4Identity;
@@ -443,7 +343,7 @@
         ScreenParams *screenParams = _headMountedDisplay->getScreen();
         monocularEye->viewport()->setViewport(0, 0, screenParams->width(), screenParams->height());
         
-        if (!self.VRModeEnabled)
+        if (!self.vrModeEnabled)
         {
             [self updateMonocularFov:monocularEye->fov()];
         }
@@ -548,7 +448,62 @@
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    [self.stereoRenderer updateRenderViewSize:self.view.bounds.size];
+    [self updateRenderViewSize:self.view.bounds.size];
+}
+
+#pragma mark Stereo renderer methods
+
+- (void)updateRenderViewSize:(CGSize)size
+{
+    if (self.vrModeEnabled)
+    {
+        [self.stereoRendererDelegate renderViewDidChangeSize:CGSizeMake(size.width / 2, size.height)];
+    }
+    else
+    {
+        [self.stereoRendererDelegate renderViewDidChangeSize:CGSizeMake(size.width, size.height)];
+    }
+}
+
+- (void)drawFrameWithHeadTransform:(HeadTransform *)headTransform leftEye:(Eye *)leftEye rightEye:(Eye *)rightEye
+{
+    GLCheckForError();
+    
+    // NSLog(@"%@", NSStringFromGLKMatrix4(leftEyeParams->transform()->eyeView()));
+    
+    [self.stereoRendererDelegate prepareNewFrameWithHeadViewMatrix:headTransform->headView()];
+    
+    GLCheckForError();
+    
+    glEnable(GL_SCISSOR_TEST);
+    leftEye->viewport()->setGLViewport();
+    leftEye->viewport()->setGLScissor();
+    
+    GLCheckForError();
+    
+    _leftEyeWrapper.eye = leftEye;
+    [self.stereoRendererDelegate drawEyeWithEye:_leftEyeWrapper];
+    
+    GLCheckForError();
+    
+    if (rightEye == nullptr) { return; }
+    
+    rightEye->viewport()->setGLViewport();
+    rightEye->viewport()->setGLScissor();
+    
+    GLCheckForError();
+    
+    _rightEyeWrapper.eye = rightEye;
+    [self.stereoRendererDelegate drawEyeWithEye:_rightEyeWrapper];
+    
+    GLCheckForError();
+}
+
+- (void)finishFrameWithViewPort:(Viewport *)viewport
+{
+    viewport->setGLViewport();
+    viewport->setGLScissor();
+    [self.stereoRendererDelegate finishFrameWithViewportRect:viewport->toCGRect()];
 }
 
 @end
