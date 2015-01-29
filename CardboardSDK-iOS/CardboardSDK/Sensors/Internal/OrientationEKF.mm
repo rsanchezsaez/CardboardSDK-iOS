@@ -202,29 +202,6 @@ void OrientationEKF::processAcceleration(GLKVector3 acc, double sensorTimeStamp)
     else
     {
         SO3Util::so3FromTwoVecN(&_vDown, &_vZ, &_so3SensorFromWorld);
-        
-        // fix the heading by aligning world +x with the projection of the
-        // sensor's forward axis (-z) onto the ground plane
-        
-        // transform sensor -z into world coordinates
-        Matrix3x3d worldFromSensor;
-        _so3SensorFromWorld.transpose(&worldFromSensor);
-        Vector3d sensorForward(0.0, 0.0, -1.0);
-        Vector3d sensorForwardWorld;
-        Matrix3x3d::mult(&worldFromSensor, &sensorForward, &sensorForwardWorld);
-        
-        if (fabs(sensorForwardWorld.z()) < 0.99)
-        {
-            sensorForwardWorld.setComponent(2, 0.0);  // project onto ground plane
-            
-            // figure out a rotation about z to align +x with this projection
-            sensorForwardWorld.normalize();
-            double cosTheta = sensorForwardWorld.x();
-            double sinTheta = sensorForwardWorld.y();
-            Matrix3x3d deltaHeadingRotationMatrix(cosTheta, -sinTheta, 0.0, sinTheta, cosTheta, 0.0, 0.0, 0.0, 1.0);
-            Matrix3x3d::mult(&_so3SensorFromWorld, &deltaHeadingRotationMatrix, &_so3SensorFromWorld);
-        }
-        
         _alignedToGravity = true;
     }
 }
