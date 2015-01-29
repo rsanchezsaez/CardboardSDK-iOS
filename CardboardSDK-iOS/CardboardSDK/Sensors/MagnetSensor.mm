@@ -23,13 +23,15 @@ void MagnetSensor::start()
     if (_manager.isMagnetometerAvailable && !_manager.isMagnetometerActive)
     {
         _manager.magnetometerUpdateInterval = 1.0f / 100.0f;
-        [_manager startMagnetometerUpdatesToQueue:[NSOperationQueue currentQueue]
-                                            withHandler:^(CMMagnetometerData *magnetometerData, NSError *error) {
-                                                addData(GLKVector3 {
-                                                        (float) magnetometerData.magneticField.x,
-                                                        (float) magnetometerData.magneticField.y,
-                                                        (float) magnetometerData.magneticField.z});
-                                            }];
+        NSOperationQueue *magnetometerQueue = [[NSOperationQueue alloc] init];
+        [_manager startMagnetometerUpdatesToQueue:magnetometerQueue
+                                      withHandler:^(CMMagnetometerData *magnetometerData, NSError *error)
+        {
+            addData(GLKVector3 {
+                (float) magnetometerData.magneticField.x,
+                (float) magnetometerData.magneticField.y,
+                (float) magnetometerData.magneticField.z});
+        }];
     }
 }
 
