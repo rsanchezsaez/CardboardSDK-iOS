@@ -18,7 +18,10 @@
 #include "Viewport.h"
 
 #include "DebugUtils.h"
-#include "GLHelpers.h"
+
+extern "C" {
+  #include "GLHelpers.h"
+}
 
 
 @interface EyeWrapper ()
@@ -167,6 +170,9 @@
     self.view.drawableDepthFormat = GLKViewDrawableDepthFormat16;
     
     [self.stereoRendererDelegate setupRendererWithView:self.view];
+    
+    self.headTracker->startTracking([UIApplication sharedApplication].statusBarOrientation);
+    self.magnetSensor->start();
 }
 
 - (void)dealloc

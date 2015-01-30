@@ -6,10 +6,6 @@
 
 #include "DistortionRenderer.h"
 
-extern "C" {
-  #include "GLHelpers.h"
-}
-
 #include "CardboardDeviceParams.h"
 #include "Distortion.h"
 #include "Eye.h"
@@ -18,6 +14,10 @@ extern "C" {
 #include "HeadMountedDisplay.h"
 #include "ScreenParams.h"
 #include "Viewport.h"
+
+extern "C" {
+  #include "GLHelpers.h"
+}
 
 
 namespace
