@@ -136,9 +136,10 @@ void HeadTracker::startTracking(UIInterfaceOrientation orientation)
         _lastGyroEventTimestamp = gyroData.timestamp;
     }];
   #elif HEAD_TRACKER_MODE == HEAD_TRACKER_MODE_CORE_MOTION
-    if (_motionManager.isDeviceMotionAvailable && !_motionManager.isDeviceMotionActive)
+    if (_motionManager.isDeviceMotionAvailable)
     {
         [_motionManager startDeviceMotionUpdatesUsingReferenceFrame:CMAttitudeReferenceFrameXArbitraryZVertical];
+        _sampleCount = kInitialSamplesToSkip + 1;
     }
   #elif HEAD_TRACKER_MODE == HEAD_TRACKER_MODE_CORE_MOTION_EKF
     NSOperationQueue *deviceMotionQueue = [[NSOperationQueue alloc] init];
@@ -193,14 +194,11 @@ GLKMatrix4 HeadTracker::lastHeadView()
     CMRotationMatrix rotationMatrix = motion.attitude.rotationMatrix;
     GLKMatrix4 deviceFromInertialReferenceFrame = GLKMatrix4Transpose(GLMatrixFromRotationMatrix(rotationMatrix)); // note the matrix inversion
     
-    ++_sampleCount;
+    if (!motion) { return _lastHeadView; }
     
   #endif
   
-    if (!isReady())
-    {
-        return _lastHeadView;
-    }
+    if (!isReady()) { return _lastHeadView; }
 
     if (!_headingCorrectionComputed)
     {
