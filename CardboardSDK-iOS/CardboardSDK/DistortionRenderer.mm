@@ -6,7 +6,9 @@
 
 #include "DistortionRenderer.h"
 
-#include "GLHelpers.h"
+extern "C" {
+  #include "GLHelpers.h"
+}
 
 #include "CardboardDeviceParams.h"
 #include "Distortion.h"
@@ -430,38 +432,16 @@ int DistortionRenderer::setupRenderTextureAndRenderbuffer(int width, int height)
     return _framebufferID;
 }
 
-int DistortionRenderer::loadShader(GLenum shaderType, const GLchar *source)
-{
-    GLuint shader = glCreateShader(shaderType);
-    if (shader != 0)
-    {
-        glShaderSource(shader, 1, &source, nil);
-        glCompileShader(shader);
-        GLint status = -1;
-        glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
-        if (status == GL_FALSE)
-        {
-            GLchar message[256];
-            glGetShaderInfoLog(shader, sizeof(message), 0, &message[0]);
-            NSLog(@"Could not compile shader %d:\n%s", shaderType, message);
-            glDeleteShader(shader);
-            shader = 0;
-        }
-    }
-    
-    GLCheckForError();
-
-    return shader;
-}
-
 int DistortionRenderer::createProgram(const GLchar *vertexSource, const GLchar *fragmentSource)
 {
-    GLuint vertexShader = loadShader(GL_VERTEX_SHADER, vertexSource);
+    GLuint vertexShader = 0;
+    GLCompileShader(&vertexShader, GL_VERTEX_SHADER, vertexSource);
     if (vertexShader == 0)
     {
         return 0;
     }
-    GLuint pixelShader = loadShader(GL_FRAGMENT_SHADER, fragmentSource);
+    GLuint pixelShader = 0;
+    GLCompileShader(&pixelShader, GL_FRAGMENT_SHADER, fragmentSource);
     if (pixelShader == 0)
     {
         return 0;
@@ -473,7 +453,7 @@ int DistortionRenderer::createProgram(const GLchar *vertexSource, const GLchar *
         GLCheckForError();
         glAttachShader(program, pixelShader);
         GLCheckForError();
-        glLinkProgram(program);
+        GLLinkProgram(program);
         GLint status;
         glGetProgramiv(program, GL_LINK_STATUS, &status);
         if (status == GL_FALSE)

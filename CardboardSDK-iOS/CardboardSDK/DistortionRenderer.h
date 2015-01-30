@@ -153,7 +153,6 @@ class DistortionRenderer
                                  float interpupillaryDistanceM);
     int createTexture(GLint width, GLint height, GLint textureFormat, GLint textureType);
     int setupRenderTextureAndRenderbuffer(int width, int height);
-    int loadShader(GLenum shaderType, const GLchar *source);
     int createProgram(const GLchar *vertexSource,
                       const GLchar *fragmentSource);
     ProgramHolder *createProgramHolder(bool aberrationCorrected);

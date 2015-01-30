@@ -6,14 +6,22 @@
 #import "GLHelpers.h"
 
 
-BOOL GLCompileShader(GLuint *shader, GLenum type, NSString *file)
+#if defined(DEBUG)
+void GLCheckForError()
 {
-    GLint status;
-    const GLchar *source;
-    
-    source = (GLchar *)[[NSString stringWithContentsOfFile:file encoding:NSUTF8StringEncoding error:nil] UTF8String];
+    GLenum err = glGetError();
+    if (err != GL_NO_ERROR)
+    {
+        NSLog(@"glError: 0x%04X", err);
+        // assert(NO);
+    }
+}
+#endif
+
+BOOL GLCompileShader(GLuint *shader, GLenum type, const GLchar *source)
+{
     if (!source) {
-        NSLog(@"Failed to load vertex shader");
+        NSLog(@"Failed to read shader source");
         return NO;
     }
     
@@ -22,7 +30,7 @@ BOOL GLCompileShader(GLuint *shader, GLenum type, NSString *file)
     glCompileShader(*shader);
     
 #if defined(DEBUG)
-    GLint logLength;
+    GLint logLength = 0;
     glGetShaderiv(*shader, GL_INFO_LOG_LENGTH, &logLength);
     if (logLength > 0) {
         GLchar *log = (GLchar *)malloc(logLength);
@@ -32,6 +40,7 @@ BOOL GLCompileShader(GLuint *shader, GLenum type, NSString *file)
     }
 #endif
     
+    GLint status = 0;
     glGetShaderiv(*shader, GL_COMPILE_STATUS, &status);
     if (status == 0) {
         glDeleteShader(*shader);
@@ -39,6 +48,14 @@ BOOL GLCompileShader(GLuint *shader, GLenum type, NSString *file)
     }
     
     return YES;
+}
+
+BOOL GLCompileShaderFromFile(GLuint *shader, GLenum type, NSString *file)
+{
+    const GLchar *source = (GLchar *)[[NSString stringWithContentsOfFile:file
+                                                                encoding:NSUTF8StringEncoding
+                                                                   error:nil] UTF8String];
+    return GLCompileShader(shader, type, source);
 }
 
 BOOL GLLinkProgram(GLuint program)
