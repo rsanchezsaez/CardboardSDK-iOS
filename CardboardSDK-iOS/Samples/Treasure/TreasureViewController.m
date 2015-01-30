@@ -137,52 +137,63 @@
 
 - (BOOL)setupPrograms
 {
-    GLuint vertexShader, gridShader, passthroughShader, highlightShader;
+    NSString *path = nil;
     
-    NSString *vertexShaderPath = [[NSBundle mainBundle] pathForResource:@"light_vertex" ofType:@"shader"];
-    if (!GLCompileShader(&vertexShader, GL_VERTEX_SHADER, vertexShaderPath)) {
-        NSLog(@"Failed to compile light_vertex shader");
+    GLuint vertexShader = 0;
+    path = [[NSBundle mainBundle] pathForResource:@"light_vertex" ofType:@"shader"];
+    if (!GLCompileShaderFromFile(&vertexShader, GL_VERTEX_SHADER, path)) {
+        NSLog(@"Failed to compile shader at %@", path);
         return NO;
     }
 
-    NSString *gridShaderPath = [[NSBundle mainBundle] pathForResource:@"grid_fragment" ofType:@"shader"];
-    if (!GLCompileShader(&gridShader, GL_FRAGMENT_SHADER, gridShaderPath)) {
-        NSLog(@"Failed to compile grid_fragment shader");
+    GLuint gridVertexShader = 0;
+    path = [[NSBundle mainBundle] pathForResource:@"light_vertex_grid" ofType:@"shader"];
+    if (!GLCompileShaderFromFile(&gridVertexShader, GL_VERTEX_SHADER, path)) {
+        NSLog(@"Failed to compile shader at %@", path);
         return NO;
     }
 
-    NSString *passthroughShaderPath = [[NSBundle mainBundle] pathForResource:@"passthrough_fragment" ofType:@"shader"];
-    if (!GLCompileShader(&passthroughShader, GL_FRAGMENT_SHADER, passthroughShaderPath)) {
-        NSLog(@"Failed to compile passthrough_fragment shader");
+    GLuint gridFragmentShader = 0;
+    path = [[NSBundle mainBundle] pathForResource:@"grid_fragment" ofType:@"shader"];
+    if (!GLCompileShaderFromFile(&gridFragmentShader, GL_FRAGMENT_SHADER, path)) {
+        NSLog(@"Failed to compile shader at %@", path);
         return NO;
     }
 
-    NSString *highlightShaderPath = [[NSBundle mainBundle] pathForResource:@"highlight_fragment" ofType:@"shader"];
-    if (!GLCompileShader(&highlightShader, GL_FRAGMENT_SHADER, highlightShaderPath)) {
-        NSLog(@"Failed to compile passthrough_fragment shader");
+    GLuint passthroughFragmentShader = 0;
+    path = [[NSBundle mainBundle] pathForResource:@"passthrough_fragment" ofType:@"shader"];
+    if (!GLCompileShaderFromFile(&passthroughFragmentShader, GL_FRAGMENT_SHADER, path)) {
+        NSLog(@"Failed to compile shader at %@", path);
+        return NO;
+    }
+
+    GLuint highlightFragmentShader = 0;
+    path = [[NSBundle mainBundle] pathForResource:@"highlight_fragment" ofType:@"shader"];
+    if (!GLCompileShaderFromFile(&highlightFragmentShader, GL_FRAGMENT_SHADER, path)) {
+        NSLog(@"Failed to compile shader at %@", path);
         return NO;
     }
 
     _cubeProgram = glCreateProgram();
     glAttachShader(_cubeProgram, vertexShader);
-    glAttachShader(_cubeProgram, passthroughShader);
-    glLinkProgram(_cubeProgram);
+    glAttachShader(_cubeProgram, passthroughFragmentShader);
+    GLLinkProgram(_cubeProgram);
     glUseProgram(_cubeProgram);
     
     GLCheckForError();
 
     _highlightedCubeProgram = glCreateProgram();
     glAttachShader(_highlightedCubeProgram, vertexShader);
-    glAttachShader(_highlightedCubeProgram, highlightShader);
-    glLinkProgram(_highlightedCubeProgram);
+    glAttachShader(_highlightedCubeProgram, highlightFragmentShader);
+    GLLinkProgram(_highlightedCubeProgram);
     glUseProgram(_highlightedCubeProgram);
     
     GLCheckForError();
 
     _floorProgram = glCreateProgram();
-    glAttachShader(_floorProgram, vertexShader);
-    glAttachShader(_floorProgram, gridShader);
-    glLinkProgram(_floorProgram);
+    glAttachShader(_floorProgram, gridVertexShader);
+    glAttachShader(_floorProgram, gridFragmentShader);
+    GLLinkProgram(_floorProgram);
     glUseProgram(_floorProgram);
     
     GLCheckForError();

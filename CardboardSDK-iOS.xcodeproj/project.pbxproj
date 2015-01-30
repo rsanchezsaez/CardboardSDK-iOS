@@ -36,6 +36,7 @@
 		BC763B391A66BBBC00463823 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC763B381A66BBBC00463823 /* Images.xcassets */; };
 		BC763B3B1A66D13300463823 /* highlight_fragment.shader in Resources */ = {isa = PBXBuildFile; fileRef = BC763B3A1A66D13300463823 /* highlight_fragment.shader */; };
 		BC763B3D1A6828DA00463823 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC763B3C1A6828DA00463823 /* AudioToolbox.framework */; };
+		BCDBD2611A7BC0B300A51284 /* light_vertex_grid.shader in Resources */ = {isa = PBXBuildFile; fileRef = BCDBD2601A7BC0B300A51284 /* light_vertex_grid.shader */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -93,6 +94,7 @@
 		BC763B3A1A66D13300463823 /* highlight_fragment.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = highlight_fragment.shader; sourceTree = "<group>"; };
 		BC763B3C1A6828DA00463823 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		BCCBC5821A5D93170093F31A /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
+		BCDBD2601A7BC0B300A51284 /* light_vertex_grid.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = light_vertex_grid.shader; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -221,8 +223,9 @@
 		BC763B281A655D1E00463823 /* Treasure */ = {
 			isa = PBXGroup;
 			children = (
-				BC763B3A1A66D13300463823 /* highlight_fragment.shader */,
 				BC763B291A655D1E00463823 /* grid_fragment.shader */,
+				BC763B3A1A66D13300463823 /* highlight_fragment.shader */,
+				BCDBD2601A7BC0B300A51284 /* light_vertex_grid.shader */,
 				BC763B2A1A655D1E00463823 /* light_vertex.shader */,
 				BC763B2B1A655D1E00463823 /* passthrough_fragment.shader */,
 				BC763B321A655EB700463823 /* TreasureViewController.h */,
@@ -309,6 +312,7 @@
 				BC763B2E1A655D1E00463823 /* passthrough_fragment.shader in Resources */,
 				BC763B2D1A655D1E00463823 /* light_vertex.shader in Resources */,
 				BC763B391A66BBBC00463823 /* Images.xcassets in Resources */,
+				BCDBD2611A7BC0B300A51284 /* light_vertex_grid.shader in Resources */,
 				BC763B2C1A655D1E00463823 /* grid_fragment.shader in Resources */,
 				BC763B3B1A66D13300463823 /* highlight_fragment.shader in Resources */,
 			);
