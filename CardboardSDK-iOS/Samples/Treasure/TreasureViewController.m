@@ -198,6 +198,8 @@
     
     GLCheckForError();
     
+    glUseProgram(0);
+    
     return YES;
 }
 
