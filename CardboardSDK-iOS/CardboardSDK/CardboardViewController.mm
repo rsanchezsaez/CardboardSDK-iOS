@@ -19,9 +19,7 @@
 
 #include "DebugUtils.h"
 
-extern "C" {
-  #include "GLHelpers.h"
-}
+#include "GLHelpers.h"
 
 
 @interface EyeWrapper ()

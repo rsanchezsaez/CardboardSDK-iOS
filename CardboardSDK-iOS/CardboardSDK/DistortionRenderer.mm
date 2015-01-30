@@ -15,9 +15,7 @@
 #include "ScreenParams.h"
 #include "Viewport.h"
 
-extern "C" {
-  #include "GLHelpers.h"
-}
+#include "GLHelpers.h"
 
 
 namespace

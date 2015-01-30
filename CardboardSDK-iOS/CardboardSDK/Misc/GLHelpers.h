@@ -10,6 +10,9 @@
 
 #import <OpenGLES/ES2/gl.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #if defined(DEBUG)
   void GLCheckForError();
@@ -24,4 +27,8 @@ BOOL GLCompileShaderFromFile(GLuint *shader, GLenum type, NSString *file);
 BOOL GLLinkProgram(GLuint program);
 BOOL GLValidateProgram(GLuint program);
 
+#endif
+
+#ifdef __cplusplus
+}
 #endif
