@@ -8,10 +8,28 @@
 
 #include <sys/utsname.h>
 
+// Enable to make the lens-distorted viewports slightly
+// smaller on iPhone 6/6+ and bigger on iPhone 5/5s 
+#define SCREEN_PARAMS_CORRECT_IPHONE_VIEWPORTS 1
+
+
+#define CBScreenIsRetina() ([[UIScreen mainScreen] scale] == 2.0)
+#define CBScreenIsIpad() (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+#define CBScreenIsIphone() (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+#define CBScreenIsIphone4Width() (CBScreenIsIphone() && [UIScreen mainScreen].sizeFixedToPortrait.width == 320.0)
+#define CBScreenIsIphone4Height() (CBScreenIsIphone() && [UIScreen mainScreen].sizeFixedToPortrait.height == 480.0)
+#define CBScreenIsIphone5Width() (CBScreenIsIphone4Width())
+#define CBScreenIsIphone5Height() (CBScreenIsIphone() && [UIScreen mainScreen].sizeFixedToPortrait.height == 568.0)
+#define CBScreenIsIphone6Width() (CBScreenIsIphone() && [UIScreen mainScreen].sizeFixedToPortrait.width == 375.0)
+#define CBScreenIsIphone6Height() (CBScreenIsIphone() && [UIScreen mainScreen].sizeFixedToPortrait.height == 667.0)
+#define CBScreenIsIphone6PlusWidth() (CBScreenIsIphone() && [[UIScreen mainScreen] scale] == 3.0f && [UIScreen mainScreen].sizeFixedToPortrait.width == 414.0)
+#define CBScreenIsIphone6PlusHeight() (CBScreenIsIphone() && [[UIScreen mainScreen] scale] == 3.0f && [UIScreen mainScreen].sizeFixedToPortrait.height == 736.0)
+
 
 @interface UIScreen (OrientationAware)
 
 - (CGSize)orientationAwareSize;
+- (CGSize)sizeFixedToPortrait;
 
 @end
 
@@ -19,6 +37,7 @@
 
 - (CGSize)orientationAwareSize
 {
+    // Starting on iOS 8 bounds are orientation dependepent
     CGSize screenSize = self.bounds.size;
     if ((NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_7_1)
         && UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
@@ -26,6 +45,12 @@
         return CGSizeMake(screenSize.height, screenSize.width);
     }
     return screenSize;
+}
+
+- (CGSize)sizeFixedToPortrait
+{
+    CGSize size = self.bounds.size;
+    return CGSizeMake(MIN(size.width, size.height), MAX(size.width, size.height));
 }
 
 @end
@@ -49,7 +74,19 @@ ScreenParams::ScreenParams(UIScreen *screen)
     const float defaultBorderSizeMeters = 0.003f;
     _xMetersPerPixel = (metersPerInch / screenPixelsPerInch);
     _yMetersPerPixel = (metersPerInch / screenPixelsPerInch);
+    
     _borderSizeMeters = defaultBorderSizeMeters;
+    
+  #if SCREEN_PARAMS_CORRECT_IPHONE_VIEWPORTS
+    if (CBScreenIsIphone5Width())
+    {
+        _borderSizeMeters = 0.006f;
+    }
+    else if (CBScreenIsIphone6Width() || CBScreenIsIphone6PlusWidth())
+    {
+        _borderSizeMeters = 0.001f;
+    }
+  #endif
 }
 
 ScreenParams::ScreenParams(ScreenParams *screenParams)
