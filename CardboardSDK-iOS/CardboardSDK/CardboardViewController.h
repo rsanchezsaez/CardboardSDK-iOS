@@ -34,7 +34,8 @@
 
 @interface CardboardViewController : GLKViewController
 
-@property (nonatomic) GLKView *view;
+@property (nonatomic, readonly) GLKView *view;
+@property (nonatomic, readonly) NSLock *glLock;
 
 @property (nonatomic, weak) id <StereoRendererDelegate> stereoRendererDelegate;
 @property (nonatomic) BOOL vrModeEnabled;

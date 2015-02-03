@@ -72,6 +72,8 @@
 
 @interface CardboardViewController () <GLKViewControllerDelegate>
 
+@property (nonatomic) NSLock *glLock;
+
 @property (nonatomic, assign) MagnetSensor *magnetSensor;
 @property (nonatomic, assign) HeadTracker *headTracker;
 @property (nonatomic, assign) HeadTransform *headTransform;
@@ -103,7 +105,7 @@
     self = [super init];
     if (!self) { return nil; }
     
-    // Do not allow the display going into sleep
+    // Do not allow the display to go into sleep
     [UIApplication sharedApplication].idleTimerDisabled = YES;
 
     self.delegate = self;
@@ -132,6 +134,8 @@
     self.leftEyeWrapper = [EyeWrapper new];
     self.rightEyeWrapper = [EyeWrapper new];
 
+    self.glLock = [NSLock new];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(magneticTriggerPressed:)
                                                  name:CBTriggerPressedNotification
@@ -265,15 +269,21 @@
     // glInsertEventMarkerEXT(0, "com.apple.GPUTools.event.debug-frame");
 
     GLCheckForError();
+
+    BOOL lockAcquired = [_glLock tryLock];
+    if (!lockAcquired) { return; }
     
-    [self calculateFrameParametersWithHeadTransform:_headTransform leftEye:_leftEye rightEye:_rightEye monocularEye:_monocularEye];
-    
+    [self calculateFrameParametersWithHeadTransform:_headTransform
+                                            leftEye:_leftEye
+                                           rightEye:_rightEye
+                                       monocularEye:_monocularEye];
+
     if (self.vrModeEnabled)
     {
         if (_distortionCorrectionEnabled)
         {
             _distortionRenderer->beforeDrawFrame();
-            
+
             [self drawFrameWithHeadTransform:_headTransform
                                      leftEye:_leftEye
                                     rightEye:_rightEye];
@@ -301,8 +311,10 @@
     }
     
     [self finishFrameWithViewPort:_monocularEye->viewport()];
-    
+
     GLCheckForError();
+
+    [_glLock unlock];
 }
 
 - (void)calculateFrameParametersWithHeadTransform:(HeadTransform *)headTransform
