@@ -71,26 +71,29 @@
 
 
 @interface CardboardViewController () <GLKViewControllerDelegate>
+{
+    MagnetSensor *_magnetSensor;
+    HeadTracker *_headTracker;
+    HeadTransform *_headTransform;
+    HeadMountedDisplay *_headMountedDisplay;
+    
+    Eye *_monocularEye;
+    Eye *_leftEye;
+    Eye *_rightEye;
+    
+    DistortionRenderer *_distortionRenderer;
+    
+    float _distortionCorrectionScale;
+    
+    float _zNear;
+    float _zFar;
+    
+    BOOL _projectionChanged;
+    
+    BOOL _frameParamentersReady;
+}
 
 @property (nonatomic) NSLock *glLock;
-
-@property (nonatomic, assign) MagnetSensor *magnetSensor;
-@property (nonatomic, assign) HeadTracker *headTracker;
-@property (nonatomic, assign) HeadTransform *headTransform;
-@property (nonatomic, assign) HeadMountedDisplay *headMountedDisplay;
-
-@property (nonatomic, assign) Eye *monocularEye;
-@property (nonatomic, assign) Eye *leftEye;
-@property (nonatomic, assign) Eye *rightEye;
-
-@property (nonatomic, assign) DistortionRenderer *distortionRenderer;
-
-@property (nonatomic, assign) float distortionCorrectionScale;
-
-@property (nonatomic, assign) float zNear;
-@property (nonatomic, assign) float zFar;
-
-@property (nonatomic, assign) BOOL projectionChanged;
 
 @property (nonatomic) EyeWrapper *leftEyeWrapper;
 @property (nonatomic) EyeWrapper *rightEyeWrapper;
@@ -121,15 +124,17 @@
 
     _distortionRenderer = new DistortionRenderer();
     
-    self.distortionCorrectionScale = 1.0f;
+    _distortionCorrectionScale = 1.0f;
 
-    self.vrModeEnabled = YES;
-    self.distortionCorrectionEnabled = YES;
+    _vrModeEnabled = YES;
+    _distortionCorrectionEnabled = YES;
 
-    self.zNear = 0.1f;
-    self.zFar = 100.0f;
+    _zNear = 0.1f;
+    _zFar = 100.0f;
 
-    self.projectionChanged = YES;
+    _projectionChanged = YES;
+
+    _frameParamentersReady = NO;
 
     self.leftEyeWrapper = [EyeWrapper new];
     self.rightEyeWrapper = [EyeWrapper new];
@@ -173,8 +178,8 @@
     
     [self.stereoRendererDelegate setupRendererWithView:self.view];
     
-    self.headTracker->startTracking([UIApplication sharedApplication].statusBarOrientation);
-    self.magnetSensor->start();
+    _headTracker->startTracking([UIApplication sharedApplication].statusBarOrientation);
+    _magnetSensor->start();
 }
 
 - (void)dealloc
@@ -183,56 +188,56 @@
     
     [self.stereoRendererDelegate shutdownRendererWithView:self.view];
 
-    if (self.magnetSensor != nullptr) { delete self.magnetSensor; }
-    if (self.headTracker != nullptr) { delete self.headTracker; }
-    if (self.headTransform != nullptr) { delete self.headTransform; }
-    if (self.headMountedDisplay != nullptr) { delete self.headMountedDisplay; }
+    if (_magnetSensor != nullptr) { delete _magnetSensor; }
+    if (_headTracker != nullptr) { delete _headTracker; }
+    if (_headTransform != nullptr) { delete _headTransform; }
+    if (_headMountedDisplay != nullptr) { delete _headMountedDisplay; }
    
-    if (self.monocularEye != nullptr) { delete self.monocularEye; }
-    if (self.leftEye != nullptr) { delete self.leftEye; }
-    if (self.rightEye != nullptr) { delete self.rightEye; }
+    if (_monocularEye != nullptr) { delete _monocularEye; }
+    if (_leftEye != nullptr) { delete _leftEye; }
+    if (_rightEye != nullptr) { delete _rightEye; }
 
-    if (self.distortionRenderer != nullptr) { delete self.distortionRenderer; }
+    if (_distortionRenderer != nullptr) { delete _distortionRenderer; }
 }
 
 - (BOOL)vignetteEnabled
 {
-    return self.distortionRenderer->vignetteEnabled();
+    return _distortionRenderer->vignetteEnabled();
 }
 
 - (void)setVignetteEnabled:(BOOL)vignetteEnabled
 {
-    self.distortionRenderer->setVignetteEnabled(vignetteEnabled);
+    _distortionRenderer->setVignetteEnabled(vignetteEnabled);
 }
 
 - (BOOL)chromaticAberrationCorrectionEnabled
 {
-    return self.distortionRenderer->chromaticAberrationEnabled();
+    return _distortionRenderer->chromaticAberrationEnabled();
 }
 
 - (void)setChromaticAberrationCorrectionEnabled:(BOOL)chromaticAberrationCorrectionEnabled
 {
-    self.distortionRenderer->setChromaticAberrationEnabled(chromaticAberrationCorrectionEnabled);
+    _distortionRenderer->setChromaticAberrationEnabled(chromaticAberrationCorrectionEnabled);
 }
 
 - (BOOL)restoreGLStateEnabled
 {
-    return self.distortionRenderer->restoreGLStateEnabled();
+    return _distortionRenderer->restoreGLStateEnabled();
 }
 
 - (void)setRestoreGLStateEnabled:(BOOL)restoreGLStateEnabled
 {
-    self.distortionRenderer->setRestoreGLStateEnabled(restoreGLStateEnabled);
+    _distortionRenderer->setRestoreGLStateEnabled(restoreGLStateEnabled);
 }
 
 - (BOOL)neckModelEnabled
 {
-    return self.headTracker->neckModelEnabled();
+    return _headTracker->neckModelEnabled();
 }
 
 - (void)setNeckModelEnabled:(BOOL)neckModelEnabled
 {
-    self.headTracker->setNeckModelEnabled(neckModelEnabled);
+    _headTracker->setNeckModelEnabled(neckModelEnabled);
 }
 
 - (void)magneticTriggerPressed:(NSNotification *)notification
@@ -247,24 +252,30 @@
 {
     if (pause)
     {
-        self.headTracker->stopTracking();
-        self.magnetSensor->stop();
+        _headTracker->stopTracking();
+        _magnetSensor->stop();
     }
     else
     {
-        self.headTracker->startTracking([UIApplication sharedApplication].statusBarOrientation);
-        self.magnetSensor->start();
+        _headTracker->startTracking([UIApplication sharedApplication].statusBarOrientation);
+        _magnetSensor->start();
     }
 }
 
 - (void)glkViewControllerUpdate:(GLKViewController *)controller
 {
-    
+    if (self.paused || !_headTracker->isReady()) { return; }
+
+    [self calculateFrameParametersWithHeadTransform:_headTransform
+                                            leftEye:_leftEye
+                                           rightEye:_rightEye
+                                       monocularEye:_monocularEye];
+    _frameParamentersReady = YES;
 }
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 {
-    if (self.paused || !_headTracker->isReady()) { return; }
+    if (self.paused || !_headTracker->isReady() || !_frameParamentersReady) { return; }
     
     // glInsertEventMarkerEXT(0, "com.apple.GPUTools.event.debug-frame");
 
@@ -273,11 +284,6 @@
     BOOL lockAcquired = [_glLock tryLock];
     if (!lockAcquired) { return; }
     
-    [self calculateFrameParametersWithHeadTransform:_headTransform
-                                            leftEye:_leftEye
-                                           rightEye:_rightEye
-                                       monocularEye:_monocularEye];
-
     if (self.vrModeEnabled)
     {
         if (_distortionCorrectionEnabled)
