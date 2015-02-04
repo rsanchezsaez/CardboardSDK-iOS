@@ -54,4 +54,6 @@ typedef NS_ENUM(NSInteger, EyeType)
 @property (nonatomic) BOOL restoreGLStateEnabled;
 @property (nonatomic) BOOL neckModelEnabled;
 
+- (void)getFrameParameters:(float *)frameParemeters;
+
 @end
