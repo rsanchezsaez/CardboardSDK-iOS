@@ -36,6 +36,7 @@
 		BC763B391A66BBBC00463823 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC763B381A66BBBC00463823 /* Images.xcassets */; };
 		BC763B3B1A66D13300463823 /* highlight_fragment.shader in Resources */ = {isa = PBXBuildFile; fileRef = BC763B3A1A66D13300463823 /* highlight_fragment.shader */; };
 		BC763B3D1A6828DA00463823 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC763B3C1A6828DA00463823 /* AudioToolbox.framework */; };
+		BC7687261A81985E00FE215B /* CardboardUnity.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC7687241A81985E00FE215B /* CardboardUnity.mm */; };
 		BCDBD2611A7BC0B300A51284 /* light_vertex_grid.shader in Resources */ = {isa = PBXBuildFile; fileRef = BCDBD2601A7BC0B300A51284 /* light_vertex_grid.shader */; };
 /* End PBXBuildFile section */
 
@@ -93,6 +94,8 @@
 		BC763B381A66BBBC00463823 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		BC763B3A1A66D13300463823 /* highlight_fragment.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = highlight_fragment.shader; sourceTree = "<group>"; };
 		BC763B3C1A6828DA00463823 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		BC7687241A81985E00FE215B /* CardboardUnity.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CardboardUnity.mm; sourceTree = "<group>"; };
+		BC7687251A81985E00FE215B /* CardboardUnity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardboardUnity.h; sourceTree = "<group>"; };
 		BCCBC5821A5D93170093F31A /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		BCDBD2601A7BC0B300A51284 /* light_vertex_grid.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = light_vertex_grid.shader; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -179,6 +182,8 @@
 				BC67335E1A5D90C700C6D79B /* Viewport.mm */,
 				BC0B3DF61A6E795D00ADD925 /* GLStateBackup.h */,
 				BC0B3DF51A6E795D00ADD925 /* GLStateBackup.mm */,
+				BC7687241A81985E00FE215B /* CardboardUnity.mm */,
+				BC7687251A81985E00FE215B /* CardboardUnity.h */,
 			);
 			path = CardboardSDK;
 			sourceTree = "<group>";
@@ -341,6 +346,7 @@
 				BC6733611A5D90C700C6D79B /* CardboardDeviceParams.mm in Sources */,
 				BC6733631A5D90C700C6D79B /* Distortion.mm in Sources */,
 				BC67336A1A5D90C700C6D79B /* ScreenParams.mm in Sources */,
+				BC7687261A81985E00FE215B /* CardboardUnity.mm in Sources */,
 				BC6733671A5D90C700C6D79B /* FieldOfView.mm in Sources */,
 				BC6733691A5D90C700C6D79B /* HeadTransform.mm in Sources */,
 				BC67336D1A5D90C700C6D79B /* OrientationEKF.mm in Sources */,

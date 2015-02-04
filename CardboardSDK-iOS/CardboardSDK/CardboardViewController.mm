@@ -141,6 +141,9 @@
 
     self.glLock = [NSLock new];
     
+    _headTracker->startTracking([UIApplication sharedApplication].statusBarOrientation);
+    _magnetSensor->start();
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(magneticTriggerPressed:)
                                                  name:CBTriggerPressedNotification
@@ -177,9 +180,6 @@
     self.view.drawableDepthFormat = GLKViewDrawableDepthFormat16;
     
     [self.stereoRendererDelegate setupRendererWithView:self.view];
-    
-    _headTracker->startTracking([UIApplication sharedApplication].statusBarOrientation);
-    _magnetSensor->start();
 }
 
 - (void)dealloc
@@ -517,6 +517,26 @@
     viewport->setGLViewport();
     viewport->setGLScissor();
     [self.stereoRendererDelegate finishFrameWithViewportRect:viewport->toCGRect()];
+}
+
+- (void)getFrameParameters:(float *)frameParemeters
+{
+    [self calculateFrameParametersWithHeadTransform:_headTransform
+                                            leftEye:_leftEye
+                                           rightEye:_rightEye
+                                       monocularEye:_monocularEye];
+
+    GLKMatrix4 headView = _headTransform->headView();
+    GLKMatrix4 leftEyeView = _leftEye->eyeView();
+    GLKMatrix4 leftEyePerspective = _leftEye->perspective(_zNear, _zFar);
+    GLKMatrix4 rightEyeView = _rightEye->eyeView();
+    GLKMatrix4 rightEyePerspective = _rightEye->perspective(_zNear, _zFar);
+
+    std::copy(headView.m, headView.m + 16, frameParemeters);
+    std::copy(leftEyeView.m, leftEyeView.m + 16, frameParemeters + 16);
+    std::copy(leftEyePerspective.m, leftEyePerspective.m + 16, frameParemeters + 32);
+    std::copy(rightEyeView.m, rightEyeView.m + 16, frameParemeters + 48);
+    std::copy(rightEyePerspective.m, rightEyePerspective.m + 16, frameParemeters + 64);
 }
 
 @end
