@@ -48,6 +48,20 @@
     return self;
 }
 
+- (EyeType)type
+{
+    EyeType type = EyeTypeMonocular;
+    if (_eye->type() == Eye::TypeLeft)
+    {
+        type = EyeTypeLeft;
+    }
+    else if (_eye->type() == Eye::TypeRight)
+    {
+        type = EyeTypeRight;
+    }
+    return type;
+}
+
 - (GLKMatrix4)eyeViewMatrix
 {
     if (_eye != nullptr)

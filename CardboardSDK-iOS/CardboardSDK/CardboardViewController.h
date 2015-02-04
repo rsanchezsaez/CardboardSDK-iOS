@@ -7,7 +7,16 @@
 #import <GLKit/GLKit.h>
 
 
+typedef NS_ENUM(NSInteger, EyeType)
+{
+    EyeTypeMonocular,
+    EyeTypeLeft,
+    EyeTypeRight,
+};
+
 @interface EyeWrapper : NSObject
+
+@property (nonatomic) EyeType type;
 
 - (GLKMatrix4)eyeViewMatrix;
 - (GLKMatrix4)perspectiveMatrixWithZNear:(float)zNear zFar:(float)zFar;
