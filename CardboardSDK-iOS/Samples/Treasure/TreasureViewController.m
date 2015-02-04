@@ -508,7 +508,7 @@
 
 - (void)drawEyeWithEye:(EyeWrapper *)eye
 {
-    // NSLog(@"%@", NSStringFromGLKMatrix4(_eyeTransform->eyeView()));
+    // DLog(@"%ld %@", eye.type, NSStringFromGLKMatrix4([eye eyeViewMatrix]));
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     

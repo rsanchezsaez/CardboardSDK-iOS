@@ -351,11 +351,8 @@
     
     if (self.vrModeEnabled)
     {
-        GLKMatrix4 leftEyeTranslate = GLKMatrix4Identity;
-        GLKMatrix4 rightEyeTranslate = GLKMatrix4Identity;
-        
-        GLKMatrix4Translate(leftEyeTranslate, halfInterLensDistance, 0, 0);
-        GLKMatrix4Translate(rightEyeTranslate, -halfInterLensDistance, 0, 0);
+        GLKMatrix4 leftEyeTranslate = GLKMatrix4MakeTranslation(halfInterLensDistance, 0, 0);
+        GLKMatrix4 rightEyeTranslate = GLKMatrix4MakeTranslation(-halfInterLensDistance, 0, 0);
         
         leftEye->setEyeView( GLKMatrix4Multiply(leftEyeTranslate, headTransform->headView()));
         rightEye->setEyeView( GLKMatrix4Multiply(rightEyeTranslate, headTransform->headView()));
