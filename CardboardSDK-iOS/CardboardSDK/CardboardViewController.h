@@ -44,7 +44,7 @@ typedef NS_ENUM(NSInteger, EyeType)
 @interface CardboardViewController : GLKViewController
 
 @property (nonatomic, readonly) GLKView *view;
-@property (nonatomic, readonly) NSLock *glLock;
+@property (nonatomic, readonly) NSRecursiveLock *glLock;
 
 @property (nonatomic, weak) id <StereoRendererDelegate> stereoRendererDelegate;
 @property (nonatomic) BOOL vrModeEnabled;

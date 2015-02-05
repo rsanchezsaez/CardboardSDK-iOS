@@ -107,7 +107,7 @@
     BOOL _frameParamentersReady;
 }
 
-@property (nonatomic) NSLock *glLock;
+@property (nonatomic) NSRecursiveLock *glLock;
 
 @property (nonatomic) EyeWrapper *leftEyeWrapper;
 @property (nonatomic) EyeWrapper *rightEyeWrapper;
@@ -153,7 +153,7 @@
     self.leftEyeWrapper = [EyeWrapper new];
     self.rightEyeWrapper = [EyeWrapper new];
 
-    self.glLock = [NSLock new];
+    self.glLock = [NSRecursiveLock new];
     
     _headTracker->startTracking([UIApplication sharedApplication].statusBarOrientation);
     _magnetSensor->start();
