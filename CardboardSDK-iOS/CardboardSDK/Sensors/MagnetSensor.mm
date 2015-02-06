@@ -25,7 +25,7 @@ void MagnetSensor::start()
         _manager.magnetometerUpdateInterval = 1.0f / 100.0f;
         [_manager startMagnetometerUpdatesToQueue:[NSOperationQueue currentQueue]
                                             withHandler:^(CMMagnetometerData *magnetometerData, NSError *error) {
-                                                addData(GLKVector3 {
+                                                addData((GLKVector3) {
                                                         (float) magnetometerData.magneticField.x,
                                                         (float) magnetometerData.magneticField.y,
                                                         (float) magnetometerData.magneticField.z});
@@ -57,9 +57,10 @@ void MagnetSensor::evaluateModel()
     for (int i = 0; i < 2; i++)
     {
         computeOffsets(kNumSamples * i, _baseline);
-        auto minmax = std::minmax_element(_offsets.begin(), _offsets.end());
-        minimums[i] = *minmax.first;
-        maximums[i] = *minmax.second;
+        auto min = std::min_element(_offsets.begin(), _offsets.end());
+        auto max = std::max_element(_offsets.begin(), _offsets.end());
+        minimums[i] = *min;
+        maximums[i] = *max;
     }
         
     if (minimums[0] < 30.0f && maximums[1] > 130.0f)

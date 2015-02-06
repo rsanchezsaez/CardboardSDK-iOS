@@ -18,7 +18,9 @@
 #include "Viewport.h"
 
 #include "DebugUtils.h"
+
 #include "GLHelpers.h"
+
 
 
 @interface EyeWrapper ()
@@ -69,112 +71,38 @@
 @end
 
 
-@interface StereoRenderer : NSObject
+@interface CardboardViewController () <GLKViewControllerDelegate>
+{
+    MagnetSensor *_magnetSensor;
+    HeadTracker *_headTracker;
+    HeadTransform *_headTransform;
+    HeadMountedDisplay *_headMountedDisplay;
+    
+    Eye *_monocularEye;
+    Eye *_leftEye;
+    Eye *_rightEye;
+    
+    DistortionRenderer *_distortionRenderer;
+    
+    float _distortionCorrectionScale;
+    
+    float _zNear;
+    float _zFar;
+    
+    BOOL _projectionChanged;
+    
+    BOOL _frameParamentersReady;
+    BOOL _convertTapIntoTrigger;
+    const char *_unityObjectName;
+    bool _InitialCardboardInsertedEvent;
+    bool _RemovedFromCardboard;
+    float _frameParameters[80];
+}
 
-@property (nonatomic, weak) id <StereoRendererDelegate> stereoRendererDelegate;
-@property (nonatomic) BOOL VRModeEnabled;
+@property (nonatomic) NSLock *glLock;
 
 @property (nonatomic) EyeWrapper *leftEyeWrapper;
 @property (nonatomic) EyeWrapper *rightEyeWrapper;
-
-@end
-
-
-@implementation StereoRenderer
-
-- (void)setupRendererWithView:(GLKView *)GLView
-{
-    _leftEyeWrapper = [EyeWrapper new];
-    _rightEyeWrapper = [EyeWrapper new];
-    [self.stereoRendererDelegate setupRendererWithView:GLView];
-}
-
-- (void)shutdownRendererWithView:(GLKView *)GLView
-{
-    [self.stereoRendererDelegate shutdownRendererWithView:GLView];
-}
-
-- (void)updateRenderViewSize:(CGSize)size
-{
-    if (self.VRModeEnabled)
-    {
-        [self.stereoRendererDelegate renderViewDidChangeSize:CGSizeMake(size.width / 2, size.height)];
-    }
-    else
-    {
-        [self.stereoRendererDelegate renderViewDidChangeSize:CGSizeMake(size.width, size.height)];
-    }
-}
-
-- (void)drawFrameWithHeadTransform:(HeadTransform *)headTransform leftEye:(Eye *)leftEye rightEye:(Eye *)rightEye
-{
-    GLCheckForError();
- 
-    // NSLog(@"%@", NSStringFromGLKMatrix4(leftEyeParams->transform()->eyeView()));
-
-    [self.stereoRendererDelegate prepareNewFrameWithHeadViewMatrix:headTransform->headView()];
-    
-    GLCheckForError();
-    
-    glEnable(GL_SCISSOR_TEST);
-    leftEye->viewport()->setGLViewport();
-    leftEye->viewport()->setGLScissor();
-    
-    GLCheckForError();
-    
-    _leftEyeWrapper.eye = leftEye;
-    [self.stereoRendererDelegate drawEyeWithEye:_leftEyeWrapper];
-
-    GLCheckForError();
-
-    if (rightEye == nullptr) { return; }
-
-    rightEye->viewport()->setGLViewport();
-    rightEye->viewport()->setGLScissor();
-
-    GLCheckForError();
-    
-    _rightEyeWrapper.eye = rightEye;
-    [self.stereoRendererDelegate drawEyeWithEye:_rightEyeWrapper];
-
-    GLCheckForError();
-}
-
-- (void)finishFrameWithViewPort:(Viewport *)viewport
-{
-    viewport->setGLViewport();
-    viewport->setGLScissor();
-    [self.stereoRendererDelegate finishFrameWithViewportRect:viewport->toCGRect()];
-}
-
-@end
-
-
-@interface CardboardViewController () <GLKViewControllerDelegate>
-
-@property (nonatomic) GLKView *view;
-
-@property (nonatomic, assign) MagnetSensor *magnetSensor;
-@property (nonatomic, assign) HeadTracker *headTracker;
-@property (nonatomic, assign) HeadTransform *headTransform;
-@property (nonatomic, assign) HeadMountedDisplay *headMountedDisplay;
-
-@property (nonatomic, assign) Eye *monocularEye;
-@property (nonatomic, assign) Eye *leftEye;
-@property (nonatomic, assign) Eye *rightEye;
-
-@property (nonatomic, assign) DistortionRenderer *distortionRenderer;
-
-@property (nonatomic, assign) float distortionCorrectionScale;
-
-@property (nonatomic, assign) float zNear;
-@property (nonatomic, assign) float zFar;
-
-@property (nonatomic, assign) BOOL projectionChanged;
-
-@property (nonatomic, strong) StereoRenderer *stereoRenderer;
-
-@property (nonatomic, assign) UIDeviceOrientation currentOrientation;
 
 @end
 
@@ -186,56 +114,59 @@
     self = [super init];
     if (!self) { return nil; }
     
-    // Do not allow the display going into sleep
+    // Do not allow the display to go into sleep
     [UIApplication sharedApplication].idleTimerDisabled = YES;
-
+    
     self.delegate = self;
-
-    self.magnetSensor = new MagnetSensor();
-    self.headTracker = new HeadTracker();
-    self.headTransform = new HeadTransform();
-    self.headMountedDisplay = new HeadMountedDisplay([UIScreen mainScreen]);
     
-    self.monocularEye = new Eye(Eye::TypeMonocular);
-    self.leftEye = new Eye(Eye::TypeLeft);
-    self.rightEye = new Eye(Eye::TypeRight);
-
-    self.distortionRenderer = new DistortionRenderer();
+    _magnetSensor = new MagnetSensor();
+    _headTracker = new HeadTracker();
+    _headTransform = new HeadTransform();
+    _headMountedDisplay = new HeadMountedDisplay([UIScreen mainScreen]);
     
-    self.stereoRenderer = [StereoRenderer new];
-    self.distortionCorrectionScale = 1.0f;
-
-    self.VRModeEnabled = YES;
-    self.distortionCorrectionEnabled = YES;
-
-    self.zNear = 0.1f;
-    self.zFar = 100.0f;
-
-    self.projectionChanged = YES;
-
+    _monocularEye = new Eye(Eye::TypeMonocular);
+    _leftEye = new Eye(Eye::TypeLeft);
+    _rightEye = new Eye(Eye::TypeRight);
+    
+    _distortionRenderer = new DistortionRenderer();
+    
+    _distortionCorrectionScale = 1.0f;
+    
+    _vrModeEnabled = YES;
+    _distortionCorrectionEnabled = YES;
+    
+    _zNear = 0.1f;
+    _zFar = 100.0f;
+    
+    _projectionChanged = YES;
+    
+    _frameParamentersReady = NO;
+    
+    self.leftEyeWrapper = [EyeWrapper new];
+    self.rightEyeWrapper = [EyeWrapper new];
+    
+    self.glLock = [NSLock new];
+    
+    _headTracker->startTracking([UIApplication sharedApplication].statusBarOrientation);
+    _magnetSensor->start();
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(magneticTriggerPressed:)
                                                  name:CBTriggerPressedNotification
                                                object:nil];
-
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(orientationDidChange:)
-                                                 name:UIDeviceOrientationDidChangeNotification
+                                                 name:UIApplicationDidChangeStatusBarOrientationNotification
                                                object:nil];
-
+    _InitialCardboardInsertedEvent = false;
+    _RemovedFromCardboard = false;
     return self;
 }
 
 - (void)orientationDidChange:(NSNotification *)notification
 {
-    UIDeviceOrientation newOrientation = [UIDevice currentDevice].orientation;
-    if (newOrientation != self.currentOrientation
-        && (newOrientation == UIDeviceOrientationLandscapeRight
-            || newOrientation == UIDeviceOrientationLandscapeLeft))
-    {
-        self.currentOrientation = newOrientation;
-        _headTracker->updateDeviceOrientation(newOrientation);
-    }
+    _headTracker->updateDeviceOrientation([UIApplication sharedApplication].statusBarOrientation);
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -255,7 +186,7 @@
     }
     self.view.drawableDepthFormat = GLKViewDrawableDepthFormat16;
     
-    [self.stereoRenderer setupRendererWithView:self.view];
+    [self.stereoRendererDelegate setupRendererWithView:self.view];
 }
 
 - (void)dealloc
@@ -263,77 +194,57 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     [self.stereoRendererDelegate shutdownRendererWithView:self.view];
-
-    if (self.magnetSensor != nullptr) { delete self.magnetSensor; }
-    if (self.headTracker != nullptr) { delete self.headTracker; }
-    if (self.headTransform != nullptr) { delete self.headTransform; }
-    if (self.headMountedDisplay != nullptr) { delete self.headMountedDisplay; }
-   
-    if (self.monocularEye != nullptr) { delete self.monocularEye; }
-    if (self.leftEye != nullptr) { delete self.leftEye; }
-    if (self.rightEye != nullptr) { delete self.rightEye; }
-
-    if (self.distortionRenderer != nullptr) { delete self.distortionRenderer; }
-}
-
-- (id<StereoRendererDelegate>)stereoRendererDelegate
-{
-    return self.stereoRenderer.stereoRendererDelegate;
-}
-
-- (void)setStereoRendererDelegate:(id<StereoRendererDelegate>)stereoRenderer
-{
-    self.stereoRenderer.stereoRendererDelegate = stereoRenderer;
-}
-
-- (BOOL)VRModeEnabled
-{
-    return self.stereoRenderer.VRModeEnabled;
-}
-
-- (void)setVRModeEnabled:(BOOL)VRModeEnabled
-{
-    self.stereoRenderer.VRModeEnabled = VRModeEnabled;
+    
+    if (_magnetSensor != nullptr) { delete _magnetSensor; }
+    if (_headTracker != nullptr) { delete _headTracker; }
+    if (_headTransform != nullptr) { delete _headTransform; }
+    if (_headMountedDisplay != nullptr) { delete _headMountedDisplay; }
+    
+    if (_monocularEye != nullptr) { delete _monocularEye; }
+    if (_leftEye != nullptr) { delete _leftEye; }
+    if (_rightEye != nullptr) { delete _rightEye; }
+    
+    if (_distortionRenderer != nullptr) { delete _distortionRenderer; }
 }
 
 - (BOOL)vignetteEnabled
 {
-    return self.distortionRenderer->vignetteEnabled();
+    return _distortionRenderer->vignetteEnabled();
 }
 
 - (void)setVignetteEnabled:(BOOL)vignetteEnabled
 {
-    self.distortionRenderer->setVignetteEnabled(vignetteEnabled);
+    _distortionRenderer->setVignetteEnabled(vignetteEnabled);
 }
 
 - (BOOL)chromaticAberrationCorrectionEnabled
 {
-    return self.distortionRenderer->chromaticAberrationEnabled();
+    return _distortionRenderer->chromaticAberrationEnabled();
 }
 
 - (void)setChromaticAberrationCorrectionEnabled:(BOOL)chromaticAberrationCorrectionEnabled
 {
-    self.distortionRenderer->setChromaticAberrationEnabled(chromaticAberrationCorrectionEnabled);
+    _distortionRenderer->setChromaticAberrationEnabled(chromaticAberrationCorrectionEnabled);
 }
 
 - (BOOL)restoreGLStateEnabled
 {
-    return self.distortionRenderer->restoreGLStateEnabled();
+    return _distortionRenderer->restoreGLStateEnabled();
 }
 
 - (void)setRestoreGLStateEnabled:(BOOL)restoreGLStateEnabled
 {
-    self.distortionRenderer->setRestoreGLStateEnabled(restoreGLStateEnabled);
+    _distortionRenderer->setRestoreGLStateEnabled(restoreGLStateEnabled);
 }
 
 - (BOOL)neckModelEnabled
 {
-    return self.headTracker->neckModelEnabled();
+    return _headTracker->neckModelEnabled();
 }
 
 - (void)setNeckModelEnabled:(BOOL)neckModelEnabled
 {
-    self.headTracker->setNeckModelEnabled(neckModelEnabled);
+    _headTracker->setNeckModelEnabled(neckModelEnabled);
 }
 
 - (void)magneticTriggerPressed:(NSNotification *)notification
@@ -348,43 +259,50 @@
 {
     if (pause)
     {
-        self.headTracker->stopTracking();
-        self.magnetSensor->stop();
+        _headTracker->stopTracking();
+        _magnetSensor->stop();
     }
     else
     {
-        self.headTracker->startTracking();
-        self.magnetSensor->start();
+        _headTracker->startTracking([UIApplication sharedApplication].statusBarOrientation);
+        _magnetSensor->start();
     }
 }
 
 - (void)glkViewControllerUpdate:(GLKViewController *)controller
 {
+    if (self.paused || !_headTracker->isReady()) { return; }
     
+    [self calculateFrameParametersWithHeadTransform:_headTransform
+                                            leftEye:_leftEye
+                                           rightEye:_rightEye
+                                       monocularEye:_monocularEye];
+    _frameParamentersReady = YES;
 }
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 {
-    if (self.paused) { return; }
+    if (self.paused || !_headTracker->isReady() || !_frameParamentersReady) { return; }
     
     // glInsertEventMarkerEXT(0, "com.apple.GPUTools.event.debug-frame");
-
+    
     GLCheckForError();
     
-    [self calculateFrameParametersWithHeadTransform:_headTransform leftEye:_leftEye rightEye:_rightEye monocularEye:_monocularEye];
+    BOOL lockAcquired = [_glLock tryLock];
+    if (!lockAcquired) { return; }
     
-    if (self.VRModeEnabled)
+    if (self.vrModeEnabled)
     {
         if (_distortionCorrectionEnabled)
         {
             _distortionRenderer->beforeDrawFrame();
             
-            [_stereoRenderer drawFrameWithHeadTransform:_headTransform
-                                                leftEye:_leftEye
-                                               rightEye:_rightEye];
+            [self drawFrameWithHeadTransform:_headTransform
+                                     leftEye:_leftEye
+                                    rightEye:_rightEye];
             
             GLCheckForError();
-
+            
             // Rebind original framebuffer
             [self.view bindDrawable];
             _distortionRenderer->afterDrawFrame();
@@ -393,21 +311,23 @@
         }
         else
         {
-            [_stereoRenderer drawFrameWithHeadTransform:_headTransform
-                                                leftEye:_leftEye
-                                               rightEye:_rightEye];
+            [self drawFrameWithHeadTransform:_headTransform
+                                     leftEye:_leftEye
+                                    rightEye:_rightEye];
         }
     }
     else
     {
-        [_stereoRenderer drawFrameWithHeadTransform:_headTransform
-                                            leftEye:_monocularEye
-                                           rightEye:nullptr];
+        [self drawFrameWithHeadTransform:_headTransform
+                                 leftEye:_monocularEye
+                                rightEye:nullptr];
     }
     
-    [_stereoRenderer finishFrameWithViewPort:_monocularEye->viewport()];
+    [self finishFrameWithViewPort:_monocularEye->viewport()];
     
     GLCheckForError();
+    
+    [_glLock unlock];
 }
 
 - (void)calculateFrameParametersWithHeadTransform:(HeadTransform *)headTransform
@@ -422,7 +342,7 @@
     
     // NSLog(@"%@", NSStringFromGLKMatrix4(_headTracker->lastHeadView()));
     
-    if (self.VRModeEnabled)
+    if (self.vrModeEnabled)
     {
         GLKMatrix4 leftEyeTranslate = GLKMatrix4Identity;
         GLKMatrix4 rightEyeTranslate = GLKMatrix4Identity;
@@ -443,7 +363,7 @@
         ScreenParams *screenParams = _headMountedDisplay->getScreen();
         monocularEye->viewport()->setViewport(0, 0, screenParams->width(), screenParams->height());
         
-        if (!self.VRModeEnabled)
+        if (!self.vrModeEnabled)
         {
             [self updateMonocularFov:monocularEye->fov()];
         }
@@ -515,7 +435,7 @@
 {
     CardboardDeviceParams *cardboardDeviceParams = _headMountedDisplay->getCardboard();
     ScreenParams *screenParams = _headMountedDisplay->getScreen();
-
+    
     float halfInterLensDistance = cardboardDeviceParams->interLensDistance() * 0.5f;
     float eyeToScreenDistance = [self virtualEyeToScreenDistance];
     
@@ -548,7 +468,118 @@
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    [self.stereoRenderer updateRenderViewSize:self.view.bounds.size];
+    [self updateRenderViewSize:self.view.bounds.size];
+}
+
+#pragma mark Stereo renderer methods
+
+- (void)updateRenderViewSize:(CGSize)size
+{
+    if (self.vrModeEnabled)
+    {
+        [self.stereoRendererDelegate renderViewDidChangeSize:CGSizeMake(size.width / 2, size.height)];
+    }
+    else
+    {
+        [self.stereoRendererDelegate renderViewDidChangeSize:CGSizeMake(size.width, size.height)];
+    }
+}
+
+- (void)drawFrameWithHeadTransform:(HeadTransform *)headTransform leftEye:(Eye *)leftEye rightEye:(Eye *)rightEye
+{
+    GLCheckForError();
+    
+    // NSLog(@"%@", NSStringFromGLKMatrix4(leftEyeParams->transform()->eyeView()));
+    
+    [self.stereoRendererDelegate prepareNewFrameWithHeadViewMatrix:headTransform->headView()];
+    
+    GLCheckForError();
+    
+    glEnable(GL_SCISSOR_TEST);
+    leftEye->viewport()->setGLViewport();
+    leftEye->viewport()->setGLScissor();
+    
+    GLCheckForError();
+    
+    _leftEyeWrapper.eye = leftEye;
+    [self.stereoRendererDelegate drawEyeWithEye:_leftEyeWrapper];
+    
+    GLCheckForError();
+    
+    if (rightEye == nullptr) { return; }
+    
+    rightEye->viewport()->setGLViewport();
+    rightEye->viewport()->setGLScissor();
+    
+    GLCheckForError();
+    
+    _rightEyeWrapper.eye = rightEye;
+    [self.stereoRendererDelegate drawEyeWithEye:_rightEyeWrapper];
+    
+    GLCheckForError();
+}
+
+- (void)finishFrameWithViewPort:(Viewport *)viewport
+{
+    viewport->setGLViewport();
+    viewport->setGLScissor();
+    [self.stereoRendererDelegate finishFrameWithViewportRect:viewport->toCGRect()];
+}
+
+- (float *)getFrameParameters:(float *)frameParameters near:(float)near far:(float)far
+{
+    [self calculateFrameParametersWithHeadTransform:_headTransform
+                                            leftEye:_leftEye
+                                           rightEye:_rightEye
+                                       monocularEye:_monocularEye];
+    
+    GLKMatrix4 headView = _headTransform->headView();
+    GLKMatrix4 leftEyeView = _leftEye->eyeView();
+    GLKMatrix4 leftEyePerspective = _leftEye->perspective(near, far);
+    GLKMatrix4 rightEyeView = _rightEye->eyeView();
+    GLKMatrix4 rightEyePerspective = _rightEye->perspective(near, far);
+    
+
+    std::copy(headView.m, headView.m + 16, frameParameters);
+    std::copy(leftEyeView.m, leftEyeView.m + 16, frameParameters + 16);
+    std::copy(leftEyePerspective.m, leftEyePerspective.m + 16, frameParameters + 32);
+    std::copy(rightEyeView.m, rightEyeView.m + 16, frameParameters + 48);
+    std::copy(rightEyePerspective.m, rightEyePerspective.m + 16, frameParameters + 64);
+    /*
+    std::copy(headView.m, headView.m + 16, _frameParameters);
+    std::copy(leftEyeView.m, leftEyeView.m + 16, _frameParameters + 16);
+    std::copy(leftEyePerspective.m, leftEyePerspective.m + 16, _frameParameters + 32);
+    std::copy(rightEyeView.m, rightEyeView.m + 16, _frameParameters + 48);
+    std::copy(rightEyePerspective.m, rightEyePerspective.m + 16, _frameParameters + 64);
+     */
+    return frameParameters;
+}
+
+- (void)setConvertTapIntoTrigger:(BOOL) enabled
+{
+    _convertTapIntoTrigger = enabled;
+}
+
+- (void)initFromUnity:(const char *) unityObjectName {
+    _unityObjectName = unityObjectName;
+    if (_InitialCardboardInsertedEvent && !_RemovedFromCardboard) {
+        UnitySendMessage((const char*)_unityObjectName, "OnInsertedCardboardInternal", "");
+    }
+}
+
+- (void)injectMotionEventInternal:(UIEventType) eventID
+                            withX:(int)x
+                            withY:(int)y
+                       withSource:(int)source
+                     withDownTime:(long)downTime
+{
+    NSTimeInterval currentTimestamp = CACurrentMediaTime();
+    /*
+    - (void)touchesBegan:(NSSet*)touches withEvent:(UIEvent*)event;
+    - (void)touchesEnded:(NSSet*)touches withEvent:(UIEvent*)event;
+    - (void)touchesCancelled:(NSSet*)touches withEvent:(UIEvent*)event;
+    - (void)touchesMoved:(NSSet*)touches withEvent:(UIEvent*)event;
+    */
 }
 
 @end

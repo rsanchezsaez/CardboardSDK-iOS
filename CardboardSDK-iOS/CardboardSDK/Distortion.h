@@ -9,6 +9,9 @@
 
 #import <Foundation/Foundation.h>
 
+#define constexpr const
+#define nullptr NULL
+
 
 class Distortion
 {

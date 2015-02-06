@@ -10,6 +10,8 @@
 #import <Foundation/Foundation.h>
 #import <GLKit/GLKit.h>
 
+#define nullptr NULL
+
 
 class FieldOfView
 {
@@ -36,7 +38,6 @@ class FieldOfView
     NSString *toString();
 
   private:
-    constexpr static float s_defaultViewAngle = 40.0f;
 
     float _left;
     float _right;

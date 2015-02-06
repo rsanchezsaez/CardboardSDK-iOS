@@ -63,13 +63,11 @@ DistortionRenderer::~DistortionRenderer()
 {
     if (_glStateBackup != nullptr) { delete _glStateBackup; }
     if (_glStateBackupAberration != nullptr) { delete _glStateBackupAberration; }
-    
     if (_leftEyeDistortionMesh != nullptr) { delete _leftEyeDistortionMesh; }
     if (_rightEyeDistortionMesh != nullptr) { delete _rightEyeDistortionMesh; }
-        
+    if (_headMountedDisplay != nullptr) { delete _headMountedDisplay; }
     if (_leftEyeViewport != nullptr) { delete _leftEyeViewport; }
     if (_rightEyeViewport != nullptr) { delete _rightEyeViewport; }
-    
     if (_programHolder != nullptr) { delete _programHolder; }
     if (_programHolderAberration != nullptr) { delete _programHolderAberration; }
 }

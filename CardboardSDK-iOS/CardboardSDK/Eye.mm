@@ -8,6 +8,7 @@
 
 #include "FieldOfView.h"
 #include "Viewport.h"
+#define nullptr NULL
 
 
 Eye::Eye(Type eyeType) :

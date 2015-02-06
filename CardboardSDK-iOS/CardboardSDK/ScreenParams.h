@@ -9,6 +9,8 @@
 
 #import <UIKit/UIKit.h>
 
+#define nullptr NULL
+
 
 class ScreenParams
 {

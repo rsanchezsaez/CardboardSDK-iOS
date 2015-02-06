@@ -10,6 +10,7 @@
 		35B1883D19ABEF58005A9930 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 35B1883C19ABEF58005A9930 /* AppDelegate.m */; };
 		35B1886119ABF053005A9930 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35B1886019ABF053005A9930 /* CoreMotion.framework */; };
 		35B1886319ABF059005A9930 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35B1886219ABF059005A9930 /* GLKit.framework */; };
+		9D765EE41A80188000AE4C16 /* UnityCardboardViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9D765EE31A80188000AE4C16 /* UnityCardboardViewController.mm */; };
 		BC0B3DF41A6D7C7C00ADD925 /* Eye.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC0B3DF31A6D7C7C00ADD925 /* Eye.mm */; };
 		BC0B3DF71A6E795D00ADD925 /* GLStateBackup.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC0B3DF51A6E795D00ADD925 /* GLStateBackup.mm */; };
 		BC6733601A5D90C700C6D79B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BC6733381A5D90C700C6D79B /* main.m */; };
@@ -44,6 +45,8 @@
 		35B1883C19ABEF58005A9930 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		35B1886019ABF053005A9930 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		35B1886219ABF059005A9930 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		9D765EE21A80188000AE4C16 /* UnityCardboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnityCardboardViewController.h; sourceTree = "<group>"; };
+		9D765EE31A80188000AE4C16 /* UnityCardboardViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UnityCardboardViewController.mm; sourceTree = "<group>"; };
 		BC0B3DF21A6D7C7C00ADD925 /* Eye.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Eye.h; sourceTree = "<group>"; };
 		BC0B3DF31A6D7C7C00ADD925 /* Eye.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Eye.mm; sourceTree = "<group>"; };
 		BC0B3DF51A6E795D00ADD925 /* GLStateBackup.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GLStateBackup.mm; sourceTree = "<group>"; };
@@ -177,6 +180,8 @@
 				BC67335E1A5D90C700C6D79B /* Viewport.mm */,
 				BC0B3DF61A6E795D00ADD925 /* GLStateBackup.h */,
 				BC0B3DF51A6E795D00ADD925 /* GLStateBackup.mm */,
+				9D765EE21A80188000AE4C16 /* UnityCardboardViewController.h */,
+				9D765EE31A80188000AE4C16 /* UnityCardboardViewController.mm */,
 			);
 			path = CardboardSDK;
 			sourceTree = "<group>";
@@ -340,6 +345,7 @@
 				BC6733671A5D90C700C6D79B /* FieldOfView.mm in Sources */,
 				BC6733691A5D90C700C6D79B /* HeadTransform.mm in Sources */,
 				BC67336D1A5D90C700C6D79B /* OrientationEKF.mm in Sources */,
+				9D765EE41A80188000AE4C16 /* UnityCardboardViewController.mm in Sources */,
 				BC6733621A5D90C700C6D79B /* CardboardViewController.mm in Sources */,
 				BC6733701A5D90C700C6D79B /* MagnetSensor.mm in Sources */,
 			);

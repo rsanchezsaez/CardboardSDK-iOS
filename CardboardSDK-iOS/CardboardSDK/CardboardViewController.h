@@ -34,12 +34,23 @@
 
 @interface CardboardViewController : GLKViewController
 
-@property (nonatomic, weak) id <StereoRendererDelegate> stereoRendererDelegate;
-@property (nonatomic) BOOL VRModeEnabled;
+@property (nonatomic, readonly) GLKView *view;
+@property (nonatomic, readonly) NSLock *glLock;
+
+@property (nonatomic, assign) id <StereoRendererDelegate> stereoRendererDelegate;
+@property (nonatomic) BOOL vrModeEnabled;
 @property (nonatomic) BOOL distortionCorrectionEnabled;
 @property (nonatomic) BOOL vignetteEnabled;
 @property (nonatomic) BOOL chromaticAberrationCorrectionEnabled;
 @property (nonatomic) BOOL restoreGLStateEnabled;
 @property (nonatomic) BOOL neckModelEnabled;
+
+//- (void)getFrameParameters:(float *)frameParemeters near:(float)near far:(float)far;
+- (float *)getFrameParameters:(float *)frameParameters near:(float)near far:(float)far;
+- (void)setConvertTapIntoTrigger:(BOOL) enabled;
+
+- (void)initFromUnity:(const char *) unityObjectName;
+
+
 
 @end
