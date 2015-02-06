@@ -1,6 +1,7 @@
 CardboardSDK-iOS
 ===============
 
+
 iOS port of  [Google's CardboardSDK](https://github.com/rsanchezsaez/cardboard-java).
 
 *Treasure* example fully running with magnetic trigger detection. Successfully tested on an iPhone 6 running iOS 8 and on a iPhone 5 running iOS 7.
@@ -38,3 +39,17 @@ In `HeadTracker.mm`, you can set `#define HEAD_TRACKER_MODE` to either
 *CardboardSDK-iOS*, as the original *CardboardSDK*, is available under the *Apache license*. See the [`LICENSE`](./LICENSE) file for more info.
 
 See  [`AUTHORS.md`](./AUTHORS.md) for some of the project contributors.
+
+### Unity iOS
+
+Included now is a unitypackage for running a fork of the Google Cardboard Unity SDK adapted to work with this SDK. In order to run this SDK in Unity:
+
+*Import the unitypackage into Unity.
+*Build the Unity project for iOS.
+*Open the generated XCode project.
+*Right click on the "classes" group, import the CardboardSDK folder.
+*Attach an iOS device and run (tested on iPhone 6). Everything should work properly.
+
+##TODO
+- Interface the magnetic trigger functionality with Unity
+- Find a way to port the "DoScreenTap" coroutine to iOS.
