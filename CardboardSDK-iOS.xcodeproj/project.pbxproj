@@ -14,7 +14,7 @@
 		BC0B3DF71A6E795D00ADD925 /* GLStateBackup.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC0B3DF51A6E795D00ADD925 /* GLStateBackup.mm */; };
 		BC6733601A5D90C700C6D79B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BC6733381A5D90C700C6D79B /* main.m */; };
 		BC6733611A5D90C700C6D79B /* CardboardDeviceParams.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC67333B1A5D90C700C6D79B /* CardboardDeviceParams.mm */; };
-		BC6733621A5D90C700C6D79B /* CardboardViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC67333D1A5D90C700C6D79B /* CardboardViewController.mm */; };
+		BC6733621A5D90C700C6D79B /* CBDViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC67333D1A5D90C700C6D79B /* CBDViewController.mm */; };
 		BC6733631A5D90C700C6D79B /* Distortion.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC67333F1A5D90C700C6D79B /* Distortion.mm */; };
 		BC6733641A5D90C700C6D79B /* DistortionRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC6733411A5D90C700C6D79B /* DistortionRenderer.mm */; };
 		BC6733671A5D90C700C6D79B /* FieldOfView.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC6733471A5D90C700C6D79B /* FieldOfView.mm */; };
@@ -55,8 +55,8 @@
 		BC6733381A5D90C700C6D79B /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		BC67333A1A5D90C700C6D79B /* CardboardDeviceParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardboardDeviceParams.h; sourceTree = "<group>"; };
 		BC67333B1A5D90C700C6D79B /* CardboardDeviceParams.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CardboardDeviceParams.mm; sourceTree = "<group>"; };
-		BC67333C1A5D90C700C6D79B /* CardboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardboardViewController.h; sourceTree = "<group>"; };
-		BC67333D1A5D90C700C6D79B /* CardboardViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CardboardViewController.mm; sourceTree = "<group>"; };
+		BC67333C1A5D90C700C6D79B /* CBDViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBDViewController.h; sourceTree = "<group>"; };
+		BC67333D1A5D90C700C6D79B /* CBDViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CBDViewController.mm; sourceTree = "<group>"; };
 		BC67333E1A5D90C700C6D79B /* Distortion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Distortion.h; sourceTree = "<group>"; };
 		BC67333F1A5D90C700C6D79B /* Distortion.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Distortion.mm; sourceTree = "<group>"; };
 		BC6733401A5D90C700C6D79B /* DistortionRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DistortionRenderer.h; sourceTree = "<group>"; };
@@ -159,11 +159,11 @@
 			children = (
 				BC763B241A655C6E00463823 /* Misc */,
 				BC67334E1A5D90C700C6D79B /* Sensors */,
+				BC4FA72B1A63ECA4008E60E3 /* CardboardSDK.h */,
+				BC67333C1A5D90C700C6D79B /* CBDViewController.h */,
+				BC67333D1A5D90C700C6D79B /* CBDViewController.mm */,
 				BC67333A1A5D90C700C6D79B /* CardboardDeviceParams.h */,
 				BC67333B1A5D90C700C6D79B /* CardboardDeviceParams.mm */,
-				BC4FA72B1A63ECA4008E60E3 /* CardboardSDK.h */,
-				BC67333C1A5D90C700C6D79B /* CardboardViewController.h */,
-				BC67333D1A5D90C700C6D79B /* CardboardViewController.mm */,
 				BC67333E1A5D90C700C6D79B /* Distortion.h */,
 				BC67333F1A5D90C700C6D79B /* Distortion.mm */,
 				BC6733401A5D90C700C6D79B /* DistortionRenderer.h */,
@@ -350,7 +350,7 @@
 				BC6733671A5D90C700C6D79B /* FieldOfView.mm in Sources */,
 				BC6733691A5D90C700C6D79B /* HeadTransform.mm in Sources */,
 				BC67336D1A5D90C700C6D79B /* OrientationEKF.mm in Sources */,
-				BC6733621A5D90C700C6D79B /* CardboardViewController.mm in Sources */,
+				BC6733621A5D90C700C6D79B /* CBDViewController.mm in Sources */,
 				BC6733701A5D90C700C6D79B /* MagnetSensor.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

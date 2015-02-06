@@ -6,4 +6,4 @@
 #include "DebugUtils.h"
 
 #include "GLHelpers.h"
-#include "CardboardViewController.h"
+#include "CBDViewController.h"

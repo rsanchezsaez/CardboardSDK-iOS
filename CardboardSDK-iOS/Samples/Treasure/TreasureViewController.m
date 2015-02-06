@@ -12,7 +12,7 @@
 #import <OpenGLES/ES2/glext.h>
 
 
-@interface TreasureRenderer : NSObject <StereoRendererDelegate>
+@interface TreasureRenderer : NSObject <CBDStereoRendererDelegate>
 {
     GLuint _cubeVertexArray;
     GLuint _cubeVertexBuffer;
@@ -506,7 +506,7 @@
     GLCheckForError();
 }
 
-- (void)drawEyeWithEye:(EyeWrapper *)eye
+- (void)drawEyeWithEye:(CBDEye *)eye
 {
     // DLog(@"%ld %@", eye.type, NSStringFromGLKMatrix4([eye eyeViewMatrix]));
 

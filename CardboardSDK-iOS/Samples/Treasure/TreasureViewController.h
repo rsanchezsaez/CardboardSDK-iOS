@@ -5,9 +5,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CardboardViewController.h"
+#import "CardboardSDK.h"
 
 
-@interface TreasureViewController : CardboardViewController
+@interface TreasureViewController : CBDViewController
 
 @end

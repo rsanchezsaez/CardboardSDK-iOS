@@ -3,7 +3,7 @@
 //  CardboardSDK-iOS
 //
 
-#import "CardboardViewController.h"
+#import "CBDViewController.h"
 
 #include "CardboardDeviceParams.h"
 #include "Distortion.h"
@@ -22,7 +22,7 @@
 #include "GLHelpers.h"
 
 
-@interface EyeWrapper ()
+@interface CBDEye ()
 
 @property (nonatomic) CardboardSDK::Eye *eye;
 
@@ -31,7 +31,7 @@
 @end
 
 
-@implementation EyeWrapper
+@implementation CBDEye
 
 - (instancetype)init
 {
@@ -48,16 +48,16 @@
     return self;
 }
 
-- (EyeType)type
+- (CBDEyeType)type
 {
-    EyeType type = EyeTypeMonocular;
+    CBDEyeType type = CBDEyeTypeMonocular;
     if (_eye->type() == CardboardSDK::Eye::TypeLeft)
     {
-        type = EyeTypeLeft;
+        type = CBDEyeTypeLeft;
     }
     else if (_eye->type() == CardboardSDK::Eye::TypeRight)
     {
-        type = EyeTypeRight;
+        type = CBDEyeTypeRight;
     }
     return type;
 }
@@ -84,7 +84,7 @@
 @end
 
 
-@interface CardboardViewController () <GLKViewControllerDelegate>
+@interface CBDViewController () <GLKViewControllerDelegate>
 {
     CardboardSDK::MagnetSensor *_magnetSensor;
     CardboardSDK::HeadTracker *_headTracker;
@@ -109,13 +109,13 @@
 
 @property (nonatomic) NSRecursiveLock *glLock;
 
-@property (nonatomic) EyeWrapper *leftEyeWrapper;
-@property (nonatomic) EyeWrapper *rightEyeWrapper;
+@property (nonatomic) CBDEye *leftEyeWrapper;
+@property (nonatomic) CBDEye *rightEyeWrapper;
 
 @end
 
 
-@implementation CardboardViewController
+@implementation CBDViewController
 
 - (id)init
 {
@@ -150,8 +150,8 @@
 
     _frameParamentersReady = NO;
 
-    self.leftEyeWrapper = [EyeWrapper new];
-    self.rightEyeWrapper = [EyeWrapper new];
+    self.leftEyeWrapper = [CBDEye new];
+    self.rightEyeWrapper = [CBDEye new];
 
     self.glLock = [NSRecursiveLock new];
     
@@ -160,7 +160,7 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(magneticTriggerPressed:)
-                                                 name:CardboardSDK::CBTriggerPressedNotification
+                                                 name:CardboardSDK::CBDTriggerPressedNotification
                                                object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self

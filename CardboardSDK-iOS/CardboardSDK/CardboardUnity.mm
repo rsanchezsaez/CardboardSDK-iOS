@@ -8,7 +8,7 @@
 
 #import "CardboardUnity.h"
 
-#import "CardboardViewController.h"
+#import "CBDViewController.h"
 
 
 #ifdef __cplusplus
@@ -16,13 +16,13 @@
 #endif
 
       
-static CardboardViewController *cardboardViewController = nil;
+static CBDViewController *cardboardViewController = nil;
       
 void _unity_getFrameParameters(float *frameParameters)
 {
     if (!cardboardViewController)
     {
-        cardboardViewController = [CardboardViewController new];
+        cardboardViewController = [CBDViewController new];
     }
     
     [cardboardViewController getFrameParameters:frameParameters];

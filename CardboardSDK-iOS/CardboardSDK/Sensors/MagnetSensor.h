@@ -16,7 +16,7 @@
 namespace CardboardSDK
 {
 
-NSString *const CBTriggerPressedNotification = @"CBTriggerPressedNotification";
+NSString *const CBDTriggerPressedNotification = @"CBTriggerPressedNotification";
 
 class MagnetSensor
 {

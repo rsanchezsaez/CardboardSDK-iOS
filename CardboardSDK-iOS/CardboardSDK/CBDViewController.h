@@ -7,16 +7,16 @@
 #import <GLKit/GLKit.h>
 
 
-typedef NS_ENUM(NSInteger, EyeType)
+typedef NS_ENUM(NSInteger, CBDEyeType)
 {
-    EyeTypeMonocular,
-    EyeTypeLeft,
-    EyeTypeRight,
+    CBDEyeTypeMonocular,
+    CBDEyeTypeLeft,
+    CBDEyeTypeRight,
 };
 
-@interface EyeWrapper : NSObject
+@interface CBDEye : NSObject
 
-@property (nonatomic) EyeType type;
+@property (nonatomic) CBDEyeType type;
 
 - (GLKMatrix4)eyeViewMatrix;
 - (GLKMatrix4)perspectiveMatrixWithZNear:(float)zNear zFar:(float)zFar;
@@ -24,14 +24,14 @@ typedef NS_ENUM(NSInteger, EyeType)
 @end
 
 
-@protocol StereoRendererDelegate <NSObject>
+@protocol CBDStereoRendererDelegate <NSObject>
 
 - (void)setupRendererWithView:(GLKView *)GLView;
 - (void)shutdownRendererWithView:(GLKView *)GLView;
 - (void)renderViewDidChangeSize:(CGSize)size;
 
 - (void)prepareNewFrameWithHeadViewMatrix:(GLKMatrix4)headViewMatrix;
-- (void)drawEyeWithEye:(EyeWrapper *)eye;
+- (void)drawEyeWithEye:(CBDEye *)eye;
 - (void)finishFrameWithViewportRect:(CGRect)viewPort;
 
 @optional
@@ -41,12 +41,12 @@ typedef NS_ENUM(NSInteger, EyeType)
 @end
 
 
-@interface CardboardViewController : GLKViewController
+@interface CBDViewController : GLKViewController
 
 @property (nonatomic, readonly) GLKView *view;
 @property (nonatomic, readonly) NSRecursiveLock *glLock;
 
-@property (nonatomic, weak) id <StereoRendererDelegate> stereoRendererDelegate;
+@property (nonatomic, weak) id <CBDStereoRendererDelegate> stereoRendererDelegate;
 @property (nonatomic) BOOL vrModeEnabled;
 @property (nonatomic) BOOL distortionCorrectionEnabled;
 @property (nonatomic) BOOL vignetteEnabled;
