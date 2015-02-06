@@ -10,33 +10,33 @@
 		35B1883D19ABEF58005A9930 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 35B1883C19ABEF58005A9930 /* AppDelegate.m */; };
 		35B1886119ABF053005A9930 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35B1886019ABF053005A9930 /* CoreMotion.framework */; };
 		35B1886319ABF059005A9930 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35B1886219ABF059005A9930 /* GLKit.framework */; };
-		BC0B3DF41A6D7C7C00ADD925 /* Eye.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC0B3DF31A6D7C7C00ADD925 /* Eye.mm */; };
-		BC0B3DF71A6E795D00ADD925 /* GLStateBackup.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC0B3DF51A6E795D00ADD925 /* GLStateBackup.mm */; };
+		BC0745C41A850B540016A464 /* CardboardDeviceParams.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC07459A1A850B540016A464 /* CardboardDeviceParams.mm */; };
+		BC0745C51A850B540016A464 /* CardboardUnity.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC07459C1A850B540016A464 /* CardboardUnity.mm */; };
+		BC0745C61A850B540016A464 /* Distortion.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC07459E1A850B540016A464 /* Distortion.mm */; };
+		BC0745C71A850B540016A464 /* DistortionRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC0745A01A850B540016A464 /* DistortionRenderer.mm */; };
+		BC0745C81A850B540016A464 /* Eye.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC0745A21A850B540016A464 /* Eye.mm */; };
+		BC0745C91A850B540016A464 /* FieldOfView.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC0745A41A850B540016A464 /* FieldOfView.mm */; };
+		BC0745CA1A850B540016A464 /* GLStateBackup.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC0745A61A850B540016A464 /* GLStateBackup.mm */; };
+		BC0745CB1A850B540016A464 /* HeadMountedDisplay.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC0745A81A850B540016A464 /* HeadMountedDisplay.mm */; };
+		BC0745CC1A850B540016A464 /* HeadTransform.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC0745AA1A850B540016A464 /* HeadTransform.mm */; };
+		BC0745CD1A850B540016A464 /* ScreenParams.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC0745AC1A850B540016A464 /* ScreenParams.mm */; };
+		BC0745CE1A850B540016A464 /* HeadTracker.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC0745AF1A850B540016A464 /* HeadTracker.mm */; };
+		BC0745CF1A850B540016A464 /* Matrix3x3d.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC0745B21A850B540016A464 /* Matrix3x3d.mm */; };
+		BC0745D01A850B540016A464 /* OrientationEKF.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC0745B41A850B540016A464 /* OrientationEKF.mm */; };
+		BC0745D11A850B540016A464 /* SO3Util.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC0745B61A850B540016A464 /* SO3Util.mm */; };
+		BC0745D21A850B540016A464 /* Vector3d.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC0745B81A850B540016A464 /* Vector3d.mm */; };
+		BC0745D31A850B540016A464 /* MagnetSensor.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC0745BA1A850B540016A464 /* MagnetSensor.mm */; };
+		BC0745D41A850B540016A464 /* Viewport.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC0745BC1A850B540016A464 /* Viewport.mm */; };
+		BC0745D51A850B540016A464 /* CBDViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC0745BF1A850B540016A464 /* CBDViewController.mm */; };
+		BC0745D61A850B540016A464 /* GLHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = BC0745C31A850B540016A464 /* GLHelpers.m */; };
 		BC6733601A5D90C700C6D79B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BC6733381A5D90C700C6D79B /* main.m */; };
-		BC6733611A5D90C700C6D79B /* CardboardDeviceParams.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC67333B1A5D90C700C6D79B /* CardboardDeviceParams.mm */; };
-		BC6733621A5D90C700C6D79B /* CBDViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC67333D1A5D90C700C6D79B /* CBDViewController.mm */; };
-		BC6733631A5D90C700C6D79B /* Distortion.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC67333F1A5D90C700C6D79B /* Distortion.mm */; };
-		BC6733641A5D90C700C6D79B /* DistortionRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC6733411A5D90C700C6D79B /* DistortionRenderer.mm */; };
-		BC6733671A5D90C700C6D79B /* FieldOfView.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC6733471A5D90C700C6D79B /* FieldOfView.mm */; };
-		BC6733681A5D90C700C6D79B /* HeadMountedDisplay.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC6733491A5D90C700C6D79B /* HeadMountedDisplay.mm */; };
-		BC6733691A5D90C700C6D79B /* HeadTransform.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC67334B1A5D90C700C6D79B /* HeadTransform.mm */; };
-		BC67336A1A5D90C700C6D79B /* ScreenParams.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC67334D1A5D90C700C6D79B /* ScreenParams.mm */; };
-		BC67336B1A5D90C700C6D79B /* HeadTracker.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC6733501A5D90C700C6D79B /* HeadTracker.mm */; };
-		BC67336C1A5D90C700C6D79B /* Matrix3x3d.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC6733531A5D90C700C6D79B /* Matrix3x3d.mm */; };
-		BC67336D1A5D90C700C6D79B /* OrientationEKF.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC6733551A5D90C700C6D79B /* OrientationEKF.mm */; };
-		BC67336E1A5D90C700C6D79B /* SO3Util.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC6733571A5D90C700C6D79B /* SO3Util.mm */; };
-		BC67336F1A5D90C700C6D79B /* Vector3d.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC67335A1A5D90C700C6D79B /* Vector3d.mm */; };
-		BC6733701A5D90C700C6D79B /* MagnetSensor.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC67335C1A5D90C700C6D79B /* MagnetSensor.mm */; };
-		BC6733711A5D90C700C6D79B /* Viewport.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC67335E1A5D90C700C6D79B /* Viewport.mm */; };
 		BC763B2C1A655D1E00463823 /* grid_fragment.shader in Resources */ = {isa = PBXBuildFile; fileRef = BC763B291A655D1E00463823 /* grid_fragment.shader */; };
 		BC763B2D1A655D1E00463823 /* light_vertex.shader in Resources */ = {isa = PBXBuildFile; fileRef = BC763B2A1A655D1E00463823 /* light_vertex.shader */; };
 		BC763B2E1A655D1E00463823 /* passthrough_fragment.shader in Resources */ = {isa = PBXBuildFile; fileRef = BC763B2B1A655D1E00463823 /* passthrough_fragment.shader */; };
-		BC763B311A655D7600463823 /* GLHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = BC763B301A655D7600463823 /* GLHelpers.m */; };
 		BC763B341A655EB700463823 /* TreasureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC763B331A655EB700463823 /* TreasureViewController.m */; };
 		BC763B391A66BBBC00463823 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC763B381A66BBBC00463823 /* Images.xcassets */; };
 		BC763B3B1A66D13300463823 /* highlight_fragment.shader in Resources */ = {isa = PBXBuildFile; fileRef = BC763B3A1A66D13300463823 /* highlight_fragment.shader */; };
 		BC763B3D1A6828DA00463823 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC763B3C1A6828DA00463823 /* AudioToolbox.framework */; };
-		BC7687261A81985E00FE215B /* CardboardUnity.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC7687241A81985E00FE215B /* CardboardUnity.mm */; };
 		BCDBD2611A7BC0B300A51284 /* light_vertex_grid.shader in Resources */ = {isa = PBXBuildFile; fileRef = BCDBD2601A7BC0B300A51284 /* light_vertex_grid.shader */; };
 /* End PBXBuildFile section */
 
@@ -46,56 +46,56 @@
 		35B1883C19ABEF58005A9930 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		35B1886019ABF053005A9930 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		35B1886219ABF059005A9930 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
-		BC0B3DF21A6D7C7C00ADD925 /* Eye.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Eye.h; sourceTree = "<group>"; };
-		BC0B3DF31A6D7C7C00ADD925 /* Eye.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Eye.mm; sourceTree = "<group>"; };
-		BC0B3DF51A6E795D00ADD925 /* GLStateBackup.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GLStateBackup.mm; sourceTree = "<group>"; };
-		BC0B3DF61A6E795D00ADD925 /* GLStateBackup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLStateBackup.h; sourceTree = "<group>"; };
-		BC4FA72B1A63ECA4008E60E3 /* CardboardSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CardboardSDK.h; sourceTree = "<group>"; };
+		BC0745991A850B540016A464 /* CardboardDeviceParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardboardDeviceParams.h; sourceTree = "<group>"; };
+		BC07459A1A850B540016A464 /* CardboardDeviceParams.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CardboardDeviceParams.mm; sourceTree = "<group>"; };
+		BC07459B1A850B540016A464 /* CardboardUnity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardboardUnity.h; sourceTree = "<group>"; };
+		BC07459C1A850B540016A464 /* CardboardUnity.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CardboardUnity.mm; sourceTree = "<group>"; };
+		BC07459D1A850B540016A464 /* Distortion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Distortion.h; sourceTree = "<group>"; };
+		BC07459E1A850B540016A464 /* Distortion.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Distortion.mm; sourceTree = "<group>"; };
+		BC07459F1A850B540016A464 /* DistortionRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DistortionRenderer.h; sourceTree = "<group>"; };
+		BC0745A01A850B540016A464 /* DistortionRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DistortionRenderer.mm; sourceTree = "<group>"; };
+		BC0745A11A850B540016A464 /* Eye.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Eye.h; sourceTree = "<group>"; };
+		BC0745A21A850B540016A464 /* Eye.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Eye.mm; sourceTree = "<group>"; };
+		BC0745A31A850B540016A464 /* FieldOfView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FieldOfView.h; sourceTree = "<group>"; };
+		BC0745A41A850B540016A464 /* FieldOfView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FieldOfView.mm; sourceTree = "<group>"; };
+		BC0745A51A850B540016A464 /* GLStateBackup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLStateBackup.h; sourceTree = "<group>"; };
+		BC0745A61A850B540016A464 /* GLStateBackup.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GLStateBackup.mm; sourceTree = "<group>"; };
+		BC0745A71A850B540016A464 /* HeadMountedDisplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeadMountedDisplay.h; sourceTree = "<group>"; };
+		BC0745A81A850B540016A464 /* HeadMountedDisplay.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HeadMountedDisplay.mm; sourceTree = "<group>"; };
+		BC0745A91A850B540016A464 /* HeadTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeadTransform.h; sourceTree = "<group>"; };
+		BC0745AA1A850B540016A464 /* HeadTransform.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HeadTransform.mm; sourceTree = "<group>"; };
+		BC0745AB1A850B540016A464 /* ScreenParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenParams.h; sourceTree = "<group>"; };
+		BC0745AC1A850B540016A464 /* ScreenParams.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ScreenParams.mm; sourceTree = "<group>"; };
+		BC0745AE1A850B540016A464 /* HeadTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeadTracker.h; sourceTree = "<group>"; };
+		BC0745AF1A850B540016A464 /* HeadTracker.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HeadTracker.mm; sourceTree = "<group>"; };
+		BC0745B11A850B540016A464 /* Matrix3x3d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Matrix3x3d.h; sourceTree = "<group>"; };
+		BC0745B21A850B540016A464 /* Matrix3x3d.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Matrix3x3d.mm; sourceTree = "<group>"; };
+		BC0745B31A850B540016A464 /* OrientationEKF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrientationEKF.h; sourceTree = "<group>"; };
+		BC0745B41A850B540016A464 /* OrientationEKF.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OrientationEKF.mm; sourceTree = "<group>"; };
+		BC0745B51A850B540016A464 /* SO3Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SO3Util.h; sourceTree = "<group>"; };
+		BC0745B61A850B540016A464 /* SO3Util.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SO3Util.mm; sourceTree = "<group>"; };
+		BC0745B71A850B540016A464 /* Vector3d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vector3d.h; sourceTree = "<group>"; };
+		BC0745B81A850B540016A464 /* Vector3d.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Vector3d.mm; sourceTree = "<group>"; };
+		BC0745B91A850B540016A464 /* MagnetSensor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MagnetSensor.h; sourceTree = "<group>"; };
+		BC0745BA1A850B540016A464 /* MagnetSensor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MagnetSensor.mm; sourceTree = "<group>"; };
+		BC0745BB1A850B540016A464 /* Viewport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Viewport.h; sourceTree = "<group>"; };
+		BC0745BC1A850B540016A464 /* Viewport.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Viewport.mm; sourceTree = "<group>"; };
+		BC0745BD1A850B540016A464 /* CardboardSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardboardSDK.h; sourceTree = "<group>"; };
+		BC0745BE1A850B540016A464 /* CBDViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBDViewController.h; sourceTree = "<group>"; };
+		BC0745BF1A850B540016A464 /* CBDViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CBDViewController.mm; sourceTree = "<group>"; };
+		BC0745C11A850B540016A464 /* DebugUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugUtils.h; sourceTree = "<group>"; };
+		BC0745C21A850B540016A464 /* GLHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLHelpers.h; sourceTree = "<group>"; };
+		BC0745C31A850B540016A464 /* GLHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLHelpers.m; sourceTree = "<group>"; };
 		BC6733371A5D90C700C6D79B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BC6733381A5D90C700C6D79B /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		BC67333A1A5D90C700C6D79B /* CardboardDeviceParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardboardDeviceParams.h; sourceTree = "<group>"; };
-		BC67333B1A5D90C700C6D79B /* CardboardDeviceParams.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CardboardDeviceParams.mm; sourceTree = "<group>"; };
-		BC67333C1A5D90C700C6D79B /* CBDViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBDViewController.h; sourceTree = "<group>"; };
-		BC67333D1A5D90C700C6D79B /* CBDViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CBDViewController.mm; sourceTree = "<group>"; };
-		BC67333E1A5D90C700C6D79B /* Distortion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Distortion.h; sourceTree = "<group>"; };
-		BC67333F1A5D90C700C6D79B /* Distortion.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Distortion.mm; sourceTree = "<group>"; };
-		BC6733401A5D90C700C6D79B /* DistortionRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DistortionRenderer.h; sourceTree = "<group>"; };
-		BC6733411A5D90C700C6D79B /* DistortionRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DistortionRenderer.mm; sourceTree = "<group>"; };
-		BC6733461A5D90C700C6D79B /* FieldOfView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FieldOfView.h; sourceTree = "<group>"; };
-		BC6733471A5D90C700C6D79B /* FieldOfView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FieldOfView.mm; sourceTree = "<group>"; };
-		BC6733481A5D90C700C6D79B /* HeadMountedDisplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeadMountedDisplay.h; sourceTree = "<group>"; };
-		BC6733491A5D90C700C6D79B /* HeadMountedDisplay.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HeadMountedDisplay.mm; sourceTree = "<group>"; };
-		BC67334A1A5D90C700C6D79B /* HeadTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeadTransform.h; sourceTree = "<group>"; };
-		BC67334B1A5D90C700C6D79B /* HeadTransform.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HeadTransform.mm; sourceTree = "<group>"; };
-		BC67334C1A5D90C700C6D79B /* ScreenParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenParams.h; sourceTree = "<group>"; };
-		BC67334D1A5D90C700C6D79B /* ScreenParams.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ScreenParams.mm; sourceTree = "<group>"; };
-		BC67334F1A5D90C700C6D79B /* HeadTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeadTracker.h; sourceTree = "<group>"; };
-		BC6733501A5D90C700C6D79B /* HeadTracker.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HeadTracker.mm; sourceTree = "<group>"; };
-		BC6733521A5D90C700C6D79B /* Matrix3x3d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Matrix3x3d.h; sourceTree = "<group>"; };
-		BC6733531A5D90C700C6D79B /* Matrix3x3d.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Matrix3x3d.mm; sourceTree = "<group>"; };
-		BC6733541A5D90C700C6D79B /* OrientationEKF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrientationEKF.h; sourceTree = "<group>"; };
-		BC6733551A5D90C700C6D79B /* OrientationEKF.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OrientationEKF.mm; sourceTree = "<group>"; };
-		BC6733561A5D90C700C6D79B /* SO3Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SO3Util.h; sourceTree = "<group>"; };
-		BC6733571A5D90C700C6D79B /* SO3Util.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SO3Util.mm; sourceTree = "<group>"; };
-		BC6733591A5D90C700C6D79B /* Vector3d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vector3d.h; sourceTree = "<group>"; };
-		BC67335A1A5D90C700C6D79B /* Vector3d.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Vector3d.mm; sourceTree = "<group>"; };
-		BC67335B1A5D90C700C6D79B /* MagnetSensor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MagnetSensor.h; sourceTree = "<group>"; };
-		BC67335C1A5D90C700C6D79B /* MagnetSensor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MagnetSensor.mm; sourceTree = "<group>"; };
-		BC67335D1A5D90C700C6D79B /* Viewport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Viewport.h; sourceTree = "<group>"; };
-		BC67335E1A5D90C700C6D79B /* Viewport.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Viewport.mm; sourceTree = "<group>"; };
 		BC763B291A655D1E00463823 /* grid_fragment.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = grid_fragment.shader; sourceTree = "<group>"; };
 		BC763B2A1A655D1E00463823 /* light_vertex.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = light_vertex.shader; sourceTree = "<group>"; };
 		BC763B2B1A655D1E00463823 /* passthrough_fragment.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = passthrough_fragment.shader; sourceTree = "<group>"; };
-		BC763B2F1A655D7600463823 /* GLHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLHelpers.h; sourceTree = "<group>"; };
-		BC763B301A655D7600463823 /* GLHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLHelpers.m; sourceTree = "<group>"; };
 		BC763B321A655EB700463823 /* TreasureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TreasureViewController.h; sourceTree = "<group>"; };
 		BC763B331A655EB700463823 /* TreasureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TreasureViewController.m; sourceTree = "<group>"; };
-		BC763B361A66A1D100463823 /* DebugUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugUtils.h; sourceTree = "<group>"; };
 		BC763B381A66BBBC00463823 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		BC763B3A1A66D13300463823 /* highlight_fragment.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = highlight_fragment.shader; sourceTree = "<group>"; };
 		BC763B3C1A6828DA00463823 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
-		BC7687241A81985E00FE215B /* CardboardUnity.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CardboardUnity.mm; sourceTree = "<group>"; };
-		BC7687251A81985E00FE215B /* CardboardUnity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardboardUnity.h; sourceTree = "<group>"; };
 		BCCBC5821A5D93170093F31A /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		BCDBD2601A7BC0B300A51284 /* light_vertex_grid.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = light_vertex_grid.shader; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -134,7 +134,7 @@
 		35B1883619ABEF58005A9930 /* CardboardSDK-iOS */ = {
 			isa = PBXGroup;
 			children = (
-				BC6733391A5D90C700C6D79B /* CardboardSDK */,
+				BC0745971A850B540016A464 /* CardboardSDK */,
 				BCCBC5841A5D94100093F31A /* Samples */,
 				BC6733361A5D90C700C6D79B /* Supporting Files */,
 				35B1883B19ABEF58005A9930 /* AppDelegate.h */,
@@ -142,6 +142,85 @@
 				BC763B381A66BBBC00463823 /* Images.xcassets */,
 			);
 			path = "CardboardSDK-iOS";
+			sourceTree = "<group>";
+		};
+		BC0745971A850B540016A464 /* CardboardSDK */ = {
+			isa = PBXGroup;
+			children = (
+				BC0745981A850B540016A464 /* Cardboard */,
+				BC0745C01A850B540016A464 /* Misc */,
+				BC0745BD1A850B540016A464 /* CardboardSDK.h */,
+				BC0745BE1A850B540016A464 /* CBDViewController.h */,
+				BC0745BF1A850B540016A464 /* CBDViewController.mm */,
+			);
+			path = CardboardSDK;
+			sourceTree = "<group>";
+		};
+		BC0745981A850B540016A464 /* Cardboard */ = {
+			isa = PBXGroup;
+			children = (
+				BC0745AD1A850B540016A464 /* Sensors */,
+				BC0745991A850B540016A464 /* CardboardDeviceParams.h */,
+				BC07459A1A850B540016A464 /* CardboardDeviceParams.mm */,
+				BC07459B1A850B540016A464 /* CardboardUnity.h */,
+				BC07459C1A850B540016A464 /* CardboardUnity.mm */,
+				BC07459D1A850B540016A464 /* Distortion.h */,
+				BC07459E1A850B540016A464 /* Distortion.mm */,
+				BC07459F1A850B540016A464 /* DistortionRenderer.h */,
+				BC0745A01A850B540016A464 /* DistortionRenderer.mm */,
+				BC0745A11A850B540016A464 /* Eye.h */,
+				BC0745A21A850B540016A464 /* Eye.mm */,
+				BC0745A31A850B540016A464 /* FieldOfView.h */,
+				BC0745A41A850B540016A464 /* FieldOfView.mm */,
+				BC0745A51A850B540016A464 /* GLStateBackup.h */,
+				BC0745A61A850B540016A464 /* GLStateBackup.mm */,
+				BC0745A71A850B540016A464 /* HeadMountedDisplay.h */,
+				BC0745A81A850B540016A464 /* HeadMountedDisplay.mm */,
+				BC0745A91A850B540016A464 /* HeadTransform.h */,
+				BC0745AA1A850B540016A464 /* HeadTransform.mm */,
+				BC0745AB1A850B540016A464 /* ScreenParams.h */,
+				BC0745AC1A850B540016A464 /* ScreenParams.mm */,
+				BC0745BB1A850B540016A464 /* Viewport.h */,
+				BC0745BC1A850B540016A464 /* Viewport.mm */,
+			);
+			path = Cardboard;
+			sourceTree = "<group>";
+		};
+		BC0745AD1A850B540016A464 /* Sensors */ = {
+			isa = PBXGroup;
+			children = (
+				BC0745B01A850B540016A464 /* Internal */,
+				BC0745AE1A850B540016A464 /* HeadTracker.h */,
+				BC0745AF1A850B540016A464 /* HeadTracker.mm */,
+				BC0745B91A850B540016A464 /* MagnetSensor.h */,
+				BC0745BA1A850B540016A464 /* MagnetSensor.mm */,
+			);
+			path = Sensors;
+			sourceTree = "<group>";
+		};
+		BC0745B01A850B540016A464 /* Internal */ = {
+			isa = PBXGroup;
+			children = (
+				BC0745B11A850B540016A464 /* Matrix3x3d.h */,
+				BC0745B21A850B540016A464 /* Matrix3x3d.mm */,
+				BC0745B31A850B540016A464 /* OrientationEKF.h */,
+				BC0745B41A850B540016A464 /* OrientationEKF.mm */,
+				BC0745B51A850B540016A464 /* SO3Util.h */,
+				BC0745B61A850B540016A464 /* SO3Util.mm */,
+				BC0745B71A850B540016A464 /* Vector3d.h */,
+				BC0745B81A850B540016A464 /* Vector3d.mm */,
+			);
+			path = Internal;
+			sourceTree = "<group>";
+		};
+		BC0745C01A850B540016A464 /* Misc */ = {
+			isa = PBXGroup;
+			children = (
+				BC0745C11A850B540016A464 /* DebugUtils.h */,
+				BC0745C21A850B540016A464 /* GLHelpers.h */,
+				BC0745C31A850B540016A464 /* GLHelpers.m */,
+			);
+			path = Misc;
 			sourceTree = "<group>";
 		};
 		BC6733361A5D90C700C6D79B /* Supporting Files */ = {
@@ -152,77 +231,6 @@
 				BC6733381A5D90C700C6D79B /* main.m */,
 			);
 			path = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		BC6733391A5D90C700C6D79B /* CardboardSDK */ = {
-			isa = PBXGroup;
-			children = (
-				BC763B241A655C6E00463823 /* Misc */,
-				BC67334E1A5D90C700C6D79B /* Sensors */,
-				BC4FA72B1A63ECA4008E60E3 /* CardboardSDK.h */,
-				BC67333C1A5D90C700C6D79B /* CBDViewController.h */,
-				BC67333D1A5D90C700C6D79B /* CBDViewController.mm */,
-				BC67333A1A5D90C700C6D79B /* CardboardDeviceParams.h */,
-				BC67333B1A5D90C700C6D79B /* CardboardDeviceParams.mm */,
-				BC67333E1A5D90C700C6D79B /* Distortion.h */,
-				BC67333F1A5D90C700C6D79B /* Distortion.mm */,
-				BC6733401A5D90C700C6D79B /* DistortionRenderer.h */,
-				BC6733411A5D90C700C6D79B /* DistortionRenderer.mm */,
-				BC0B3DF21A6D7C7C00ADD925 /* Eye.h */,
-				BC0B3DF31A6D7C7C00ADD925 /* Eye.mm */,
-				BC6733461A5D90C700C6D79B /* FieldOfView.h */,
-				BC6733471A5D90C700C6D79B /* FieldOfView.mm */,
-				BC6733481A5D90C700C6D79B /* HeadMountedDisplay.h */,
-				BC6733491A5D90C700C6D79B /* HeadMountedDisplay.mm */,
-				BC67334A1A5D90C700C6D79B /* HeadTransform.h */,
-				BC67334B1A5D90C700C6D79B /* HeadTransform.mm */,
-				BC67334C1A5D90C700C6D79B /* ScreenParams.h */,
-				BC67334D1A5D90C700C6D79B /* ScreenParams.mm */,
-				BC67335D1A5D90C700C6D79B /* Viewport.h */,
-				BC67335E1A5D90C700C6D79B /* Viewport.mm */,
-				BC0B3DF61A6E795D00ADD925 /* GLStateBackup.h */,
-				BC0B3DF51A6E795D00ADD925 /* GLStateBackup.mm */,
-				BC7687241A81985E00FE215B /* CardboardUnity.mm */,
-				BC7687251A81985E00FE215B /* CardboardUnity.h */,
-			);
-			path = CardboardSDK;
-			sourceTree = "<group>";
-		};
-		BC67334E1A5D90C700C6D79B /* Sensors */ = {
-			isa = PBXGroup;
-			children = (
-				BC6733511A5D90C700C6D79B /* Internal */,
-				BC67334F1A5D90C700C6D79B /* HeadTracker.h */,
-				BC6733501A5D90C700C6D79B /* HeadTracker.mm */,
-				BC67335B1A5D90C700C6D79B /* MagnetSensor.h */,
-				BC67335C1A5D90C700C6D79B /* MagnetSensor.mm */,
-			);
-			path = Sensors;
-			sourceTree = "<group>";
-		};
-		BC6733511A5D90C700C6D79B /* Internal */ = {
-			isa = PBXGroup;
-			children = (
-				BC6733521A5D90C700C6D79B /* Matrix3x3d.h */,
-				BC6733531A5D90C700C6D79B /* Matrix3x3d.mm */,
-				BC6733541A5D90C700C6D79B /* OrientationEKF.h */,
-				BC6733551A5D90C700C6D79B /* OrientationEKF.mm */,
-				BC6733561A5D90C700C6D79B /* SO3Util.h */,
-				BC6733571A5D90C700C6D79B /* SO3Util.mm */,
-				BC6733591A5D90C700C6D79B /* Vector3d.h */,
-				BC67335A1A5D90C700C6D79B /* Vector3d.mm */,
-			);
-			path = Internal;
-			sourceTree = "<group>";
-		};
-		BC763B241A655C6E00463823 /* Misc */ = {
-			isa = PBXGroup;
-			children = (
-				BC763B361A66A1D100463823 /* DebugUtils.h */,
-				BC763B2F1A655D7600463823 /* GLHelpers.h */,
-				BC763B301A655D7600463823 /* GLHelpers.m */,
-			);
-			path = Misc;
 			sourceTree = "<group>";
 		};
 		BC763B281A655D1E00463823 /* Treasure */ = {
@@ -330,28 +338,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BC67336B1A5D90C700C6D79B /* HeadTracker.mm in Sources */,
-				BC67336F1A5D90C700C6D79B /* Vector3d.mm in Sources */,
+				BC0745CB1A850B540016A464 /* HeadMountedDisplay.mm in Sources */,
+				BC0745D21A850B540016A464 /* Vector3d.mm in Sources */,
+				BC0745CA1A850B540016A464 /* GLStateBackup.mm in Sources */,
+				BC0745CC1A850B540016A464 /* HeadTransform.mm in Sources */,
+				BC0745C61A850B540016A464 /* Distortion.mm in Sources */,
+				BC0745C81A850B540016A464 /* Eye.mm in Sources */,
+				BC0745CF1A850B540016A464 /* Matrix3x3d.mm in Sources */,
+				BC0745C71A850B540016A464 /* DistortionRenderer.mm in Sources */,
 				BC763B341A655EB700463823 /* TreasureViewController.m in Sources */,
+				BC0745C51A850B540016A464 /* CardboardUnity.mm in Sources */,
+				BC0745D51A850B540016A464 /* CBDViewController.mm in Sources */,
+				BC0745D11A850B540016A464 /* SO3Util.mm in Sources */,
+				BC0745CE1A850B540016A464 /* HeadTracker.mm in Sources */,
 				BC6733601A5D90C700C6D79B /* main.m in Sources */,
-				BC0B3DF41A6D7C7C00ADD925 /* Eye.mm in Sources */,
-				BC763B311A655D7600463823 /* GLHelpers.m in Sources */,
-				BC67336C1A5D90C700C6D79B /* Matrix3x3d.mm in Sources */,
-				BC6733711A5D90C700C6D79B /* Viewport.mm in Sources */,
-				BC6733641A5D90C700C6D79B /* DistortionRenderer.mm in Sources */,
-				BC67336E1A5D90C700C6D79B /* SO3Util.mm in Sources */,
-				BC6733681A5D90C700C6D79B /* HeadMountedDisplay.mm in Sources */,
+				BC0745D01A850B540016A464 /* OrientationEKF.mm in Sources */,
+				BC0745C41A850B540016A464 /* CardboardDeviceParams.mm in Sources */,
+				BC0745CD1A850B540016A464 /* ScreenParams.mm in Sources */,
+				BC0745D31A850B540016A464 /* MagnetSensor.mm in Sources */,
+				BC0745C91A850B540016A464 /* FieldOfView.mm in Sources */,
 				35B1883D19ABEF58005A9930 /* AppDelegate.m in Sources */,
-				BC0B3DF71A6E795D00ADD925 /* GLStateBackup.mm in Sources */,
-				BC6733611A5D90C700C6D79B /* CardboardDeviceParams.mm in Sources */,
-				BC6733631A5D90C700C6D79B /* Distortion.mm in Sources */,
-				BC67336A1A5D90C700C6D79B /* ScreenParams.mm in Sources */,
-				BC7687261A81985E00FE215B /* CardboardUnity.mm in Sources */,
-				BC6733671A5D90C700C6D79B /* FieldOfView.mm in Sources */,
-				BC6733691A5D90C700C6D79B /* HeadTransform.mm in Sources */,
-				BC67336D1A5D90C700C6D79B /* OrientationEKF.mm in Sources */,
-				BC6733621A5D90C700C6D79B /* CBDViewController.mm in Sources */,
-				BC6733701A5D90C700C6D79B /* MagnetSensor.mm in Sources */,
+				BC0745D61A850B540016A464 /* GLHelpers.m in Sources */,
+				BC0745D41A850B540016A464 /* Viewport.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
