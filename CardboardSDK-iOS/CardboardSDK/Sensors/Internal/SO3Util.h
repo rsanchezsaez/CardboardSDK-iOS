@@ -9,6 +9,10 @@
 #include "Vector3d.h"
 #include "Matrix3x3d.h"
 
+
+namespace CardboardSDK
+{
+
 class SO3Util
 {
   public:
@@ -19,5 +23,7 @@ class SO3Util
     static void rodriguesSo3Exp(Vector3d *w, double kA, double kB, Matrix3x3d *result);
     static void generatorField(int i, Matrix3x3d *pos, Matrix3x3d *result);
 };
+
+}
 
 #endif

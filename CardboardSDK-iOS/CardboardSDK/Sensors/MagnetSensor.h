@@ -12,6 +12,10 @@
 
 #include <vector>
 
+
+namespace CardboardSDK
+{
+
 NSString *const CBTriggerPressedNotification = @"CBTriggerPressedNotification";
 
 class MagnetSensor
@@ -33,6 +37,10 @@ class MagnetSensor
     void addData(GLKVector3 value);
     void evaluateModel();
     void computeOffsets(int start, GLKVector3 baseline);
+    
+    static const size_t numberOfSamples = 20;
 };
+
+}
 
 #endif

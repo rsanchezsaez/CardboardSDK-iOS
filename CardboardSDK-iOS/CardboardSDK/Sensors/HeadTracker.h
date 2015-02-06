@@ -12,6 +12,9 @@
 #import <GLKit/GLKit.h>
 
 
+namespace CardboardSDK
+{
+
 class HeadTracker
 {
   public:
@@ -46,5 +49,7 @@ class HeadTracker
     const float _defaultNeckHorizontalOffset = 0.08f;
     const float _defaultNeckVerticalOffset = 0.075f;
 };
+
+}
 
 #endif

@@ -11,6 +11,9 @@
 #import <GLKit/GLKit.h>
 
 
+namespace CardboardSDK
+{
+
 class FieldOfView
 {
   public:
@@ -43,5 +46,7 @@ class FieldOfView
     float _bottom;
     float _top;
 };
+    
+}
 
-#endif 
+#endif

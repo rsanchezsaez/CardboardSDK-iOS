@@ -10,6 +10,9 @@
 #import <GLKit/GLKit.h>
 
 
+namespace CardboardSDK
+{
+
 class FieldOfView;
 class Viewport;
 
@@ -49,5 +52,7 @@ class Eye
     float _lastZNear;
     float _lastZFar;
 };
+
+}
 
 #endif

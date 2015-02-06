@@ -10,6 +10,9 @@
 #import <UIKit/UIKit.h>
 
 
+namespace CardboardSDK
+{
+
 class ScreenParams
 {
   public:
@@ -37,5 +40,6 @@ class ScreenParams
     float pixelsPerInch(UIScreen *screen);
 };
 
+}
 
 #endif

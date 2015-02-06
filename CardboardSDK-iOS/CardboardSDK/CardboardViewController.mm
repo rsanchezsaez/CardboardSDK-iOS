@@ -24,9 +24,9 @@
 
 @interface EyeWrapper ()
 
-@property (nonatomic) Eye *eye;
+@property (nonatomic) CardboardSDK::Eye *eye;
 
-- (instancetype)initWithEye:(Eye *)eye;
+- (instancetype)initWithEye:(CardboardSDK::Eye *)eye;
 
 @end
 
@@ -38,7 +38,7 @@
     return [self initWithEye:nullptr];
 }
 
-- (instancetype)initWithEye:(Eye *)eye
+- (instancetype)initWithEye:(CardboardSDK::Eye *)eye
 {
     self = [super init];
     if (!self) { return nil; }
@@ -51,11 +51,11 @@
 - (EyeType)type
 {
     EyeType type = EyeTypeMonocular;
-    if (_eye->type() == Eye::TypeLeft)
+    if (_eye->type() == CardboardSDK::Eye::TypeLeft)
     {
         type = EyeTypeLeft;
     }
-    else if (_eye->type() == Eye::TypeRight)
+    else if (_eye->type() == CardboardSDK::Eye::TypeRight)
     {
         type = EyeTypeRight;
     }
@@ -86,16 +86,16 @@
 
 @interface CardboardViewController () <GLKViewControllerDelegate>
 {
-    MagnetSensor *_magnetSensor;
-    HeadTracker *_headTracker;
-    HeadTransform *_headTransform;
-    HeadMountedDisplay *_headMountedDisplay;
+    CardboardSDK::MagnetSensor *_magnetSensor;
+    CardboardSDK::HeadTracker *_headTracker;
+    CardboardSDK::HeadTransform *_headTransform;
+    CardboardSDK::HeadMountedDisplay *_headMountedDisplay;
     
-    Eye *_monocularEye;
-    Eye *_leftEye;
-    Eye *_rightEye;
+    CardboardSDK::Eye *_monocularEye;
+    CardboardSDK::Eye *_leftEye;
+    CardboardSDK::Eye *_rightEye;
     
-    DistortionRenderer *_distortionRenderer;
+    CardboardSDK::DistortionRenderer *_distortionRenderer;
     
     float _distortionCorrectionScale;
     
@@ -127,16 +127,16 @@
 
     self.delegate = self;
 
-    _magnetSensor = new MagnetSensor();
-    _headTracker = new HeadTracker();
-    _headTransform = new HeadTransform();
-    _headMountedDisplay = new HeadMountedDisplay([UIScreen mainScreen]);
+    _magnetSensor = new CardboardSDK::MagnetSensor();
+    _headTracker = new CardboardSDK::HeadTracker();
+    _headTransform = new CardboardSDK::HeadTransform();
+    _headMountedDisplay = new CardboardSDK::HeadMountedDisplay([UIScreen mainScreen]);
     
-    _monocularEye = new Eye(Eye::TypeMonocular);
-    _leftEye = new Eye(Eye::TypeLeft);
-    _rightEye = new Eye(Eye::TypeRight);
+    _monocularEye = new CardboardSDK::Eye(CardboardSDK::Eye::TypeMonocular);
+    _leftEye = new CardboardSDK::Eye(CardboardSDK::Eye::TypeLeft);
+    _rightEye = new CardboardSDK::Eye(CardboardSDK::Eye::TypeRight);
 
-    _distortionRenderer = new DistortionRenderer();
+    _distortionRenderer = new CardboardSDK::DistortionRenderer();
     
     _distortionCorrectionScale = 1.0f;
 
@@ -160,7 +160,7 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(magneticTriggerPressed:)
-                                                 name:CBTriggerPressedNotification
+                                                 name:CardboardSDK::CBTriggerPressedNotification
                                                object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -337,12 +337,12 @@
     [_glLock unlock];
 }
 
-- (void)calculateFrameParametersWithHeadTransform:(HeadTransform *)headTransform
-                                          leftEye:(Eye *)leftEye
-                                         rightEye:(Eye *)rightEye
-                                     monocularEye:(Eye *)monocularEye
+- (void)calculateFrameParametersWithHeadTransform:(CardboardSDK::HeadTransform *)headTransform
+                                          leftEye:(CardboardSDK::Eye *)leftEye
+                                         rightEye:(CardboardSDK::Eye *)rightEye
+                                     monocularEye:(CardboardSDK::Eye *)monocularEye
 {
-    CardboardDeviceParams *cardboardDeviceParams = _headMountedDisplay->getCardboard();
+    CardboardSDK::CardboardDeviceParams *cardboardDeviceParams = _headMountedDisplay->getCardboard();
     
     headTransform->setHeadView(_headTracker->lastHeadView());
     float halfInterLensDistance = cardboardDeviceParams->interLensDistance() * 0.5f;
@@ -364,7 +364,7 @@
     
     if (_projectionChanged)
     {
-        ScreenParams *screenParams = _headMountedDisplay->getScreen();
+        CardboardSDK::ScreenParams *screenParams = _headMountedDisplay->getScreen();
         monocularEye->viewport()->setViewport(0, 0, screenParams->width(), screenParams->height());
         
         if (!self.vrModeEnabled)
@@ -392,9 +392,9 @@
     }
 }
 
-- (void)updateMonocularFov:(FieldOfView *)monocularFov
+- (void)updateMonocularFov:(CardboardSDK::FieldOfView *)monocularFov
 {
-    ScreenParams *screenParams = _headMountedDisplay->getScreen();
+    CardboardSDK::ScreenParams *screenParams = _headMountedDisplay->getScreen();
     const float monocularBottomFov = 22.5f;
     const float monocularLeftFov = GLKMathRadiansToDegrees(
                                                            atanf(
@@ -407,11 +407,12 @@
     monocularFov->setTop(monocularBottomFov);
 }
 
-- (void)updateFovsWithLeftEyeFov:(FieldOfView *)leftEyeFov rightEyeFov:(FieldOfView *)rightEyeFov
+- (void)updateFovsWithLeftEyeFov:(CardboardSDK::FieldOfView *)leftEyeFov
+                     rightEyeFov:(CardboardSDK::FieldOfView *)rightEyeFov
 {
-    CardboardDeviceParams *cardboardDeviceParams = _headMountedDisplay->getCardboard();
-    ScreenParams *screenParams = _headMountedDisplay->getScreen();
-    Distortion *distortion = cardboardDeviceParams->distortion();
+    CardboardSDK::CardboardDeviceParams *cardboardDeviceParams = _headMountedDisplay->getCardboard();
+    CardboardSDK::ScreenParams *screenParams = _headMountedDisplay->getScreen();
+    CardboardSDK::Distortion *distortion = cardboardDeviceParams->distortion();
     float eyeToScreenDistance = [self virtualEyeToScreenDistance];
     
     float outerDistance = (screenParams->widthInMeters() - cardboardDeviceParams->interLensDistance() ) / 2.0f;
@@ -437,8 +438,8 @@
 
 - (void)updateUndistortedFOVAndViewport
 {
-    CardboardDeviceParams *cardboardDeviceParams = _headMountedDisplay->getCardboard();
-    ScreenParams *screenParams = _headMountedDisplay->getScreen();
+    CardboardSDK::CardboardDeviceParams *cardboardDeviceParams = _headMountedDisplay->getCardboard();
+    CardboardSDK::ScreenParams *screenParams = _headMountedDisplay->getScreen();
 
     float halfInterLensDistance = cardboardDeviceParams->interLensDistance() * 0.5f;
     float eyeToScreenDistance = [self virtualEyeToScreenDistance];
@@ -448,13 +449,13 @@
     float bottom = cardboardDeviceParams->verticalDistanceToLensCenter() - screenParams->borderSizeInMeters();
     float top = screenParams->borderSizeInMeters() + screenParams->heightInMeters() - cardboardDeviceParams->verticalDistanceToLensCenter();
     
-    FieldOfView *leftEyeFov = _leftEye->fov();
+    CardboardSDK::FieldOfView *leftEyeFov = _leftEye->fov();
     leftEyeFov->setLeft(GLKMathRadiansToDegrees(atan2f(left, eyeToScreenDistance)));
     leftEyeFov->setRight(GLKMathRadiansToDegrees(atan2f(right, eyeToScreenDistance)));
     leftEyeFov->setBottom(GLKMathRadiansToDegrees(atan2f(bottom, eyeToScreenDistance)));
     leftEyeFov->setTop(GLKMathRadiansToDegrees(atan2f(top, eyeToScreenDistance)));
     
-    FieldOfView *rightEyeFov = _rightEye->fov();
+    CardboardSDK::FieldOfView *rightEyeFov = _rightEye->fov();
     rightEyeFov->setLeft(leftEyeFov->right());
     rightEyeFov->setRight(leftEyeFov->left());
     rightEyeFov->setBottom(leftEyeFov->bottom());
@@ -489,7 +490,9 @@
     }
 }
 
-- (void)drawFrameWithHeadTransform:(HeadTransform *)headTransform leftEye:(Eye *)leftEye rightEye:(Eye *)rightEye
+- (void)drawFrameWithHeadTransform:(CardboardSDK::HeadTransform *)headTransform
+                           leftEye:(CardboardSDK::Eye *)leftEye
+                          rightEye:(CardboardSDK::Eye *)rightEye
 {
     GLCheckForError();
     
@@ -523,7 +526,7 @@
     GLCheckForError();
 }
 
-- (void)finishFrameWithViewPort:(Viewport *)viewport
+- (void)finishFrameWithViewPort:(CardboardSDK::Viewport *)viewport
 {
     viewport->setGLViewport();
     viewport->setGLScissor();

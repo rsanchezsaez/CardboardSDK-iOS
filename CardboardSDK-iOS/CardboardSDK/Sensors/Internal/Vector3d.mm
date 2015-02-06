@@ -6,6 +6,10 @@
 #include "Vector3d.h"
 #include <cmath>
 
+
+namespace CardboardSDK
+{
+
 Vector3d::Vector3d()
 {
     setZero();
@@ -130,4 +134,6 @@ int Vector3d::largestAbsComponent(Vector3d *v)
         return 1;
     }
     return 2;
+}
+
 }

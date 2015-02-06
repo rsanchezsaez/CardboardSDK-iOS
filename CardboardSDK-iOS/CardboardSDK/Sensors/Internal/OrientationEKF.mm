@@ -11,9 +11,11 @@
 #include <algorithm>
 
 
+namespace CardboardSDK
+{
+
 static const double DEG_TO_RAD = M_PI / 180.0;
 static const double RAD_TO_DEG = 180.0 / M_PI;
-
 
 namespace
 {
@@ -254,3 +256,4 @@ void OrientationEKF::accelerationObservationFunctionForNumericalJacobian(Matrix3
     SO3Util::muFromSO3(&temp, result);
 }
 
+}

@@ -6,6 +6,9 @@
 #include "SO3Util.h"
 
 
+namespace CardboardSDK
+{
+
 void SO3Util::so3FromTwoVecN(Vector3d *a, Vector3d *b, Matrix3x3d *result)
 {
     Vector3d so3FromTwoVecNN;
@@ -179,4 +182,6 @@ void SO3Util::generatorField(int i, Matrix3x3d *pos, Matrix3x3d *result)
     result->set((i + 2) % 3,
                 0,
                 pos->get((i + 1) % 3, 0));
+}
+    
 }

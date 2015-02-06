@@ -12,6 +12,9 @@
 #import <OpenGLES/ES2/gl.h>
 
 
+namespace CardboardSDK
+{
+
 class GLStateBackup
 {
   public:
@@ -49,5 +52,7 @@ class GLStateBackup
     GLint _elementArrayBufferBinding;
     std::vector<VertexAttributeState> _vertexAttributes;
 };
+
+}
 
 #endif /* defined(__CardboardSDK_iOS__GLStateBackup__) */

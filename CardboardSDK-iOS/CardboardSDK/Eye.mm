@@ -10,6 +10,9 @@
 #include "Viewport.h"
 
 
+namespace CardboardSDK
+{
+
 Eye::Eye(Type eyeType) :
     _type(eyeType),
     _eyeView(GLKMatrix4Identity),
@@ -69,4 +72,6 @@ FieldOfView *Eye::fov()
 void Eye::setProjectionChanged()
 {
     _projectionChanged = true;
+}
+
 }

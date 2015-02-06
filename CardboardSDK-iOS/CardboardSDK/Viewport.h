@@ -11,6 +11,9 @@
 #import <CoreGraphics/CoreGraphics.h>
 
 
+namespace CardboardSDK
+{
+
 struct Viewport
 {
   public:
@@ -28,4 +31,6 @@ struct Viewport
     NSString *toString();
 };
 
-#endif 
+}
+
+#endif

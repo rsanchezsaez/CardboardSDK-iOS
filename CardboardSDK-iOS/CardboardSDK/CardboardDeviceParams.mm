@@ -10,6 +10,9 @@
 #include "FieldOfView.h"
 
 
+namespace CardboardSDK
+{
+
 CardboardDeviceParams::CardboardDeviceParams() :
     _vendor(@"com.google"),
     _model(@"cardboard"),
@@ -93,4 +96,6 @@ bool CardboardDeviceParams::equals(CardboardDeviceParams *other)
         && (screenToLensDistance() == other->screenToLensDistance())
         && (maximumLeftEyeFOV()->equals(other->maximumLeftEyeFOV()))
         && (distortion()->equals(other->distortion()));
+}
+
 }

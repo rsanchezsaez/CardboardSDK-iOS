@@ -10,6 +10,9 @@
 #include "ScreenParams.h"
 
 
+namespace CardboardSDK
+{
+
 HeadMountedDisplay::HeadMountedDisplay(UIScreen *screen)
 {
     _screen = new ScreenParams(screen);
@@ -67,4 +70,6 @@ bool HeadMountedDisplay::equals(HeadMountedDisplay *other)
         return true;
     }
     return _screen->equals(other->_screen) && _cardboard->equals(other->_cardboard);
+}
+    
 }

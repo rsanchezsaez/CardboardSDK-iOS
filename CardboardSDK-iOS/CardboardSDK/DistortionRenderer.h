@@ -11,6 +11,9 @@
 #import <OpenGLES/ES2/gl.h>
 
 
+namespace CardboardSDK
+{
+
 class Distortion;
 class Eye;
 class FieldOfView;
@@ -21,7 +24,6 @@ class Viewport;
 
 class DistortionRenderer
 {
-    
   public:
     DistortionRenderer();
     ~DistortionRenderer();
@@ -157,5 +159,7 @@ class DistortionRenderer
                       const GLchar *fragmentSource);
     ProgramHolder *createProgramHolder(bool aberrationCorrected);
 };
+
+}
 
 #endif

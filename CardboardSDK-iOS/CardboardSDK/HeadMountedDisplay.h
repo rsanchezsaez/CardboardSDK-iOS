@@ -10,6 +10,9 @@
 #import <UIKit/UIKit.h>
 
 
+namespace CardboardSDK
+{
+
 class CardboardDeviceParams;
 class ScreenParams;
 
@@ -34,4 +37,6 @@ class HeadMountedDisplay
     CardboardDeviceParams *_cardboard;
 };
 
-#endif 
+}
+
+#endif

@@ -7,6 +7,9 @@
 #include "HeadTransform.h"
 
 
+namespace CardboardSDK
+{
+
 HeadTransform::HeadTransform() :
     _headView(GLKMatrix4Identity)
 {
@@ -102,4 +105,6 @@ GLKVector3 HeadTransform::eulerAngles()
         roll = atan2f(_headView.m[1], _headView.m[0]);
     }
     return GLKVector3Make(-pitch, -yaw, -roll);
+}
+
 }

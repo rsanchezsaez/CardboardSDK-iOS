@@ -10,10 +10,14 @@
 
 #import "CardboardViewController.h"
 
-static CardboardViewController *cardboardViewController = nil;
 
-extern "C" {
-    
+#ifdef __cplusplus
+  extern "C" {
+#endif
+
+      
+static CardboardViewController *cardboardViewController = nil;
+      
 void _unity_getFrameParameters(float *frameParameters)
 {
     if (!cardboardViewController)
@@ -24,4 +28,7 @@ void _unity_getFrameParameters(float *frameParameters)
     [cardboardViewController getFrameParameters:frameParameters];
 }
 
-}
+      
+#ifdef __cplusplus
+  }
+#endif

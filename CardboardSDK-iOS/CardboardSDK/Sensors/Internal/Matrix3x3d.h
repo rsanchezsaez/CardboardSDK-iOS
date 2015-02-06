@@ -11,6 +11,9 @@
 #import <GLKit/GLKit.h>
 
 
+namespace CardboardSDK
+{
+
 class Matrix3x3d
 {
   public:
@@ -56,5 +59,7 @@ class Matrix3x3d
   private:
     double _m[9];
 };
+
+}
 
 #endif

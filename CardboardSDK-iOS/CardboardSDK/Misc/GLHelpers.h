@@ -6,14 +6,16 @@
 #ifndef _GLHelpers_h
 #define _GLHelpers_h
 
-#import <Foundation/Foundation.h>
 
+#import <Foundation/Foundation.h>
 #import <OpenGLES/ES2/gl.h>
 
+
 #ifdef __cplusplus
-extern "C" {
+  extern "C" {
 #endif
 
+      
 #if defined(DEBUG)
   void GLCheckForError();
 #else
@@ -27,8 +29,10 @@ BOOL GLCompileShaderFromFile(GLuint *shader, GLenum type, NSString *file);
 BOOL GLLinkProgram(GLuint program);
 BOOL GLValidateProgram(GLuint program);
 
+      
+#ifdef __cplusplus
+  }
 #endif
 
-#ifdef __cplusplus
-}
+
 #endif

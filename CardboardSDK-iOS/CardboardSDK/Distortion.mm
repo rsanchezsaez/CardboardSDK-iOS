@@ -7,6 +7,9 @@
 #include "Distortion.h"
 
 
+namespace CardboardSDK
+{
+
 Distortion::Distortion()
 {
     _coefficients[0] = 0.441f;
@@ -93,4 +96,6 @@ bool Distortion::equals(Distortion *other)
 NSString *Distortion::toString()
 {
     return [NSString stringWithFormat:@"{%f, %f}", _coefficients[0], _coefficients[1]];
+}
+
 }

@@ -6,6 +6,9 @@
 #include "Matrix3x3d.h"
 
 
+namespace CardboardSDK
+{
+
 Matrix3x3d::Matrix3x3d()
 {
     setZero();
@@ -221,3 +224,4 @@ GLKMatrix3 Matrix3x3d::getGLKMatrix()
                           _m[6], _m[7], _m[8]);
 }
 
+}

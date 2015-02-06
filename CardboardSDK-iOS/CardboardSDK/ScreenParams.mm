@@ -8,8 +8,9 @@
 
 #include <sys/utsname.h>
 
+
 // Enable to make the lens-distorted viewports slightly
-// smaller on iPhone 6/6+ and bigger on iPhone 5/5s 
+// smaller on iPhone 6/6+ and bigger on iPhone 5/5s
 #define SCREEN_PARAMS_CORRECT_IPHONE_VIEWPORTS 1
 
 
@@ -55,6 +56,9 @@
 
 @end
 
+
+namespace CardboardSDK
+{
 
 ScreenParams::ScreenParams(UIScreen *screen)
 {
@@ -191,4 +195,6 @@ float ScreenParams::pixelsPerInch(UIScreen *screen)
         }
     }
     return pixelsPerInch;
+}
+
 }

@@ -7,6 +7,9 @@
 #include "FieldOfView.h"
 
 
+namespace CardboardSDK
+{
+
 FieldOfView::FieldOfView() :
     _left(s_defaultViewAngle),
     _right(s_defaultViewAngle),
@@ -101,4 +104,6 @@ bool FieldOfView::equals(FieldOfView *other)
 NSString *FieldOfView::toString()
 {
     return [NSString stringWithFormat:@"{left:%f right:%f bottom:%f top:%f}", _left, _right, _bottom, _top];
+}
+
 }

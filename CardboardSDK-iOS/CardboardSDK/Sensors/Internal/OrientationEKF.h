@@ -12,6 +12,9 @@
 #import <GLKit/GLKit.h>
 
 
+namespace CardboardSDK
+{
+
 class OrientationEKF
 {
   public:
@@ -64,5 +67,7 @@ class OrientationEKF
     void updateAccelerationCovariance(double currentAccelNorm);
     void accelerationObservationFunctionForNumericalJacobian(Matrix3x3d *so3SensorFromWorldPred, Vector3d *result);
 };
+
+}
 
 #endif

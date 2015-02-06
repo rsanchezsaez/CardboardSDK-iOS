@@ -7,6 +7,9 @@
 #include "GLStateBackup.h"
 
 
+namespace CardboardSDK
+{
+
 GLStateBackup::VertexAttributeState::VertexAttributeState(GLuint attributeId) :
     _attributeId(attributeId),
     _enabled(false)
@@ -118,4 +121,6 @@ void GLStateBackup::writeToGL()
         glDisable(GL_DEPTH_TEST);
     }
     glViewport(_viewport[0], _viewport[1], _viewport[2], _viewport[3]);
+}
+
 }

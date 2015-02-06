@@ -10,6 +10,9 @@
 #import <Foundation/Foundation.h>
 
 
+namespace CardboardSDK
+{
+
 class Distortion;
 class FieldOfView;
 
@@ -46,5 +49,7 @@ private:
     FieldOfView *_maximumLeftEyeFOV;
     Distortion *_distortion;
 };
+
+}
 
 #endif

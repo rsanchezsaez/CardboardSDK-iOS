@@ -10,6 +10,9 @@
 #import <GLKit/GLKit.h>
 
 
+namespace CardboardSDK
+{
+
 class HeadTransform
 {
   public:
@@ -28,5 +31,7 @@ class HeadTransform
   private:
     GLKMatrix4 _headView;
 };
+
+}
 
 #endif 

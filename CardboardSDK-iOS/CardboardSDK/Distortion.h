@@ -10,6 +10,9 @@
 #import <Foundation/Foundation.h>
 
 
+namespace CardboardSDK
+{
+
 class Distortion
 {
   public:
@@ -30,5 +33,7 @@ class Distortion
     constexpr static int s_numberOfCoefficients = 2;
     float _coefficients[s_numberOfCoefficients];
 };
+
+}
 
 #endif

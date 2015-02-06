@@ -18,6 +18,9 @@
 #include "GLHelpers.h"
 
 
+namespace CardboardSDK
+{
+
 namespace
 {
     float clamp(float val, float min, float max)
@@ -25,7 +28,6 @@ namespace
         return MAX(min, MIN(max, val));
     }
 }
-
 
 DistortionRenderer::DistortionRenderer() :
     _textureID(-1),
@@ -745,4 +747,6 @@ NSString *DistortionRenderer::EyeViewport::toString()
 {
     return [NSString stringWithFormat:@"{x:%f y:%f width:%f height:%f eyeX:%f, eyeY:%f}",
             x, y, width, height, eyeX, eyeY];
+}
+
 }

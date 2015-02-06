@@ -9,6 +9,9 @@
 #import <OpenGLES/ES2/gl.h>
 
 
+namespace CardboardSDK
+{
+
 void Viewport::setViewport(int x, int y, int width, int height)
 {
     this->x = x;
@@ -35,4 +38,6 @@ CGRect Viewport::toCGRect()
 NSString *Viewport::toString()
 {
     return [NSString stringWithFormat:@"{x:%d y:%d width:%d height:%d}", this->x, this->y, this->width, this->height];
+}
+
 }
