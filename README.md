@@ -44,12 +44,13 @@ See  [`AUTHORS.md`](./AUTHORS.md) for some of the project contributors.
 
 Included now is a unitypackage for running a fork of the Google Cardboard Unity SDK adapted to work with this SDK. In order to run this SDK in Unity:
 
-*Import the unitypackage into Unity.
-*Build the Unity project for iOS.
-*Open the generated XCode project.
-*Right click on the "classes" group, import the CardboardSDK folder.
-*Attach an iOS device and run (tested on iPhone 6). Everything should work properly.
+- Import the unitypackage into Unity.
+- Build the Unity project for iOS.
+- Open the generated XCode project.
+- Click on the Project in XCode. In the general tab, scroll down to "Linked Frameworks and Libraries". Click the plus button and add GLKit.framework.
+- While still in project settings, scroll up to "Deployment Info". Uncheck all the Device Orientations except either "Landscape Left" or "Landscape Right"
+- Attach an iOS device and run (tested on iPhone 6). Everything should work properly.
 
-##TODO
+#### TODO for Unity iOS
 - Interface the magnetic trigger functionality with Unity
 - Find a way to port the "DoScreenTap" coroutine to iOS.
