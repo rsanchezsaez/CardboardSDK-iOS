@@ -43,7 +43,7 @@ typedef NS_ENUM(NSInteger, CBDEyeType)
 
 @interface CBDViewController : GLKViewController
 
-@property (nonatomic, readonly) GLKView *view;
+@property (nonatomic) GLKView *view;
 @property (nonatomic, readonly) NSRecursiveLock *glLock;
 
 @property (nonatomic, weak) id <CBDStereoRendererDelegate> stereoRendererDelegate;

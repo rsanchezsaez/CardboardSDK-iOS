@@ -117,6 +117,8 @@
 
 @implementation CBDViewController
 
+@dynamic view;
+
 - (id)init
 {
     self = [super init];
