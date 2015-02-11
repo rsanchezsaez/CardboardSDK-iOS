@@ -8,11 +8,13 @@
 
 #include "CardboardSDK.h"
 
+#import "TextOverlayView.h"
+
 #import <AudioToolbox/AudioServices.h>
 #import <OpenGLES/ES2/glext.h>
 
 
-@interface TreasureRenderer : NSObject <CBDStereoRendererDelegate>
+@interface TreasureRenderer : NSObject
 {
     GLuint _cubeVertexArray;
     GLuint _cubeVertexBuffer;
@@ -73,7 +75,6 @@
     GLKVector4 _lightPositionInWorldSpace;
     GLKVector4 _lightPositionInEyeSpace;
     
-    int _score;
     float _objectDistance;
     float _floorDepth;
 }
@@ -109,9 +110,9 @@
     return self;
 }
 
-- (void)setupRendererWithView:(GLKView *)GLView
+- (void)setupRendererWithView:(GLKView *)glView
 {
-    [EAGLContext setCurrentContext:GLView.context];
+    [EAGLContext setCurrentContext:glView.context];
 
     [self setupPrograms];
 
@@ -484,7 +485,7 @@
     glBindVertexArrayOES(0);
 }
 
-- (void)shutdownRendererWithView:(GLKView *)GLView
+- (void)shutdownRendererWithView:(GLKView *)glView
 {
 }
 
@@ -678,29 +679,15 @@ float randomFloat()
     _modelCube = GLKMatrix4Translate(_modelCube, positionVector.x, newY, positionVector.z);
 }
 
-- (void)magneticTriggerPressed
-{
-    if ([self isLookingAtCube])
-    {
-        _score++;
-        // mOverlayView.show3DToast("Found it! Look around for another one.\nScore = " + mScore);
-        [self hideCube];
-    } else {
-        // mOverlayView.show3DToast("Look around to find the object!");
-    }
-    
-    // Always give user feedback.
-    AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
-    
-    DLog(@"Score: %d", _score);
-}
-
 @end
 
 
-@interface TreasureViewController()
+@interface TreasureViewController() <CBDStereoRendererDelegate>
 
 @property (nonatomic) TreasureRenderer *treasureRenderer;
+@property (nonatomic) TextOverlayView *textOverlayView;
+
+@property (nonatomic) NSInteger score;
 
 @end
 
@@ -712,10 +699,84 @@ float randomFloat()
     self = [super init];
     if (!self) {return nil; }
     
-    self.treasureRenderer = [TreasureRenderer new];
-    self.stereoRendererDelegate = self.treasureRenderer;
+    self.stereoRendererDelegate = self;
     
     return self;
 }
+
+- (void)setupRendererWithView:(GLKView *)glView
+{
+    self.treasureRenderer = [TreasureRenderer new];
+    [self.treasureRenderer setupRendererWithView:glView];
+    
+    // views have portrait coordinates yet
+    CGRect eyeFrame = self.view.bounds;
+    eyeFrame.size.height = self.view.bounds.size.height;
+    eyeFrame.size.width = self.view.bounds.size.width / 2;
+    
+    // Draw outside screen
+    eyeFrame.origin.y = eyeFrame.size.height;
+    
+    self.textOverlayView = [[TextOverlayView alloc] initWithFrame:eyeFrame
+                                                          context:glView.context
+                                                             lock:self.glLock];
+    [self.view addSubview:self.textOverlayView];
+    
+    [self.textOverlayView showTitle:@"CardboardSDK-iOS"
+                           messsage:@"Look for the cube, center your vision\non it and pull the trigger."
+                           duration:10.0f];
+}
+
+- (void)shutdownRendererWithView:(GLKView *)glView
+{
+    [self.treasureRenderer shutdownRendererWithView:glView];
+}
+
+- (void)renderViewDidChangeSize:(CGSize)size
+{
+    [self.treasureRenderer renderViewDidChangeSize:size];
+}
+
+- (void)prepareNewFrameWithHeadViewMatrix:(GLKMatrix4)headViewMatrix
+{
+    [self.treasureRenderer prepareNewFrameWithHeadViewMatrix:headViewMatrix];
+    [self.textOverlayView updateTexturesIfNeeded];
+}
+
+- (void)drawEyeWithEye:(CBDEye *)eye
+{
+    [self.treasureRenderer drawEyeWithEye:eye];
+    [self.textOverlayView renderTextureForEye:eye.type];
+}
+
+- (void)finishFrameWithViewportRect:(CGRect)viewPort
+{
+    [self.treasureRenderer finishFrameWithViewportRect:viewPort];
+}
+
+- (void)magneticTriggerPressed
+{
+    if ([self.treasureRenderer isLookingAtCube])
+    {
+        self.score++;
+        // mOverlayView.show3DToast("Found it! Look around for another one.\nScore = " + mScore);
+        [self.treasureRenderer hideCube];
+        NSString *message = [NSString stringWithFormat:@"Well done! Score: %ld", self.score];
+        [self.textOverlayView showTitle:@"Success"
+                               messsage:message];
+        
+    }
+    else
+    {
+        [self.textOverlayView showTitle:@"Fail"
+                               messsage:@"Look around and find the cube."];
+    }
+    
+    // Always give user feedback.
+    AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
+    
+    DLog(@"Score: %ld", self.score);
+}
+
 
 @end
