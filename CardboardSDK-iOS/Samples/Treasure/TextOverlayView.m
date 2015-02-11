@@ -76,7 +76,7 @@
 @property (nonatomic) NSLayoutConstraint *messageLabelTrailing;
 @property (nonatomic) CGFloat messageLabelMargin;
 
-@property (nonatomic) BOOL texturesRenderedAfterElementsHidden;
+@property (nonatomic) BOOL texturesNeedUpdate;
 
 @end
 
@@ -162,15 +162,10 @@
 
 - (void)updateTexturesIfNeeded
 {
-    if (!self.titleLabel.hidden || !self.messageLabel.hidden)
+    if (self.texturesNeedUpdate)
     {
-        self.texturesRenderedAfterElementsHidden = NO;
         [self updateTextures];
-    }
-    else if (!self.texturesRenderedAfterElementsHidden)
-    {
-        self.texturesRenderedAfterElementsHidden = YES;
-        [self updateTextures];
+        self.texturesNeedUpdate = NO;
     }
 }
 
@@ -205,6 +200,7 @@
         [self performSelector:@selector(hideLabels)
                    withObject:nil
                    afterDelay:duration];
+        self.texturesNeedUpdate = YES;
     });
 }
 
@@ -212,6 +208,7 @@
 {
     self.titleLabel.hidden = YES;
     self.messageLabel.hidden = YES;
+    self.texturesNeedUpdate = YES;
 }
 
 @end
