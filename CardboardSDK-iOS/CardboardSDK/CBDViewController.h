@@ -26,8 +26,8 @@ typedef NS_ENUM(NSInteger, CBDEyeType)
 
 @protocol CBDStereoRendererDelegate <NSObject>
 
-- (void)setupRendererWithView:(GLKView *)GLView;
-- (void)shutdownRendererWithView:(GLKView *)GLView;
+- (void)setupRendererWithView:(GLKView *)glView;
+- (void)shutdownRendererWithView:(GLKView *)glView;
 - (void)renderViewDidChangeSize:(CGSize)size;
 
 - (void)prepareNewFrameWithHeadViewMatrix:(GLKMatrix4)headViewMatrix;

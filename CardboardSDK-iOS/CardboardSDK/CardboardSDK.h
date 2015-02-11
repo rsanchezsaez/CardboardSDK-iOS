@@ -6,4 +6,5 @@
 #include "DebugUtils.h"
 
 #include "GLHelpers.h"
-#include "CBDViewController.h"
+#import "CBDViewController.h"
+#import "CBDStereoGLView.h"

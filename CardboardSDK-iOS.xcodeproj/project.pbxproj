@@ -30,14 +30,16 @@
 		BC0745D51A850B540016A464 /* CBDViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC0745BF1A850B540016A464 /* CBDViewController.mm */; };
 		BC0745D61A850B540016A464 /* GLHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = BC0745C31A850B540016A464 /* GLHelpers.m */; };
 		BC6733601A5D90C700C6D79B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BC6733381A5D90C700C6D79B /* main.m */; };
-		BC763B2C1A655D1E00463823 /* grid_fragment.shader in Resources */ = {isa = PBXBuildFile; fileRef = BC763B291A655D1E00463823 /* grid_fragment.shader */; };
-		BC763B2D1A655D1E00463823 /* light_vertex.shader in Resources */ = {isa = PBXBuildFile; fileRef = BC763B2A1A655D1E00463823 /* light_vertex.shader */; };
-		BC763B2E1A655D1E00463823 /* passthrough_fragment.shader in Resources */ = {isa = PBXBuildFile; fileRef = BC763B2B1A655D1E00463823 /* passthrough_fragment.shader */; };
 		BC763B341A655EB700463823 /* TreasureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC763B331A655EB700463823 /* TreasureViewController.m */; };
 		BC763B391A66BBBC00463823 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC763B381A66BBBC00463823 /* Images.xcassets */; };
-		BC763B3B1A66D13300463823 /* highlight_fragment.shader in Resources */ = {isa = PBXBuildFile; fileRef = BC763B3A1A66D13300463823 /* highlight_fragment.shader */; };
 		BC763B3D1A6828DA00463823 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC763B3C1A6828DA00463823 /* AudioToolbox.framework */; };
-		BCDBD2611A7BC0B300A51284 /* light_vertex_grid.shader in Resources */ = {isa = PBXBuildFile; fileRef = BCDBD2601A7BC0B300A51284 /* light_vertex_grid.shader */; };
+		BC8A57961A8A85FB00C672FA /* CBDStereoGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = BC8A57951A8A85FB00C672FA /* CBDStereoGLView.m */; };
+		BC8A579F1A8A875900C672FA /* grid_fragment.shader in Resources */ = {isa = PBXBuildFile; fileRef = BC8A57981A8A875900C672FA /* grid_fragment.shader */; };
+		BC8A57A01A8A875900C672FA /* highlight_fragment.shader in Resources */ = {isa = PBXBuildFile; fileRef = BC8A57991A8A875900C672FA /* highlight_fragment.shader */; };
+		BC8A57A11A8A875900C672FA /* light_vertex.shader in Resources */ = {isa = PBXBuildFile; fileRef = BC8A579A1A8A875900C672FA /* light_vertex.shader */; };
+		BC8A57A21A8A875900C672FA /* light_vertex_grid.shader in Resources */ = {isa = PBXBuildFile; fileRef = BC8A579B1A8A875900C672FA /* light_vertex_grid.shader */; };
+		BC8A57A31A8A875900C672FA /* passthrough_fragment.shader in Resources */ = {isa = PBXBuildFile; fileRef = BC8A579C1A8A875900C672FA /* passthrough_fragment.shader */; };
+		BC8A57A41A8A875900C672FA /* TextOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = BC8A579D1A8A875900C672FA /* TextOverlayView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -88,16 +90,20 @@
 		BC0745C31A850B540016A464 /* GLHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLHelpers.m; sourceTree = "<group>"; };
 		BC6733371A5D90C700C6D79B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BC6733381A5D90C700C6D79B /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		BC763B291A655D1E00463823 /* grid_fragment.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = grid_fragment.shader; sourceTree = "<group>"; };
-		BC763B2A1A655D1E00463823 /* light_vertex.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = light_vertex.shader; sourceTree = "<group>"; };
-		BC763B2B1A655D1E00463823 /* passthrough_fragment.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = passthrough_fragment.shader; sourceTree = "<group>"; };
 		BC763B321A655EB700463823 /* TreasureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TreasureViewController.h; sourceTree = "<group>"; };
 		BC763B331A655EB700463823 /* TreasureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TreasureViewController.m; sourceTree = "<group>"; };
 		BC763B381A66BBBC00463823 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		BC763B3A1A66D13300463823 /* highlight_fragment.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = highlight_fragment.shader; sourceTree = "<group>"; };
 		BC763B3C1A6828DA00463823 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		BC8A57941A8A85FB00C672FA /* CBDStereoGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBDStereoGLView.h; sourceTree = "<group>"; };
+		BC8A57951A8A85FB00C672FA /* CBDStereoGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBDStereoGLView.m; sourceTree = "<group>"; };
+		BC8A57981A8A875900C672FA /* grid_fragment.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = grid_fragment.shader; sourceTree = "<group>"; };
+		BC8A57991A8A875900C672FA /* highlight_fragment.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = highlight_fragment.shader; sourceTree = "<group>"; };
+		BC8A579A1A8A875900C672FA /* light_vertex.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = light_vertex.shader; sourceTree = "<group>"; };
+		BC8A579B1A8A875900C672FA /* light_vertex_grid.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = light_vertex_grid.shader; sourceTree = "<group>"; };
+		BC8A579C1A8A875900C672FA /* passthrough_fragment.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = passthrough_fragment.shader; sourceTree = "<group>"; };
+		BC8A579D1A8A875900C672FA /* TextOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextOverlayView.m; sourceTree = "<group>"; };
+		BC8A579E1A8A875900C672FA /* TextOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextOverlayView.h; sourceTree = "<group>"; };
 		BCCBC5821A5D93170093F31A /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
-		BCDBD2601A7BC0B300A51284 /* light_vertex_grid.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = light_vertex_grid.shader; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +158,8 @@
 				BC0745BD1A850B540016A464 /* CardboardSDK.h */,
 				BC0745BE1A850B540016A464 /* CBDViewController.h */,
 				BC0745BF1A850B540016A464 /* CBDViewController.mm */,
+				BC8A57941A8A85FB00C672FA /* CBDStereoGLView.h */,
+				BC8A57951A8A85FB00C672FA /* CBDStereoGLView.m */,
 			);
 			path = CardboardSDK;
 			sourceTree = "<group>";
@@ -236,15 +244,25 @@
 		BC763B281A655D1E00463823 /* Treasure */ = {
 			isa = PBXGroup;
 			children = (
-				BC763B291A655D1E00463823 /* grid_fragment.shader */,
-				BC763B3A1A66D13300463823 /* highlight_fragment.shader */,
-				BCDBD2601A7BC0B300A51284 /* light_vertex_grid.shader */,
-				BC763B2A1A655D1E00463823 /* light_vertex.shader */,
-				BC763B2B1A655D1E00463823 /* passthrough_fragment.shader */,
+				BC8A57971A8A875900C672FA /* shaders */,
+				BC8A579D1A8A875900C672FA /* TextOverlayView.m */,
+				BC8A579E1A8A875900C672FA /* TextOverlayView.h */,
 				BC763B321A655EB700463823 /* TreasureViewController.h */,
 				BC763B331A655EB700463823 /* TreasureViewController.m */,
 			);
 			path = Treasure;
+			sourceTree = "<group>";
+		};
+		BC8A57971A8A875900C672FA /* shaders */ = {
+			isa = PBXGroup;
+			children = (
+				BC8A57981A8A875900C672FA /* grid_fragment.shader */,
+				BC8A57991A8A875900C672FA /* highlight_fragment.shader */,
+				BC8A579A1A8A875900C672FA /* light_vertex.shader */,
+				BC8A579B1A8A875900C672FA /* light_vertex_grid.shader */,
+				BC8A579C1A8A875900C672FA /* passthrough_fragment.shader */,
+			);
+			path = shaders;
 			sourceTree = "<group>";
 		};
 		BCCBC5811A5D92450093F31A /* Frameworks */ = {
@@ -322,12 +340,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BC763B2E1A655D1E00463823 /* passthrough_fragment.shader in Resources */,
-				BC763B2D1A655D1E00463823 /* light_vertex.shader in Resources */,
+				BC8A57A01A8A875900C672FA /* highlight_fragment.shader in Resources */,
+				BC8A579F1A8A875900C672FA /* grid_fragment.shader in Resources */,
+				BC8A57A11A8A875900C672FA /* light_vertex.shader in Resources */,
+				BC8A57A31A8A875900C672FA /* passthrough_fragment.shader in Resources */,
+				BC8A57A21A8A875900C672FA /* light_vertex_grid.shader in Resources */,
 				BC763B391A66BBBC00463823 /* Images.xcassets in Resources */,
-				BCDBD2611A7BC0B300A51284 /* light_vertex_grid.shader in Resources */,
-				BC763B2C1A655D1E00463823 /* grid_fragment.shader in Resources */,
-				BC763B3B1A66D13300463823 /* highlight_fragment.shader in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -344,6 +362,7 @@
 				BC0745CC1A850B540016A464 /* HeadTransform.mm in Sources */,
 				BC0745C61A850B540016A464 /* Distortion.mm in Sources */,
 				BC0745C81A850B540016A464 /* Eye.mm in Sources */,
+				BC8A57A41A8A875900C672FA /* TextOverlayView.m in Sources */,
 				BC0745CF1A850B540016A464 /* Matrix3x3d.mm in Sources */,
 				BC0745C71A850B540016A464 /* DistortionRenderer.mm in Sources */,
 				BC763B341A655EB700463823 /* TreasureViewController.m in Sources */,
@@ -356,6 +375,7 @@
 				BC0745C41A850B540016A464 /* CardboardDeviceParams.mm in Sources */,
 				BC0745CD1A850B540016A464 /* ScreenParams.mm in Sources */,
 				BC0745D31A850B540016A464 /* MagnetSensor.mm in Sources */,
+				BC8A57961A8A85FB00C672FA /* CBDStereoGLView.m in Sources */,
 				BC0745C91A850B540016A464 /* FieldOfView.mm in Sources */,
 				35B1883D19ABEF58005A9930 /* AppDelegate.m in Sources */,
 				BC0745D61A850B540016A464 /* GLHelpers.m in Sources */,

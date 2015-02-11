@@ -27,14 +27,14 @@
 #define CBScreenIsIphone6PlusHeight() (CBScreenIsIphone() && [[UIScreen mainScreen] scale] == 3.0f && [UIScreen mainScreen].sizeFixedToPortrait.height == 736.0)
 
 
-@interface UIScreen (OrientationAware)
+@interface UIScreen (CBDOrientationAware)
 
 - (CGSize)orientationAwareSize;
 - (CGSize)sizeFixedToPortrait;
 
 @end
 
-@implementation UIScreen (OrientationAware)
+@implementation UIScreen (CBDOrientationAware)
 
 - (CGSize)orientationAwareSize
 {
