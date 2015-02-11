@@ -186,8 +186,6 @@
 {
     dispatch_async(dispatch_get_main_queue(), ^
     {
-        NSLog(@"title:%@ messaage:%@", title, message);
-        
         self.titleLabel.text = title;
         self.messageLabel.text = message;
         
