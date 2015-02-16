@@ -5,23 +5,23 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>0B92599F-B9F2-4E0C-AD0E-3447E688F355</string>
+	<string>D492DCC0-1BAC-4A55-8B75-DA22AC7CC02D</string>
 	<key>IDESourceControlProjectName</key>
-	<string>CardboardSDK-iOS</string>
+	<string>CBDTreasure</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>EDFFEE58A17C1EBE75F750230E9F223862BB84E3</key>
-		<string>github.com:rsanchezsaez/CardboardVR-iOS.git</string>
+		<string>github.com:rsanchezsaez/CardboardSDK-iOS.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>CardboardSDK-iOS.xcodeproj</string>
+	<string>iOS Examples/CBDTreasure/CBDTreasure.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>EDFFEE58A17C1EBE75F750230E9F223862BB84E3</key>
-		<string>../..</string>
+		<string>../../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>github.com:rsanchezsaez/CardboardVR-iOS.git</string>
+	<string>github.com:rsanchezsaez/CardboardSDK-iOS.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
@@ -34,7 +34,7 @@
 			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>EDFFEE58A17C1EBE75F750230E9F223862BB84E3</string>
 			<key>IDESourceControlWCCName</key>
-			<string>CardboardVR-iOS</string>
+			<string>CardboardSDK-iOS</string>
 		</dict>
 	</array>
 </dict>

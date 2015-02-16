@@ -6,7 +6,6 @@
 
 #import "AppDelegate.h"
 
-#import "CardboardSDK/CardboardSDK.h"
 #import "TreasureViewController.h"
 
 //#import "CardboardUnity.h"
