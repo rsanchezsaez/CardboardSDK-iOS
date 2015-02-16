@@ -471,7 +471,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_INPUT_FILETYPE = automatic;
 				INFOPLIST_FILE = "CardboardSDK-iOS/Supporting Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "CardboardSDK-iOS";
 			};
@@ -484,7 +484,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_INPUT_FILETYPE = automatic;
 				INFOPLIST_FILE = "CardboardSDK-iOS/Supporting Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "CardboardSDK-iOS";
 			};
