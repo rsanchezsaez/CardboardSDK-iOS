@@ -61,9 +61,8 @@ void MagnetSensor::evaluateModel()
     for (int i = 0; i < 2; i++)
     {
         computeOffsets(i * numberOfSamples, _baseline);
-        auto minmax = std::minmax_element(_offsets.begin(), _offsets.end());
-        minimums[i] = *minmax.first;
-        maximums[i] = *minmax.second;
+        minimums[i] = *std::min_element(_offsets.begin(), _offsets.end());
+        maximums[i] = *std::max_element(_offsets.begin(), _offsets.end());
     }
         
     if (minimums[0] < 30.0f && maximums[1] > 130.0f)
