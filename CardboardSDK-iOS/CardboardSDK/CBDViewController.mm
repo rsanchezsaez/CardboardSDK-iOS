@@ -535,7 +535,7 @@
     [self.stereoRendererDelegate finishFrameWithViewportRect:viewport->toCGRect()];
 }
 
-- (void)getFrameParameters:(float *)frameParemeters
+- (void)getFrameParameters:(float *)frameParemeters zNear:(float)zNear zFar:(float)zFar
 {
     [self calculateFrameParametersWithHeadTransform:_headTransform
                                             leftEye:_leftEye
@@ -544,9 +544,9 @@
 
     GLKMatrix4 headView = _headTransform->headView();
     GLKMatrix4 leftEyeView = _leftEye->eyeView();
-    GLKMatrix4 leftEyePerspective = _leftEye->perspective(_zNear, _zFar);
+    GLKMatrix4 leftEyePerspective = _leftEye->perspective(zNear, zFar);
     GLKMatrix4 rightEyeView = _rightEye->eyeView();
-    GLKMatrix4 rightEyePerspective = _rightEye->perspective(_zNear, _zFar);
+    GLKMatrix4 rightEyePerspective = _rightEye->perspective(zNear, zFar);
 
     std::copy(headView.m, headView.m + 16, frameParemeters);
     std::copy(leftEyeView.m, leftEyeView.m + 16, frameParemeters + 16);

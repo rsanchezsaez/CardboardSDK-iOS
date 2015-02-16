@@ -46,7 +46,7 @@ typedef NS_ENUM(NSInteger, CBDEyeType)
 @property (nonatomic) GLKView *view;
 @property (nonatomic, readonly) NSRecursiveLock *glLock;
 
-@property (nonatomic, weak) id <CBDStereoRendererDelegate> stereoRendererDelegate;
+@property (nonatomic, unsafe_unretained) id <CBDStereoRendererDelegate> stereoRendererDelegate;
 @property (nonatomic) BOOL vrModeEnabled;
 @property (nonatomic) BOOL distortionCorrectionEnabled;
 @property (nonatomic) BOOL vignetteEnabled;
@@ -54,6 +54,6 @@ typedef NS_ENUM(NSInteger, CBDEyeType)
 @property (nonatomic) BOOL restoreGLStateEnabled;
 @property (nonatomic) BOOL neckModelEnabled;
 
-- (void)getFrameParameters:(float *)frameParemeters;
+- (void)getFrameParameters:(float *)frameParemeters zNear:(float)zNear zFar:(float)zFar;
 
 @end

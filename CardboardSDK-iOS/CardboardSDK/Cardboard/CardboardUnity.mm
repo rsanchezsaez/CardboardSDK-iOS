@@ -18,16 +18,15 @@
       
 static CBDViewController *cardboardViewController = nil;
       
-void _unity_getFrameParameters(float *frameParameters)
+void _unity_getFrameParameters(float *frameParameters, float zNear, float zFar)
 {
     if (!cardboardViewController)
     {
         cardboardViewController = [CBDViewController new];
     }
     
-    [cardboardViewController getFrameParameters:frameParameters];
+    [cardboardViewController getFrameParameters:frameParameters zNear:zNear zFar:zFar];
 }
-
       
 #ifdef __cplusplus
   }
