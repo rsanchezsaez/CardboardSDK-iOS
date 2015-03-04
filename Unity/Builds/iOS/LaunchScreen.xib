@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6221" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment version="2048" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6213"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view userInteractionEnabled="NO" contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view userInteractionEnabled="NO" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="gVh-4A-1je">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreenImage-Portrait.png" translatesAutoresizingMaskIntoConstraints="NO" id="Etn-d3-fHe">
+                            <rect key="frame" x="0.0" y="0.0" width="736" height="414"/>
+                        </imageView>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreenImage-Landscape.png" translatesAutoresizingMaskIntoConstraints="NO" id="tRs-Dj-Pjo">
+                            <rect key="frame" x="0.0" y="0.0" width="736" height="414"/>
+                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
+                                <rect key="frame" x="-154" y="0.0" width="708" height="400"/>
+                            </variation>
+                        </imageView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="Etn-d3-fHe" secondAttribute="trailing" id="7IW-be-PC1"/>
+                        <constraint firstAttribute="trailing" secondItem="tRs-Dj-Pjo" secondAttribute="trailing" id="Ow3-vo-5jw"/>
+                        <constraint firstItem="tRs-Dj-Pjo" firstAttribute="leading" secondItem="gVh-4A-1je" secondAttribute="leading" id="cbI-yH-Ikk"/>
+                        <constraint firstItem="Etn-d3-fHe" firstAttribute="leading" secondItem="gVh-4A-1je" secondAttribute="leading" id="gMB-cx-ug0"/>
+                        <constraint firstAttribute="bottom" secondItem="Etn-d3-fHe" secondAttribute="bottom" id="hyb-TL-boA"/>
+                        <constraint firstItem="tRs-Dj-Pjo" firstAttribute="top" secondItem="gVh-4A-1je" secondAttribute="top" id="lar-rq-aCW"/>
+                        <constraint firstItem="Etn-d3-fHe" firstAttribute="top" secondItem="gVh-4A-1je" secondAttribute="top" id="sWv-rZ-D2s"/>
+                        <constraint firstAttribute="bottom" secondItem="tRs-Dj-Pjo" secondAttribute="bottom" id="wot-8N-gNh"/>
+                    </constraints>
+                    <variation key="default">
+                        <mask key="subviews">
+                            <exclude reference="Etn-d3-fHe"/>
+                            <exclude reference="tRs-Dj-Pjo"/>
+                        </mask>
+                    </variation>
+                    <variation key="heightClass=compact">
+                        <mask key="subviews">
+                            <include reference="tRs-Dj-Pjo"/>
+                        </mask>
+                    </variation>
+                    <variation key="widthClass=compact">
+                        <mask key="subviews">
+                            <include reference="Etn-d3-fHe"/>
+                        </mask>
+                    </variation>
+                </view>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="gVh-4A-1je" secondAttribute="bottom" id="S6m-R2-QBg"/>
+                <constraint firstItem="gVh-4A-1je" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="VWh-bq-Pfv"/>
+                <constraint firstAttribute="trailing" secondItem="gVh-4A-1je" secondAttribute="trailing" id="pQa-S3-BOy"/>
+                <constraint firstItem="gVh-4A-1je" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="yJz-b3-xuQ"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <variation key="default">
+                <mask key="subviews">
+                    <exclude reference="gVh-4A-1je"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=compact">
+                <mask key="subviews">
+                    <include reference="gVh-4A-1je"/>
+                </mask>
+            </variation>
+            <variation key="widthClass=compact">
+                <mask key="subviews">
+                    <include reference="gVh-4A-1je"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=regular-widthClass=compact">
+                <mask key="constraints">
+                    <include reference="S6m-R2-QBg"/>
+                    <include reference="VWh-bq-Pfv"/>
+                    <include reference="pQa-S3-BOy"/>
+                    <include reference="yJz-b3-xuQ"/>
+                </mask>
+            </variation>
+            <point key="canvasLocation" x="315" y="378"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="LaunchScreenImage-Landscape.png" width="2208" height="1242"/>
+        <image name="LaunchScreenImage-Portrait.png" width="1242" height="2208"/>
+    </resources>
+</document>
