@@ -1,8 +1,7 @@
-#ifndef _TRAMPOLINE_UI_IAD_H_
-#define _TRAMPOLINE_UI_IAD_H_
+#pragma once
 
 #import <iAd/iAd.h>
-#include "PluginBase/MainViewControllerListener.h"
+#include "PluginBase/UnityViewControllerListener.h"
 
 extern "C" typedef void (*ADErrorDelegate)(void*, int, const char*, const char*);
 
@@ -46,10 +45,10 @@ typedef enum
 	adbannerCenter			= layoutMaskCenter | (layoutMaskCenter << layoutShiftHorz),
 
 	// these are for banner
-	adbannerTop 			= 0,
-	adbannerBottom 			= 1,
+	adbannerTop				= 0,
+	adbannerBottom			= 1,
 
-	adbannerManual 			= -1
+	adbannerManual			= -1
 }
 ADBannerLayout;
 
@@ -61,13 +60,13 @@ typedef enum
 ADBannerType;
 
 
-@interface UnityADBanner : NSObject <ADBannerViewDelegate, MainViewControllerListener>
+@interface UnityADBanner : NSObject <ADBannerViewDelegate, UnityViewControllerListener>
 {
 	ADBannerView*	_view;
 
 	CGPoint			_userLayoutCenter;
 	ADBannerLayout	_bannerLayout;
-	BOOL 			_showingBanner;
+	BOOL			_showingBanner;
 }
 - (id)initWithParent:(UIView*)parent layout:(ADBannerLayout)layout;
 - (id)initWithParent:(UIView*)parent layout:(ADBannerLayout)layout type:(ADBannerType)type;
@@ -81,7 +80,7 @@ ADBannerType;
 
 @end
 
-@interface UnityInterstitialAd : NSObject <ADInterstitialAdDelegate>
+@interface UnityInterstitialAd : NSObject <ADInterstitialAdDelegate, UnityViewControllerListener>
 {
 	ADInterstitialAd*	_view;
 	UIViewController*	_presentController;
@@ -95,6 +94,3 @@ ADBannerType;
 @property (readonly, copy, nonatomic) ADInterstitialAd* view;
 
 @end
-
-#endif // _TRAMPOLINE_UI_IAD_H_
-

@@ -1,32 +1,22 @@
-#ifndef _TRAMPOLINE_UI_UNITYVIEW_H_
-#define _TRAMPOLINE_UI_UNITYVIEW_H_
+#pragma once
 
-#import <UIKit/UIKit.h>
 #include "Unity/GlesHelper.h"
 
-@interface UnityView : GLView
+@interface UnityView : UnityRenderingView
 {
 }
+
 // we take scale factor into account because gl backbuffer size depends on it
 - (id)initWithFrame:(CGRect)frame scaleFactor:(CGFloat)scale;
 - (id)initWithFrame:(CGRect)frame;
 - (id)initFromMainScreen;
 
+// layoutSubviews can be called from non-main thread, so we only set flag here
 - (void)layoutSubviews;
 
-// please note that it is "orientation if was full-screen view"
-// due to changing view extents, script-side orientation might be different
-- (ScreenOrientation)contentOrientation;
-
-// layoutSubviews can be called from non-main thread, so we only set flag here
-// willRotateTo will set content orientation (call this from view controller willRotateToInterfaceOrientation)
-// didRotate will recreate gles surface is needed (call this from view controller didRotateFromInterfaceOrientation)
-// if you want to simply reorient view (outside of view controller orientation handling) you can do:
-// willRotateTo
-// OrientView
-// didRotate
-// you can use [UnityAppContoller onForcedOrientation] for main view
-- (void)willRotateTo:(ScreenOrientation)orientation;
+// will simply update content orientation (it might be tweaked in layoutSubviews, due to disagreement between unity and view controller)
+- (void)willRotateToOrientation:(UIInterfaceOrientation)toOrientation fromOrientation:(UIInterfaceOrientation)fromOrientation;
+// will recreate gles backing if needed and repaint once to make sure we dont have black frame creeping in
 - (void)didRotate;
 
 - (void)recreateGLESSurfaceIfNeeded;
@@ -36,8 +26,8 @@
 - (void)touchesEnded:(NSSet*)touches withEvent:(UIEvent*)event;
 - (void)touchesCancelled:(NSSet*)touches withEvent:(UIEvent*)event;
 - (void)touchesMoved:(NSSet*)touches withEvent:(UIEvent*)event;
+
+// will match script-side Screen.orientation
+@property (nonatomic, readonly) ScreenOrientation contentOrientation;
+
 @end
-
-
-
-#endif // _TRAMPOLINE_UI_UNITYVIEW_H_

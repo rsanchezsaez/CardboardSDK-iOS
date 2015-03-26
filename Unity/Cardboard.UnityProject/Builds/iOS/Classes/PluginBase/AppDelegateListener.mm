@@ -1,6 +1,5 @@
 
 #include "AppDelegateListener.h"
-#include <UIKit/UIApplication.h>
 
 #define DEFINE_NOTIFICATION(name) extern "C" __attribute__((visibility ("default"))) NSString* const name = @#name;
 
@@ -16,7 +15,7 @@ void UnityRegisterAppDelegateListener(id<AppDelegateListener> obj)
 {
 	#define REGISTER_SELECTOR(sel, notif_name)					\
 	if([obj respondsToSelector:sel])							\
-		[[NSNotificationCenter defaultCenter] 	addObserver:obj	\
+		[[NSNotificationCenter defaultCenter]	addObserver:obj	\
 												selector:sel	\
 												name:notif_name	\
 												object:nil		\

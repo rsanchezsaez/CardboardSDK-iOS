@@ -9,17 +9,16 @@
 
 #include "Preprocessor.h"
 #include "UnityTrampolineConfigure.h"
-#include "iPhone_Common.h"
 #include "UnityInterface.h"
 
-#ifdef __cplusplus
-extern "C" {
+#ifndef __OBJC__
+	#if USE_IL2CPP_PCH
+		#include "il2cpp_precompiled_header.h"
+	#endif
 #endif
 
-void UnitySendMessage(const char* obj, const char* method, const char* msg);
-
-#ifdef __cplusplus
-}
+#ifndef TARGET_IPHONE_SIMULATOR
+	#define TARGET_IPHONE_SIMULATOR 0
 #endif
 
 #define printf_console printf

@@ -1,4 +1,5 @@
 
+#include <QuartzCore/QuartzCore.h>
 #include <stdio.h>
 
 #include "GlesHelper.h"
@@ -6,8 +7,7 @@
 #include "DisplayManager.h"
 #include "EAGLContextHelper.h"
 #include "CVTextureCache.h"
-#include "iPhone_Profiler.h"
-
+#include "InternalProfiler.h"
 
 
 // here goes some gles magic
@@ -22,6 +22,8 @@ extern "C" void glDiscardFramebufferEXT(GLenum target, GLsizei numAttachments, c
 extern "C" void glRenderbufferStorageMultisampleAPPLE(GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height);
 extern "C" void glResolveMultisampleFramebufferAPPLE(void);
 
+#define SAFE_GL_DELETE(func, obj)	do { if(obj) { GLES_CHK(func(1,&obj)); obj = 0; } } while(0)
+
 #define DISCARD_FBO(ctx, fbo, cnt, att)													\
 do{																						\
 	if(surface->context.API >= 3)	GLES_CHK(glInvalidateFramebuffer(fbo, cnt, att));	\
@@ -31,62 +33,49 @@ do{																						\
 #define CREATE_RB_AA(ctx, aa, fmt, w, h)																			\
 do{																													\
 	if(surface->context.API >= 3)	GLES_CHK(glRenderbufferStorageMultisample(GL_RENDERBUFFER, aa, fmt, w, h));		\
-	else if(_supportsMSAA)			GLES_CHK(glRenderbufferStorageMultisampleAPPLE(GL_RENDERBUFFER, aa, fmt, w, h));\
+	else if(_supportsDiscard)		GLES_CHK(glRenderbufferStorageMultisampleAPPLE(GL_RENDERBUFFER, aa, fmt, w, h));\
 } while(0)
 
 
-extern GLint gDefaultFBO;
 
 
-extern "C" void InitEAGLLayer(void* eaglLayer, bool use32bitColor);
+static	bool	_supportsDiscard		= false;
+static	bool	_supportsPackedStencil	= false;
 
-void InitGLES(int api)
+extern "C" void InitRenderingGLES()
 {
-    if(api == 3)
-    {
-        _supportsDiscard = true;
-        _supportsMSAA = true;
-        _supportsPackedStencil = true;
-    }
-    else
-    {
-		_supportsDiscard		= UnityHasRenderingAPIExtension("GL_EXT_discard_framebuffer");
-		_supportsMSAA			= UnityHasRenderingAPIExtension("GL_APPLE_framebuffer_multisample");
-		_supportsPackedStencil	= UnityHasRenderingAPIExtension("GL_OES_packed_depth_stencil");
-    }
+	int api = UnitySelectedRenderingAPI();
+	assert(api == apiOpenGLES2 || api == apiOpenGLES3);
+
+	_supportsDiscard		= api == apiOpenGLES2 ? UnityHasRenderingAPIExtension("GL_EXT_discard_framebuffer")			: true;
+	_supportsMSAA			= api == apiOpenGLES2 ? UnityHasRenderingAPIExtension("GL_APPLE_framebuffer_multisample")	: true;
+	_supportsPackedStencil	= api == apiOpenGLES2 ? UnityHasRenderingAPIExtension("GL_OES_packed_depth_stencil")		: true;
 }
 
 
-void CreateSystemRenderingSurface(UnityRenderingSurface* surface)
+extern "C" void CreateSystemRenderingSurfaceGLES(UnityDisplaySurfaceGLES* surface)
 {
 	EAGLContextSetCurrentAutoRestore autorestore(surface->context);
-	DestroySystemRenderingSurface(surface);
-
-	const NSString* colorFormat = surface->use32bitColor ? kEAGLColorFormatRGBA8 : kEAGLColorFormatRGB565;
+	DestroySystemRenderingSurfaceGLES(surface);
 
 	surface->layer.opaque = YES;
-	surface->layer.drawableProperties = [NSDictionary dictionaryWithObjectsAndKeys:
-											[NSNumber numberWithBool:FALSE], kEAGLDrawablePropertyRetainedBacking,
-											colorFormat, kEAGLDrawablePropertyColorFormat,
-											nil
-										];
+	surface->layer.drawableProperties = @{ kEAGLDrawablePropertyRetainedBacking : @(FALSE), kEAGLDrawablePropertyColorFormat : kEAGLColorFormatRGBA8 };
 
-
-	surface->colorFormat = surface->use32bitColor ? GL_RGBA8 : GL_RGB565;
+	surface->colorFormat = GL_RGBA8;
 
 	GLES_CHK(glGenRenderbuffers(1, &surface->systemColorRB));
 	GLES_CHK(glBindRenderbuffer(GL_RENDERBUFFER, surface->systemColorRB));
-	AllocateRenderBufferStorageFromEAGLLayer(surface->context, surface->layer);
+	AllocateRenderBufferStorageFromEAGLLayer((__bridge void*)surface->context, (__bridge void*)surface->layer);
 
 	GLES_CHK(glGenFramebuffers(1, &surface->systemFB));
 	GLES_CHK(glBindFramebuffer(GL_FRAMEBUFFER, surface->systemFB));
 	GLES_CHK(glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, surface->systemColorRB));
 }
 
-void CreateRenderingSurface(UnityRenderingSurface* surface)
+extern "C" void CreateRenderingSurfaceGLES(UnityDisplaySurfaceGLES* surface)
 {
 	EAGLContextSetCurrentAutoRestore autorestore(surface->context);
-	DestroyRenderingSurface(surface);
+	DestroyRenderingSurfaceGLES(surface);
 
 	bool needRenderingSurface = surface->targetW != surface->systemW || surface->targetH != surface->systemH || surface->useCVTextureCache;
 	if(needRenderingSurface)
@@ -97,7 +86,7 @@ void CreateRenderingSurface(UnityRenderingSurface* surface)
 		if(surface->cvTextureCache)
 		{
 			surface->cvTextureCacheTexture = CreateReadableRTFromCVTextureCache(surface->cvTextureCache, surface->targetW, surface->targetH, &surface->cvPixelBuffer);
-            surface->targetColorRT = GetGLTextureFromCVTextureCache(surface->cvTextureCacheTexture);
+			surface->targetColorRT = GetGLTextureFromCVTextureCache(surface->cvTextureCacheTexture);
 		}
 		else
 		{
@@ -111,11 +100,7 @@ void CreateRenderingSurface(UnityRenderingSurface* surface)
 		GLES_CHK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
 
 		if(!surface->cvTextureCache)
-		{
-			GLenum fmt  = surface->use32bitColor ? GL_RGBA : GL_RGB;
-			GLenum type = surface->use32bitColor ? GL_UNSIGNED_BYTE : GL_UNSIGNED_SHORT_5_6_5;
-			GLES_CHK(glTexImage2D(GL_TEXTURE_2D, 0, fmt, surface->targetW, surface->targetH, 0, fmt, type, 0));
-		}
+			GLES_CHK(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, surface->targetW, surface->targetH, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0));
 
 		GLES_CHK(glGenFramebuffers(1, &surface->targetFB));
 		GLES_CHK(glBindFramebuffer(GL_FRAMEBUFFER, surface->targetFB));
@@ -137,19 +122,21 @@ void CreateRenderingSurface(UnityRenderingSurface* surface)
 	}
 }
 
-void CreateSharedDepthbuffer(UnityRenderingSurface* surface)
+extern "C" void CreateSharedDepthbufferGLES(UnityDisplaySurfaceGLES* surface)
 {
 	EAGLContextSetCurrentAutoRestore autorestore(surface->context);
-	DestroySharedDepthbuffer(surface);
+	DestroySharedDepthbufferGLES(surface);
+	if (surface->disableDepthAndStencil)
+		return;
 
-	surface->depthFormat = surface->use24bitDepth ? GL_DEPTH_COMPONENT24 : GL_DEPTH_COMPONENT16;
-	if(_supportsPackedStencil && surface->use24bitDepth)
+	surface->depthFormat = GL_DEPTH_COMPONENT24;
+	if(_supportsPackedStencil)
 		surface->depthFormat = GL_DEPTH24_STENCIL8;
 
 	GLES_CHK(glGenRenderbuffers(1, &surface->depthRB));
 	GLES_CHK(glBindRenderbuffer(GL_RENDERBUFFER, surface->depthRB));
 
-	bool needMSAA = _supportsMSAA && (surface->msaaSamples > 1);
+	bool needMSAA = _supportsMSAA && surface->msaaSamples > 1;
 
 	if(needMSAA)
 		CREATE_RB_AA(surface->context, surface->msaaSamples, surface->depthFormat, surface->targetW, surface->targetH);
@@ -162,17 +149,17 @@ void CreateSharedDepthbuffer(UnityRenderingSurface* surface)
 	else						GLES_CHK(glBindFramebuffer(GL_FRAMEBUFFER, surface->systemFB));
 
 	GLES_CHK(glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, surface->depthRB));
-	if(_supportsPackedStencil && surface->use24bitDepth)
+	if(_supportsPackedStencil)
 		GLES_CHK(glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, surface->depthRB));
 }
 
-void CreateUnityRenderBuffers(UnityRenderingSurface* surface)
+extern "C" void CreateUnityRenderBuffersGLES(UnityDisplaySurfaceGLES* surface)
 {
-	int api = surface->context.API;
-	{
-		int w = surface->targetW, h = surface->targetH;
-		unsigned texid = 0, rbid = 0, fbo = 0;
+	UnityRenderBufferDesc target_desc = { surface->targetW, surface->targetH, (unsigned int)surface->msaaSamples, 1 };
+	UnityRenderBufferDesc system_desc = { surface->systemW, surface->systemH, 1, 1 };
 
+	{
+		unsigned texid = 0, rbid = 0, fbo = 0;
 		if(surface->msaaFB)
 		{
 			rbid  = surface->msaaColorRB;
@@ -189,19 +176,22 @@ void CreateUnityRenderBuffers(UnityRenderingSurface* surface)
 			fbo = surface->systemFB;
 		}
 
-		surface->unityColorBuffer = UnityCreateUpdateExternalColorSurface(api, surface->unityColorBuffer, texid, rbid, w, h, surface->use32bitColor, surface->msaaSamples, true);
-		surface->unityDepthBuffer = UnityCreateUpdateExternalDepthSurface(api, surface->unityDepthBuffer, 0, surface->depthRB, w, h, surface->use24bitDepth, surface->msaaSamples, true);
-		UnityRegisterFBO(api, surface->unityColorBuffer, surface->unityDepthBuffer, fbo);
+		surface->unityColorBuffer = UnityCreateExternalSurfaceGLES(surface->unityColorBuffer, true, texid, rbid, surface->colorFormat, &target_desc);
+		if(surface->depthRB)
+			surface->unityDepthBuffer = UnityCreateExternalSurfaceGLES(surface->unityDepthBuffer, false, 0, surface->depthRB, surface->depthFormat, &target_desc);
+		else
+			surface->unityDepthBuffer = UnityCreateDummySurface(surface->context.API, surface->unityDepthBuffer, false, &target_desc);
+
+		UnityRegisterFBO(surface->unityColorBuffer, surface->unityDepthBuffer, fbo);
 	}
 
 	if(surface->msaaFB || surface->targetFB)
 	{
-		int w = surface->systemW, h = surface->systemH;
 		unsigned rbid = surface->systemColorRB;
 
-		surface->systemColorBuffer = UnityCreateUpdateExternalColorSurface(api, surface->systemColorBuffer, 0, rbid, w, h, surface->use32bitColor, 1, true);
-		surface->systemDepthBuffer = UnityCreateUpdateExternalDepthSurface(api, surface->systemDepthBuffer, 0, 0, w, h, surface->use24bitDepth, 1, true);
-		UnityRegisterFBO(api, surface->systemColorBuffer, surface->systemDepthBuffer, surface->systemFB);
+		surface->systemColorBuffer = UnityCreateExternalSurfaceGLES(surface->systemColorBuffer, true, 0, rbid, surface->colorFormat, &system_desc);
+		surface->systemDepthBuffer = UnityCreateDummySurface(surface->context.API, surface->systemDepthBuffer, false, &system_desc);
+		UnityRegisterFBO(surface->systemColorBuffer, surface->systemDepthBuffer, surface->systemFB);
 	}
 	else
 	{
@@ -210,7 +200,8 @@ void CreateUnityRenderBuffers(UnityRenderingSurface* surface)
 	}
 }
 
-void DestroySystemRenderingSurface(UnityRenderingSurface* surface)
+
+extern "C" void DestroySystemRenderingSurfaceGLES(UnityDisplaySurfaceGLES* surface)
 {
 	EAGLContextSetCurrentAutoRestore autorestore(surface->context);
 
@@ -220,27 +211,19 @@ void DestroySystemRenderingSurface(UnityRenderingSurface* surface)
 	if(surface->systemColorRB)
 	{
 		GLES_CHK(glBindRenderbuffer(GL_RENDERBUFFER, surface->systemColorRB));
-		DeallocateRenderBufferStorageFromEAGLLayer(surface->context);
+		DeallocateRenderBufferStorageFromEAGLLayer((__bridge void*)surface->context);
 
 		GLES_CHK(glBindRenderbuffer(GL_RENDERBUFFER, 0));
 		GLES_CHK(glDeleteRenderbuffers(1, &surface->systemColorRB));
 		surface->systemColorRB = 0;
 	}
 
-	if(surface->depthRB && surface->targetFB == 0 && surface->msaaFB == 0)
-	{
-		GLES_CHK(glDeleteRenderbuffers(1, &surface->depthRB));
-		surface->depthRB = 0;
-	}
-
-	if(surface->systemFB)
-	{
-		GLES_CHK(glDeleteFramebuffers(1, &surface->systemFB));
-		surface->systemFB = 0;
-	}
+	if(surface->targetFB == 0 && surface->msaaFB == 0)
+		SAFE_GL_DELETE(glDeleteRenderbuffers, surface->depthRB);
+	SAFE_GL_DELETE(glDeleteFramebuffers, surface->systemFB);
 }
 
-void DestroyRenderingSurface(UnityRenderingSurface* surface)
+extern "C" void DestroyRenderingSurfaceGLES(UnityDisplaySurfaceGLES* surface)
 {
 	EAGLContextSetCurrentAutoRestore autorestore(surface->context);
 
@@ -255,63 +238,36 @@ void DestroyRenderingSurface(UnityRenderingSurface* surface)
 	if(surface->cvTextureCache)			CFRelease(surface->cvTextureCache);
 	surface->cvTextureCache = 0;
 
-
-	if(surface->targetFB)
-	{
-		GLES_CHK(glDeleteFramebuffers(1, &surface->targetFB));
-		surface->targetFB = 0;
-	}
-
-	if(surface->msaaColorRB)
-	{
-		GLES_CHK(glDeleteRenderbuffers(1, &surface->msaaColorRB));
-		surface->msaaColorRB = 0;
-	}
-
-	if(surface->msaaFB)
-	{
-		GLES_CHK(glDeleteFramebuffers(1, &surface->msaaFB));
-		surface->msaaFB = 0;
-	}
+	SAFE_GL_DELETE(glDeleteFramebuffers, surface->targetFB);
+	SAFE_GL_DELETE(glDeleteRenderbuffers, surface->msaaColorRB);
+	SAFE_GL_DELETE(glDeleteFramebuffers, surface->msaaFB);
 }
 
-void DestroySharedDepthbuffer(UnityRenderingSurface* surface)
+extern "C" void DestroySharedDepthbufferGLES(UnityDisplaySurfaceGLES* surface)
+{
+	EAGLContextSetCurrentAutoRestore autorestore(surface->context);
+	SAFE_GL_DELETE(glDeleteRenderbuffers, surface->depthRB);
+}
+
+extern "C" void DestroyUnityRenderBuffersGLES(UnityDisplaySurfaceGLES* surface)
 {
 	EAGLContextSetCurrentAutoRestore autorestore(surface->context);
 
-	if(surface->depthRB)
-	{
-		GLES_CHK(glDeleteRenderbuffers(1, &surface->depthRB));
-		surface->depthRB = 0;
-	}
-}
-
-void DestroyUnityRenderBuffers(UnityRenderingSurface* surface)
-{
-	EAGLContextSetCurrentAutoRestore autorestore(surface->context);
-
-	if(surface->unityColorBuffer)
-		UnityDestroyExternalColorSurface(surface->context.API, surface->unityColorBuffer);
-	if(surface->systemColorBuffer);
-		UnityDestroyExternalColorSurface(surface->context.API, surface->systemColorBuffer);
-
+	if(surface->unityColorBuffer)	UnityDestroyExternalSurface(surface->api, surface->unityColorBuffer);
+	if(surface->systemColorBuffer)	UnityDestroyExternalSurface(surface->api, surface->systemColorBuffer);
 	surface->unityColorBuffer = surface->systemColorBuffer = 0;
 
-
-	if(surface->unityDepthBuffer)
-		UnityDestroyExternalDepthSurface(surface->context.API, surface->unityDepthBuffer);
-	if(surface->systemDepthBuffer);
-		UnityDestroyExternalDepthSurface(surface->context.API, surface->systemDepthBuffer);
-
+	if(surface->unityDepthBuffer)	UnityDestroyExternalSurface(surface->api, surface->unityDepthBuffer);
+	if(surface->systemDepthBuffer)	UnityDestroyExternalSurface(surface->api, surface->systemDepthBuffer);
 	surface->unityDepthBuffer = surface->systemDepthBuffer = 0;
 }
 
-void PreparePresentRenderingSurface(UnityRenderingSurface* surface, EAGLContext* mainContext)
+extern "C" void PreparePresentGLES(UnityDisplaySurfaceGLES* surface)
 {
 	{
 		EAGLContextSetCurrentAutoRestore autorestore(surface->context);
 
-		if(surface->msaaSamples > 1 && _supportsMSAA)
+		if(_supportsMSAA && surface->msaaSamples > 1)
 		{
 			Profiler_StartMSAAResolve();
 
@@ -343,15 +299,16 @@ void PreparePresentRenderingSurface(UnityRenderingSurface* surface, EAGLContext*
 		}
 	}
 
-	AppController_RenderPluginMethod(@selector(onFrameResolved));
+	APP_CONTROLLER_RENDER_PLUGIN_METHOD(onFrameResolved);
 
 	if(surface->targetColorRT)
 	{
 		// shaders are bound to context
-		EAGLContextSetCurrentAutoRestore autorestore(mainContext);
+		EAGLContextSetCurrentAutoRestore autorestore(UnityGetMainScreenContextGLES());
 
 		assert(surface->systemColorBuffer != 0 && surface->systemDepthBuffer != 0);
-		UnitySetDefaultFBO(surface->context.API, surface->systemColorBuffer, surface->systemDepthBuffer);
+		UnitySetAsDefaultFBO(surface->systemColorBuffer, surface->systemDepthBuffer);
+		UnitySetFBO(surface->systemColorBuffer, surface->systemDepthBuffer);
 		UnityBlitToSystemFB(surface->targetColorRT, surface->targetW, surface->targetH, surface->systemW, surface->systemH);
 	}
 
@@ -374,25 +331,35 @@ void PreparePresentRenderingSurface(UnityRenderingSurface* surface, EAGLContext*
 		DISCARD_FBO(surface->context, GL_FRAMEBUFFER, 2, &discardAttach[1]);
 	}
 }
-
-void SetupUnityDefaultFBO(UnityRenderingSurface* surface)
+extern "C" void PresentGLES(UnityDisplaySurfaceGLES* surface)
 {
-	UnitySetDefaultFBO(surface->context.API, surface->unityColorBuffer, surface->unityDepthBuffer);
+	if(surface->context && surface->systemColorRB)
+	{
+		EAGLContextSetCurrentAutoRestore autorestore(surface->context);
+		GLES_CHK(glBindRenderbuffer(GL_RENDERBUFFER, surface->systemColorRB));
+		[surface->context presentRenderbuffer:GL_RENDERBUFFER];
+	}
 }
 
-
-@implementation GLView
-+ (Class) layerClass
+extern "C" void PrepareRenderingGLES(UnityDisplaySurfaceGLES* /*surface*/)
 {
-	return [CAEAGLLayer class];
 }
-@end
+extern "C" void TeardownRenderingGLES(UnityDisplaySurfaceGLES* /*surface*/)
+{
+}
 
+extern "C" void PrepareFrameRenderingGLES()
+{
+	UnityDisplaySurfaceGLES* surf = (UnityDisplaySurfaceGLES*)GetMainDisplaySurface();
+	UnitySetAsDefaultFBO(surf->unityColorBuffer, surf->unityDepthBuffer);
+}
+extern "C" void TeardownFrameRenderingGLES()
+{
+}
 
-void CheckGLESError(const char* file, int line)
+extern "C" void CheckGLESError(const char* file, int line)
 {
 	GLenum e = glGetError();
-	if( e )
-		printf_console ("OpenGLES error 0x%04X in %s:%i\n", e, file, line);
+	if(e)
+		::printf("OpenGLES error 0x%04X in %s:%i\n", e, file, line);
 }
-

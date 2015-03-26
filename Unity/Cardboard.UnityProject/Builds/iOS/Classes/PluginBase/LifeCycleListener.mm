@@ -1,12 +1,11 @@
 
 #include "LifeCycleListener.h"
-#include <UIKit/UIApplication.h>
 
 void UnityRegisterLifeCycleListener(id<LifeCycleListener> obj)
 {
 	#define REGISTER_SELECTOR(sel, notif_name)					\
 	if([obj respondsToSelector:sel])							\
-		[[NSNotificationCenter defaultCenter] 	addObserver:obj	\
+		[[NSNotificationCenter defaultCenter]	addObserver:obj	\
 												selector:sel	\
 												name:notif_name	\
 												object:nil		\

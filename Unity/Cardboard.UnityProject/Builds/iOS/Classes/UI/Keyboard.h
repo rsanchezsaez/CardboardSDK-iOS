@@ -1,7 +1,4 @@
-#ifndef _TRAMPOLINE_UI_KEYBOARD_H_
-#define _TRAMPOLINE_UI_KEYBOARD_H_
-
-#import <UIKit/UIKit.h>
+#pragma once
 
 typedef struct
 {
@@ -53,6 +50,3 @@ KeyboardShowParam;
 @property (retain, nonatomic, getter=getText, setter=setText:)	NSString*	text;
 
 @end
-
-
-#endif // _TRAMPOLINE_UI_KEYBOARD_H_

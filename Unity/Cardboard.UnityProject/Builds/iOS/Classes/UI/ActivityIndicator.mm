@@ -1,13 +1,16 @@
 
 #include "ActivityIndicator.h"
-#include "iPhone_OrientationSupport.h"
+#include "OrientationSupport.h"
 
-static ActivityIndicator* _activityIndicator = nil;
-
-@implementation ActivityIndicator
+@interface ActivityIndicator : UIActivityIndicatorView
 {
 	UIView*	_parent;
 }
+@end
+static ActivityIndicator* _activityIndicator = nil;
+
+
+@implementation ActivityIndicator
 - (void)show:(UIView*)parent
 {
 	_parent = parent;
@@ -18,12 +21,6 @@ static ActivityIndicator* _activityIndicator = nil;
 {
 	self.center = CGPointMake([_parent bounds].size.width/2, [_parent bounds].size.height/2);
 }
-
-+ (ActivityIndicator*)Instance
-{
-	return _activityIndicator;
-}
-
 @end
 
 void ShowActivityIndicator(UIView* parent, int style)
@@ -48,11 +45,10 @@ void ShowActivityIndicator(UIView* parent)
 
 void HideActivityIndicator()
 {
-	if( _activityIndicator )
+	if(_activityIndicator)
 	{
 		[_activityIndicator stopAnimating];
 		[_activityIndicator removeFromSuperview];
-		[_activityIndicator release];
 		_activityIndicator = nil;
 	}
 }
@@ -67,4 +63,3 @@ extern "C" void UnityStopActivityIndicator()
 {
 	HideActivityIndicator();
 }
-

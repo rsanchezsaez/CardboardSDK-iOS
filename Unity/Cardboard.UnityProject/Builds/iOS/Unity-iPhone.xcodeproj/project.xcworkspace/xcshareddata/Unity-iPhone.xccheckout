@@ -5,7 +5,7 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>39F96CC5-4DB6-4461-8A57-8EEE1023765D</string>
+	<string>F71A94B9-AD04-464F-9061-DF6D552340E6</string>
 	<key>IDESourceControlProjectName</key>
 	<string>Unity-iPhone</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
@@ -14,7 +14,7 @@
 		<string>github.com:rsanchezsaez/CardboardSDK-iOS.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>Unity/Cardboard.UnityProject/Builds/iOS/Unity-iPhone.xcodeproj</string>
+	<string>Unity/Cardboard.UnityProject/Builds/iOS 5/Unity-iPhone.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>EDFFEE58A17C1EBE75F750230E9F223862BB84E3</key>
@@ -34,7 +34,7 @@
 			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>EDFFEE58A17C1EBE75F750230E9F223862BB84E3</string>
 			<key>IDESourceControlWCCName</key>
-			<string>CardboardSDK-iOS</string>
+			<string>CardboardSDK-iOS-Unity</string>
 		</dict>
 	</array>
 </dict>

@@ -1,4 +1,4 @@
-#import <Foundation/Foundation.h>
+
 #import "PLCrashReporter.h"
 #import "CrashReporter.h"
 
@@ -12,7 +12,7 @@ static NSUncaughtExceptionHandler* gsCrashReporterUEHandler = NULL;
 
 static void SavePendingCrashReport()
 {
-	if (![[UnityPLCrashReporter sharedReporter] hasPendingCrashReport]) 
+	if (![[UnityPLCrashReporter sharedReporter] hasPendingCrashReport])
 		return;
 
 	NSFileManager *fm = [NSFileManager defaultManager];
@@ -20,14 +20,14 @@ static void SavePendingCrashReport()
 
 	if (![fm createDirectoryAtPath:GetCrashReportsPath() withIntermediateDirectories:YES attributes:nil error:&error])
 	{
-		printf_console("CrashReporter: could not create crash report directory: %s\n", [[error localizedDescription] UTF8String]);
+		::printf("CrashReporter: could not create crash report directory: %s\n", [[error localizedDescription] UTF8String]);
 		return;
 	}
 
 	NSData *data = [[UnityPLCrashReporter sharedReporter] loadPendingCrashReportDataAndReturnError: &error];
 	if (data == nil)
 	{
-		printf_console("CrashReporter: failed to load crash report data: %s\n", [[error localizedDescription] UTF8String]);
+		::printf("CrashReporter: failed to load crash report data: %s\n", [[error localizedDescription] UTF8String]);
 		return;
 	}
 
@@ -37,15 +37,15 @@ static void SavePendingCrashReport()
 	file = [file stringByAppendingString:@".plcrash"];
 	if ([data writeToFile:file atomically:YES])
 	{
-		printf_console("CrashReporter: saved pending crash report.\n");
+		::printf("CrashReporter: saved pending crash report.\n");
 		if (![[UnityPLCrashReporter sharedReporter] purgePendingCrashReportAndReturnError: &error])
 		{
-			printf_console("CrashReporter: couldn't remove pending report: %s\n", [[error localizedDescription] UTF8String]);
+			::printf("CrashReporter: couldn't remove pending report: %s\n", [[error localizedDescription] UTF8String]);
 		}
 	}
 	else
 	{
-		printf_console("CrashReporter: couldn't save crash report.\n");
+		::printf("CrashReporter: couldn't save crash report.\n");
 	}
 }
 
@@ -56,10 +56,10 @@ static void InitCrashReporter()
 
 	UnityInstallPostCrashCallback();
 	if ([[UnityPLCrashReporter sharedReporter] enableCrashReporterAndReturnError: &error])
-		printf_console("CrashReporter: initialized\n");
+		::printf("CrashReporter: initialized\n");
 	else
 		NSLog(@"CrashReporter: could not enable crash reporter: %@", error);
-	
+
 	SavePendingCrashReport();
 }
 

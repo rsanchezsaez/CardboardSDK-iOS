@@ -1,5 +1,4 @@
-#ifndef _TRAMPOLINE_UNITY_DISPLAYMANAGER_H_
-#define _TRAMPOLINE_UNITY_DISPLAYMANAGER_H_
+#pragma once
 
 #include "GlesHelper.h"
 
@@ -9,71 +8,69 @@
 typedef struct
 RenderingSurfaceParams
 {
-	int  msaaSampleCount;
-	int  renderW;
-	int  renderH;
+	// rendering setup
+	int	msaaSampleCount;
+	int	renderW;
+	int	renderH;
+	int	srgb;
 
-	bool use32bitColor;
-	bool use24bitDepth;
-	bool useCVTextureCache;
+	// unity setup
+	int	disableDepthAndStencil;
+	int	useCVTextureCache;
 }
 RenderingSurfaceParams;
 
 
 @interface DisplayConnection : NSObject
-{
-@public
-    UIScreen*       screen;
-    UIWindow*       window;
-    UIView*         view;
-
-    CGSize          screenSize;
-
-    UnityRenderingSurface   surface;
-}
 - (id)init:(UIScreen*)targetScreen;
-- (id)createView:(BOOL)useWithGles showRightAway:(BOOL)showRightAway;
-- (id)createView:(BOOL)useWithGles;
-
-- (void)shouldShowWindow:(BOOL)show;
-
 - (void)dealloc;
 
-- (void)createContext:(EAGLContext*)parent;
+- (void)createView:(BOOL)useForRendering showRightAway:(BOOL)showRightAway;
+- (void)createView:(BOOL)useForRendering;
+- (void)createWithWindow:(UIWindow*)window andView:(UIView*)view;
+- (void)initRendering;
 - (void)recreateSurface:(RenderingSurfaceParams)params;
 
+- (void)shouldShowWindow:(BOOL)show;
 - (void)requestRenderingResolution:(CGSize)res;
-
 - (void)present;
+
+@property (readonly, copy, nonatomic)	UIScreen*				screen;
+@property (readonly, copy, nonatomic)	UIWindow*				window;
+@property (readonly, copy, nonatomic)	UIView*					view;
+
+
+@property (readonly, nonatomic)			CGSize						screenSize;
+@property (readonly, nonatomic)			UnityDisplaySurfaceBase*	surface;
+
 @end
 
 
 @interface DisplayManager : NSObject
-{
-    NSMutableDictionary*    displayConnection;
-    DisplayConnection*      mainDisplay;
-}
-- (int)displayCount;
+- (id)objectForKeyedSubscript:(id)key;
 - (BOOL)displayAvailable:(UIScreen*)targetScreen;
-- (DisplayConnection*)display:(UIScreen*)targetScreen;
-- (DisplayConnection*)mainDisplay;
-
 - (void)updateDisplayListInUnity;
 
-- (void)presentAll;
-- (void)presentAllButMain;
+- (void)prepareRendering;
+- (void)present;
+- (void)teardownRendering;
+
+- (void)enumerateDisplaysWithBlock:(void (^)(DisplayConnection* conn))block;
 
 + (void)Initialize;
 + (DisplayManager*)Instance;
+
+@property (readonly, nonatomic)	DisplayConnection*	mainDisplay;
+
+@property (readonly, nonatomic)	int					displayCount;
+
 @end
 
-inline DisplayConnection* 		GetMainDisplay()
+inline DisplayConnection*			GetMainDisplay()
 {
-	return [[DisplayManager Instance] mainDisplay];
+	return [DisplayManager Instance].mainDisplay;
 }
-inline UnityRenderingSurface*	GetMainRenderingSurface()
+inline UnityDisplaySurfaceBase*		GetMainDisplaySurface()
 {
-	return &GetMainDisplay()->surface;
+	return GetMainDisplay().surface;
 }
-
-#endif // _TRAMPOLINE_UNITY_DISPLAYMANAGER_H_

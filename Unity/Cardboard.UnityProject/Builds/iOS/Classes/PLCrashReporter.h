@@ -54,14 +54,14 @@ typedef void (*UnityPLCrashReporterPostCrashSignalCallback)(siginfo_t *info, uco
 typedef struct UnityPLCrashReporterCallbacks {
     /** The version number of this structure. If not one of the defined version numbers for this type, the behavior
      * is undefined. The current version of this structure is 0. */
-    uint16_t version;
-    
-    /** An arbitrary user-supplied context value. This value may be NULL. */
-    void *context;
+	uint16_t version;
+
+	/** An arbitrary user-supplied context value. This value may be NULL. */
+	void *context;
 
     /** The callback used to report caught signal information. In version 0 of this structure, all crashes will be
      * reported via this function. */
-    UnityPLCrashReporterPostCrashSignalCallback handleSignal;
+	UnityPLCrashReporterPostCrashSignalCallback handleSignal;
 } UnityPLCrashReporterCallbacks;
 
 @interface UnityPLCrashReporter : NSObject {

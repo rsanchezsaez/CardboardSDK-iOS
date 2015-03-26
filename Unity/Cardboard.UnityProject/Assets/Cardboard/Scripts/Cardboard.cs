@@ -345,13 +345,12 @@ public class Cardboard : MonoBehaviour {
 
 #endif
 
-      //if (config.canApplyDistortionCorrection()) {
-		if (true) {
+      if (config.canApplyDistortionCorrection()) {
           Debug.Log("Creating new cardboard screen texture");
           StereoScreen = new RenderTexture(Screen.width, Screen.height, 16,
                                            RenderTextureFormat.RGB565);
           StereoScreen.Create();
-          //InitFromUnity(StereoScreen.GetNativeTextureID());
+          InitFromUnity(StereoScreen.GetNativeTextureID());
       } else {
           if (!Application.isEditor) {
             Debug.LogWarning("Lens distortion-correction disabled. Causes: ["

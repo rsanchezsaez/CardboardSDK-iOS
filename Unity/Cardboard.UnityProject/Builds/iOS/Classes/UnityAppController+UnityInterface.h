@@ -8,4 +8,3 @@
 @property (nonatomic) BOOL	paused;
 
 @end
-

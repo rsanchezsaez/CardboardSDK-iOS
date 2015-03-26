@@ -1,18 +1,25 @@
-#ifndef _TRAMPOLINE_UNITY_CVTEXTURECACHE_H_
-#define _TRAMPOLINE_UNITY_CVTEXTURECACHE_H_
+#pragma once
 
-bool		CanUseCVTextureCache();
-// returns CVOpenGLESTextureCacheRef
+// depending on selected rendering api it will be or GLES or Metal texture cache
+
+// returns CVOpenGLESTextureCacheRef/CVMetalTextureCacheRef
 void*		CreateCVTextureCache();
-// cache = CVOpenGLESTextureCacheRef
+// cache = CVOpenGLESTextureCacheRef/CVMetalTextureCacheRef
 void		FlushCVTextureCache(void* cache);
 
-// returns CVOpenGLESTextureRef
-// cache = CVOpenGLESTextureCacheRef
+// returns CVOpenGLESTextureRef/CVMetalTextureRef
+// cache = CVOpenGLESTextureCacheRef/CVMetalTextureCacheRef
 // image = CVImageBufferRef/CVPixelBufferRef
-void*		CreateTextureFromCVTextureCache(void* cache, void* image, unsigned w, unsigned h, int iosFormat, int glesFormat, int type);
+void*		CreateTextureFromCVTextureCache(void* cache, void* image, unsigned w, unsigned h);
+
 // texture = CVOpenGLESTextureRef
-unsigned	GetGLTextureFromCVTextureCache(void* texture);
+unsigned		GetGLTextureFromCVTextureCache(void* texture);
+// texture = CVMetalTextureRef
+MTLTextureRef	GetMetalTextureFromCVTextureCache(void* texture);
+
+// texture = CVOpenGLESTextureRef/CVMetalTextureRef
+uintptr_t		GetTextureFromCVTextureCache(void* texture);
+
 
 // returns CVPixelBufferRef
 // enforces kCVPixelFormatType_32BGRA
@@ -22,5 +29,3 @@ void*		CreatePixelBufferForCVTextureCache(unsigned w, unsigned h);
 // pb = CVPixelBufferRef (out)
 // enforces rgba texture with bgra backing
 void*		CreateReadableRTFromCVTextureCache(void* cache, unsigned w, unsigned h, void** pb);
-
-#endif // _TRAMPOLINE_UNITY_CVTEXTURECACHE_H_

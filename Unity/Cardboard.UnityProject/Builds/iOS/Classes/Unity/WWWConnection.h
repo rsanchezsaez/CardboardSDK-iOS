@@ -1,8 +1,4 @@
-#ifndef _TRAMPOLINE_UNITY_WWWCONNECTION_H_
-#define _TRAMPOLINE_UNITY_WWWCONNECTION_H_
-
-#import <Foundation/NSURLConnection.h>
-#import <Foundation/NSURL.h>
+#pragma once
 
 
 @interface UnityWWWConnectionDelegate : NSObject<NSURLConnectionDataDelegate>
@@ -20,7 +16,7 @@
 @property (readonly, retain, nonatomic) NSData*				data;
 @property (readonly, retain, nonatomic) NSURLConnection*	connection;
 
-@property (readonly, nonatomic) 		void*				udata;
+@property (readonly, nonatomic)			void*				udata;
 @property (nonatomic)					BOOL				shouldAbort;
 
 @end
@@ -73,7 +69,3 @@
 	WWWRequestProviderClassName = #ClassName;		\
 }													\
 @end												\
-
-
-
-#endif // _TRAMPOLINE_UNITY_WWWCONNECTION_H_

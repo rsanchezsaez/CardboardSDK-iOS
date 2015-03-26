@@ -1,8 +1,6 @@
-#ifndef _TRAMPOLINE_PLUGINBASE_APPDELEGATELISTENER_H_
-#define _TRAMPOLINE_PLUGINBASE_APPDELEGATELISTENER_H_
+#pragma once
 
 #include "LifeCycleListener.h"
-#import <Foundation/NSNotification.h>
 
 
 @protocol AppDelegateListener<LifeCycleListener>
@@ -49,6 +47,3 @@ extern "C" __attribute__((visibility ("default"))) NSString* const kUnityDidFail
 extern "C" __attribute__((visibility ("default"))) NSString* const kUnityDidReceiveRemoteNotification;
 extern "C" __attribute__((visibility ("default"))) NSString* const kUnityDidReceiveLocalNotification;
 extern "C" __attribute__((visibility ("default"))) NSString* const kUnityOnOpenURL;
-
-
-#endif // _TRAMPOLINE_PLUGINBASE_APPDELEGATELISTENER_H_

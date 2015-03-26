@@ -12,222 +12,249 @@
 
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
+#include "UnityMetalSupport.h"
 
 static DisplayManager* _DisplayManager = nil;
 extern bool _ios80orNewer;
 
-extern "C" void InitEAGLLayer(void* eaglLayer, bool use32bitColor);
+@interface DisplayConnection()
+@property (readonly, nonatomic)	UnityDisplaySurfaceGLES*	surfaceGLES;
+@property (readonly, nonatomic)	UnityDisplaySurfaceMTL*		surfaceMTL;
+@end
 
 @implementation DisplayConnection
 {
-	BOOL            needRecreateSurface;
-	CGSize          requestedRenderingSize;
+	BOOL						_needRecreateSurface;
+	CGSize						_requestedRenderingSize;
+
+	UIScreen*					_screen;
+	UIWindow*					_window;
+	UIView*						_view;
+
+	CGSize						_screenSize;
+
+	UnityDisplaySurfaceBase*	_surface;
 }
+
+@synthesize screen      = _screen;
+@synthesize window      = _window;
+@synthesize view        = _view;
+@synthesize screenSize  = _screenSize;
+@synthesize surface		= _surface;
+
+@synthesize surfaceGLES;
+- (UnityDisplaySurfaceGLES*)surfaceGLES	{ assert(_surface->api != apiMetal); return (UnityDisplaySurfaceGLES*)_surface; }
+@synthesize surfaceMTL;
+- (UnityDisplaySurfaceMTL*)surfaceMTL	{ assert(_surface->api == apiMetal); return (UnityDisplaySurfaceMTL*)_surface; }
+
 
 - (id)init:(UIScreen*)targetScreen
 {
 	if( (self = [super init]) )
 	{
-		self->screen = targetScreen;
+		self->_screen = targetScreen;
 
-		if([targetScreen respondsToSelector:@selector(preferredMode)])
-			targetScreen.currentMode = targetScreen.preferredMode;
-		if([targetScreen respondsToSelector:@selector(overscanCompensation)])
-			targetScreen.overscanCompensation = UIScreenOverscanCompensationInsetApplicationFrame;
+		targetScreen.currentMode = targetScreen.preferredMode;
+		targetScreen.overscanCompensation = UIScreenOverscanCompensationInsetApplicationFrame;
 
-		self->screenSize = targetScreen.currentMode.size;
+		self->_screenSize = targetScreen.currentMode.size;
 
-		self->needRecreateSurface = NO;
-		self->requestedRenderingSize = CGSizeMake(-1,-1);
-
-		self->window = nil;
-		self->view = nil;
-		::memset(&self->surface, 0x00, sizeof(UnityRenderingSurface));
+		self->_needRecreateSurface = NO;
+		self->_requestedRenderingSize = CGSizeMake(-1,-1);
 	}
 	return self;
 }
 
-- (id)createView:(BOOL)useWithGles
+- (void)createWithWindow:(UIWindow*)window andView:(UIView*)view
 {
-	return [self createView:useWithGles showRightAway:YES];
+	_window = window;
+	_view	= view;
+
+	CGSize layerSize = _view.layer.bounds.size;
+	_screenSize = CGSizeMake(roundf(layerSize.width) * _view.contentScaleFactor, roundf(layerSize.height) * _view.contentScaleFactor);
+
 }
 
-- (id)createView:(BOOL)useWithGles showRightAway:(BOOL)showRightAway;
+- (void)createView:(BOOL)useForRendering
 {
-	if(view == nil)
+	[self createView:useForRendering showRightAway:YES];
+}
+- (void)createView:(BOOL)useForRendering showRightAway:(BOOL)showRightAway;
+{
+	NSAssert(_screen != [UIScreen mainScreen], @"DisplayConnection for mainScreen should be created with createWithWindow:andView:");
+	if(_view == nil)
 	{
-		window = [[UIWindow alloc] initWithFrame: [screen bounds]];
-		window.screen = screen;
+		UIWindow* window = [[UIWindow alloc] initWithFrame: _screen.bounds];
+		window.screen = _screen;
 
-		if(screen == [UIScreen mainScreen])
-		{
-			view = [GetAppController() initUnityView];
-			NSAssert([view isKindOfClass:[UnityView class]], @"You MUST use UnityView subclass as unity view");
-		}
-		else
-		{
-			view = useWithGles ? [GLView alloc] : [UIView alloc];
-			[view initWithFrame: [self->screen bounds]];
-		}
+		UIView* view = [(useForRendering ? [UnityRenderingView alloc] : [UIView alloc]) initWithFrame: _screen.bounds];
+		view.contentScaleFactor = UnityScreenScaleFactor(_screen);
 
-		view.contentScaleFactor = UnityScreenScaleFactor(self->screen);
+		[self createWithWindow:window andView:view];
 
 		if(showRightAway)
 		{
 			[window addSubview:view];
 			[window makeKeyAndVisible];
 		}
-
-		CGSize	layerSize	= [view.layer bounds].size;
-		CGFloat	scale		= view.contentScaleFactor;
-		screenSize = CGSizeMake(layerSize.width * scale, layerSize.height * scale);
 	}
-	// TODO: create context here: for now we cant call it as we will query unity for target api
-	/*
-	if(surface.context == nil)
-	{
-		surface.layer = (CAEAGLLayer*)view.layer;
-		surface.context = CreateContext([[DisplayManager Instance] mainDisplay]->surface.context);
-	}
-	*/
-
-	return self;
 }
 
 - (void)shouldShowWindow:(BOOL)show
 {
-	window.hidden = show ? NO : YES;
-	window.screen = show ? screen : nil;
+	_window.hidden = show ? NO : YES;
+	_window.screen = show ? _screen : nil;
 }
 
-
-- (void)createContext:(EAGLContext*)parent
+- (void)initRendering
 {
-	if(surface.context == nil)
+	if(_surface == 0)
 	{
-		surface.layer = (CAEAGLLayer*)view.layer;
-		surface.context = CreateContext(parent);
+		int api = UnitySelectedRenderingAPI();
+		if(api == apiMetal)
+		{
+			UnityDisplaySurfaceMTL* surf = new UnityDisplaySurfaceMTL();
+			surf->layer			= (CAMetalLayer*)_view.layer;
+			surf->device		= UnityGetMetalDevice();
+			surf->commandQueue	= [surf->device newCommandQueue];
+			_surface = surf;
+		}
+		else
+		{
+			UnityDisplaySurfaceGLES* surf = new UnityDisplaySurfaceGLES();
+			surf->layer		= (CAEAGLLayer*)_view.layer;
+			surf->context	= UnityCreateContextEAGL(UnityGetDataContextGLES(), 0);
+			_surface = surf;
+		}
+		_surface->api	= api;
 	}
 }
 
+
 - (void)recreateSurface:(RenderingSurfaceParams)params
 {
-	[self createContext:[[DisplayManager Instance] mainDisplay]->surface.context];
+	[self initRendering];
 
-	CGSize	layerSize	= [view.layer bounds].size;
-	CGFloat	scale		= UnityScreenScaleFactor(screen);
-	screenSize = CGSizeMake(layerSize.width * scale, layerSize.height * scale);
+	CGSize layerSize = _view.layer.bounds.size;
+	float scale = UnityScreenScaleFactor(_screen);
+	_screenSize = CGSizeMake(layerSize.width * scale, layerSize.height * scale);
 
-	bool systemSizeChanged	= screenSize.width != surface.systemW || screenSize.height != surface.systemH;
-	bool msaaChanged		= (surface.msaaSamples != params.msaaSampleCount && _supportsMSAA);
-	bool colorfmtChanged	= params.use32bitColor != surface.use32bitColor;
-	bool depthfmtChanged	= params.use24bitDepth != surface.use24bitDepth;
-	bool useCVCacheChanged	= params.useCVTextureCache != surface.useCVTextureCache;
+	bool systemSizeChanged	= _surface->systemW != _screenSize.width || _surface->systemH != _screenSize.height;
+	bool msaaChanged		= _supportsMSAA && (_surface->msaaSamples != params.msaaSampleCount);
+	bool depthfmtChanged	= _surface->disableDepthAndStencil != params.disableDepthAndStencil;
+	bool cvCacheChanged		= _surface->useCVTextureCache != params.useCVTextureCache;
 
 	bool renderSizeChanged  = false;
-	if(		(params.renderW > 0 && surface.targetW != params.renderW)	// changed resolution
-		||	(params.renderH > 0 && surface.targetH != params.renderH)	// changed resolution
-		||	(params.renderW <= 0 && surface.targetW != surface.systemW)	// no longer need intermediate fb
-		||	(params.renderH <= 0 && surface.targetH != surface.systemH)	// no longer need intermediate fb
-	  )
+	if(		(params.renderW > 0 && _surface->targetW != params.renderW)		// changed resolution
+		||	(params.renderH > 0 && _surface->targetH != params.renderH)		// changed resolution
+		||	(params.renderW <= 0 && _surface->targetW != _surface->systemW) // no longer need intermediate fb
+		||	(params.renderH <= 0 && _surface->targetH != _surface->systemH) // no longer need intermediate fb
+	)
 	{
 		renderSizeChanged = true;
 	}
 
-	bool recreateSystemSurface		= (surface.systemFB == 0) || systemSizeChanged || colorfmtChanged;
-	bool recreateRenderingSurface	= systemSizeChanged || renderSizeChanged || msaaChanged || colorfmtChanged || useCVCacheChanged;
+	bool recreateSystemSurface		= systemSizeChanged;
+	bool recreateRenderingSurface	= systemSizeChanged || renderSizeChanged || msaaChanged || cvCacheChanged;
 	bool recreateDepthbuffer		= systemSizeChanged || renderSizeChanged || msaaChanged || depthfmtChanged;
 
+	_surface->disableDepthAndStencil= params.disableDepthAndStencil;
 
-	surface.use32bitColor		= params.use32bitColor;
-	surface.use24bitDepth		= params.use24bitDepth;
-	surface.useCVTextureCache	= params.useCVTextureCache;
+	_surface->systemW = _screenSize.width;
+	_surface->systemH = _screenSize.height;
 
-	surface.systemW = screenSize.width;
-	surface.systemH = screenSize.height;
+	_surface->targetW = params.renderW > 0 ? params.renderW : _surface->systemW;
+	_surface->targetH = params.renderH > 0 ? params.renderH : _surface->systemH;
 
-	surface.targetW = params.renderW > 0 ? params.renderW : surface.systemW;
-	surface.targetH = params.renderH > 0 ? params.renderH : surface.systemH;
+	_surface->msaaSamples = _supportsMSAA ? params.msaaSampleCount : 0;
+	_surface->srgb = params.srgb;
+	_surface->useCVTextureCache	= params.useCVTextureCache;
 
-	surface.msaaSamples = _supportsMSAA ? params.msaaSampleCount : 0;
+	if(UnitySelectedRenderingAPI() == apiMetal)
+		recreateSystemSurface = recreateSystemSurface || self.surfaceMTL->systemColorRB == 0;
+	else
+		recreateSystemSurface = recreateSystemSurface || self.surfaceGLES->systemFB == 0;
 
-
-	if(recreateSystemSurface)
-		CreateSystemRenderingSurface(&surface);
+	if (recreateSystemSurface)
+		CreateSystemRenderingSurface(_surface);
 	if(recreateRenderingSurface)
-		CreateRenderingSurface(&surface);
+		CreateRenderingSurface(_surface);
 	if(recreateDepthbuffer)
-		CreateSharedDepthbuffer(&surface);
-	if(recreateSystemSurface || recreateRenderingSurface || recreateDepthbuffer)
-		CreateUnityRenderBuffers(&surface);
+		CreateSharedDepthbuffer(_surface);
+	if (recreateSystemSurface || recreateRenderingSurface)
+		CreateUnityRenderBuffers(_surface);
 }
 
 - (void)dealloc
 {
-	if(surface.context != nil)
+	if(_surface)
 	{
-		DestroySystemRenderingSurface(&surface);
-		DestroyRenderingSurface(&surface);
-		DestroySharedDepthbuffer(&surface);
-		DestroyUnityRenderBuffers(&surface);
+		DestroySystemRenderingSurface(_surface);
+		DestroyRenderingSurface(_surface);
+		DestroySharedDepthbuffer(_surface);
+		DestroyUnityRenderBuffers(_surface);
 
-		[surface.context release];
-		surface.context = nil;
-		surface.layer   = nil;
-
-		::memset(&self->surface, 0x00, sizeof(UnityRenderingSurface));
+		if(UnitySelectedRenderingAPI() == apiMetal)
+		{
+			self.surfaceMTL->device	= nil;
+			self.surfaceMTL->layer	= nil;
+		}
+		else
+		{
+			self.surfaceGLES->context	= nil;
+			self.surfaceGLES->layer		= nil;
+		}
 	}
 
-	[view release];
-	view = nil;
+	delete _surface;
+	_surface = 0;
 
-	[window release];
-	window = nil;
-
-	[super dealloc];
+	_view	= nil;
+	_window	= nil;
 }
 
 - (void)present
 {
-	if(surface.context != nil)
+	PreparePresent(self.surface);
+	Present(self.surface);
+
+	if(_needRecreateSurface)
 	{
-		PreparePresentRenderingSurface(&surface, [[DisplayManager Instance] mainDisplay]->surface.context);
-
-		EAGLContextSetCurrentAutoRestore autorestore(surface.context);
-		GLES_CHK(glBindRenderbuffer(GL_RENDERBUFFER, surface.systemColorRB));
-		[surface.context presentRenderbuffer:GL_RENDERBUFFER];
-
-		if(needRecreateSurface)
+		RenderingSurfaceParams params =
 		{
-			RenderingSurfaceParams params =
-			{
-				surface.msaaSamples, (int)requestedRenderingSize.width, (int)requestedRenderingSize.height,
-				surface.use32bitColor, surface.use24bitDepth, surface.cvTextureCache != 0
-			};
-			[self recreateSurface:params];
+			_surface->msaaSamples, (int)_requestedRenderingSize.width, (int)_requestedRenderingSize.height,
+			_surface->disableDepthAndStencil, self.surface->cvTextureCache != 0
+		};
+		[self recreateSurface:params];
 
-			needRecreateSurface = NO;
-			requestedRenderingSize = CGSizeMake(surface.targetW, surface.targetH);
-		}
+		_needRecreateSurface = NO;
+		_requestedRenderingSize = CGSizeMake(_surface->targetW, _surface->targetH);
 	}
 }
 
 
 - (void)requestRenderingResolution:(CGSize)res
 {
-	requestedRenderingSize = res;
-	needRecreateSurface    = YES;
+	_requestedRenderingSize = res;
+	_needRecreateSurface    = YES;
 }
 @end
 
 
 @implementation DisplayManager
+{
+	NSMapTable*         _displayConnection;
+	DisplayConnection*  _mainDisplay;
+}
+
+@synthesize mainDisplay     = _mainDisplay;
+@synthesize displayCount;
+- (int)displayCount { return _displayConnection.count; }
+
 
 - (void)registerScreen:(UIScreen*)screen
 {
-	NSValue* key = [NSValue valueWithPointer:screen];
-	NSValue* val = [NSValue valueWithPointer: [[DisplayConnection alloc] init:screen]];
-	[displayConnection setObject:val forKey:key];
+	[_displayConnection setObject: [[DisplayConnection alloc] init:screen] forKey:screen];
 }
 
 - (id)init
@@ -246,41 +273,33 @@ extern "C" void InitEAGLLayer(void* eaglLayer, bool use32bitColor);
 											  object:nil
 		];
 
-		displayConnection = [[NSMutableDictionary dictionaryWithCapacity:1] retain];
-		[[UIScreen screens] enumerateObjectsUsingBlock:^(id object, NSUInteger idx, BOOL* stop) {
-			[self registerScreen:(UIScreen*)object];
-		}];
+		_displayConnection = [NSMapTable
+			mapTableWithKeyOptions:NSPointerFunctionsStrongMemory | NSPointerFunctionsObjectPointerPersonality
+			valueOptions:NSPointerFunctionsStrongMemory | NSPointerFunctionsObjectPointerPersonality
+		];
 
-		// on pre-ios6 on devices that dont support airplay (iphone3gs) [UIScreen screens] will return empty array
-		if([displayConnection count] == 0)
-			[self registerScreen:[UIScreen mainScreen]];
+		for(UIScreen* screen in [UIScreen screens])
+			[self registerScreen:screen];
 
-		mainDisplay = [self display:[UIScreen mainScreen]];
+		_mainDisplay = self[[UIScreen mainScreen]];
 	}
 	return self;
 }
 
-- (int)displayCount
-{
-	return displayConnection.count;
-}
-
-- (DisplayConnection*)mainDisplay
-{
-	return mainDisplay;
-}
-
 - (BOOL)displayAvailable:(UIScreen*)targetScreen;
 {
-	return [self display:targetScreen] != nil;
+	return self[targetScreen] != nil;
 }
 
 - (DisplayConnection*)display:(UIScreen*)targetScreen
 {
-	NSValue* key = [NSValue valueWithPointer:targetScreen];
-	NSValue* val = [displayConnection objectForKey:key];
+	return self[targetScreen];
+}
 
-	return val ? (DisplayConnection*)(val.pointerValue) : nil;
+- (id)objectForKeyedSubscript:(id)key
+{
+	NSAssert([key isKindOfClass:[UIScreen class]], @"DisplayManager allows only UIScreen as subscript");
+	return [_displayConnection objectForKey:(UIScreen*)key];
 }
 
 - (void)updateDisplayListInUnity
@@ -288,21 +307,43 @@ extern "C" void InitEAGLLayer(void* eaglLayer, bool use32bitColor);
 	UnityUpdateDisplayList();
 }
 
-- (void)presentAll
+- (void)enumerateDisplaysWithBlock:(void (^)(DisplayConnection* conn))block
 {
-	[displayConnection enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL* stop) {
-		void* conn = ((NSValue*)obj).pointerValue;
-		[(DisplayConnection*)conn present];
-	}];
+	for(UIScreen* screen in _displayConnection)
+	{
+		// if we want simple mirroring unity wont create rendering backing for display
+		// in that case we dont want to touch Display
+		DisplayConnection* conn = [_displayConnection objectForKey:screen];
+		if(conn.surface != nil)
+			block(conn);
+	}
 }
 
-- (void)presentAllButMain
+- (void)prepareRendering
 {
-	[displayConnection enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL* stop) {
-		void* conn = ((NSValue*)obj).pointerValue;
-		if((DisplayConnection*)conn != [self mainDisplay])
-			[(DisplayConnection*)conn present];
-	}];
+	[self enumerateDisplaysWithBlock:^(DisplayConnection* conn)
+		{
+			PrepareRendering(conn.surface);
+		}
+	];
+	PrepareFrameRendering();
+}
+- (void)teardownRendering
+{
+	[self enumerateDisplaysWithBlock:^(DisplayConnection* conn)
+		{
+			TeardownRendering(conn.surface);
+		}
+	];
+	TeardownFrameRendering();
+}
+- (void)present
+{
+	[self enumerateDisplaysWithBlock:^(DisplayConnection* conn)
+		{
+			[conn present];
+		}
+	];
 }
 
 
@@ -314,23 +355,14 @@ extern "C" void InitEAGLLayer(void* eaglLayer, bool use32bitColor);
 
 - (void)screenDidDisconnect:(NSNotification*)notification
 {
-	UIScreen* screen = (UIScreen*)[notification object];
+	UIScreen*           screen  = (UIScreen*)[notification object];
+	DisplayConnection*  conn    = (DisplayConnection*)self[screen];
 
-	// first of all disable rendering to these buffers
-	{
-		DisplayConnection* conn = [[DisplayManager Instance] display:screen];
-		if(conn->surface.systemFB != 0)
-			UnityDisableRenderBuffers(conn->surface.unityColorBuffer, conn->surface.unityDepthBuffer);
-	}
+	if(conn != nil && conn.surface != nil)
+		UnityDisableRenderBuffers(conn.surface->unityColorBuffer, conn.surface->unityDepthBuffer);
 
-	NSValue* key = [NSValue valueWithPointer:screen];
-	NSValue* val = [displayConnection objectForKey:key];
-	if(val != nil)
-	{
-		[(DisplayConnection*)val.pointerValue release];
-		[displayConnection removeObjectForKey:key];
-	}
-
+	[_displayConnection removeObjectForKey:screen];
+	conn = nil;
 	[self updateDisplayListInUnity];
 }
 
@@ -361,66 +393,75 @@ static void EnsureDisplayIsInited(DisplayConnection* conn)
 	// so we can assume that we need to init secondary display from script
 	// meaning: gles + show right away
 
-	if(conn->view == nil)
+	if(conn.view == nil)
 		[conn createView:YES];
 
-	// careful here: we dont want to trigger surface recreation
-	if(conn->surface.systemFB == 0)
+	int api = UnitySelectedRenderingAPI();
+
+	bool needRecreate = false;
+	if(conn.surface == 0)		needRecreate = true;
+	else if(api == apiMetal)	needRecreate = conn.surfaceMTL->layer == nil;
+	else						needRecreate = conn.surfaceGLES->systemFB == 0;
+
+	if(needRecreate)
 	{
-		RenderingSurfaceParams params = {0, -1, -1, UnityUse32bitDisplayBuffer(), UnityUse24bitDepthBuffer(), false};
+		RenderingSurfaceParams params = {0, -1, -1, UnityDisableDepthAndStencilBuffers(), false};
 		[conn recreateSurface:params];
 		{
-			// make sure we end up with correct context/fbo setup
-			DisplayConnection* main = [[DisplayManager Instance] mainDisplay];
-			[EAGLContext setCurrentContext:main->surface.context];
-			SetupUnityDefaultFBO(&main->surface);
+			DisplayConnection* main = [DisplayManager Instance].mainDisplay;
+
+			if(api != apiMetal)
+				[EAGLContext setCurrentContext:UnityGetMainScreenContextGLES()];
+
+			PrepareRendering(main.surface);
 		}
 	}
 }
 
 extern "C" int UnityDisplayManager_DisplayCount()
 {
-	return [[DisplayManager Instance] displayCount];
+	return [DisplayManager Instance].displayCount;
 }
 
 extern "C" bool UnityDisplayManager_DisplayAvailable(void* nativeDisplay)
 {
-	return [[DisplayManager Instance] displayAvailable:(UIScreen*)nativeDisplay];
+	return [[DisplayManager Instance] displayAvailable:(__bridge UIScreen*)nativeDisplay];
 }
 
 extern "C" void UnityDisplayManager_DisplaySystemResolution(void* nativeDisplay, int* w, int* h)
 {
-	DisplayConnection* conn = [[DisplayManager Instance] display:(UIScreen*)nativeDisplay];
+	DisplayConnection* conn = [DisplayManager Instance][(__bridge UIScreen*)nativeDisplay];
 	EnsureDisplayIsInited(conn);
 
-	*w = (int)conn->surface.systemW;
-	*h = (int)conn->surface.systemH;
+	*w = (int)conn.surface->systemW;
+	*h = (int)conn.surface->systemH;
 }
 
 extern "C" void UnityDisplayManager_DisplayRenderingResolution(void* nativeDisplay, int* w, int* h)
 {
-	DisplayConnection* conn = [[DisplayManager Instance] display:(UIScreen*)nativeDisplay];
+	DisplayConnection* conn = [DisplayManager Instance][(__bridge UIScreen*)nativeDisplay];
 	EnsureDisplayIsInited(conn);
 
-	*w = (int)conn->surface.targetW;
-	*h = (int)conn->surface.targetH;
+	*w = (int)conn.surface->targetW;
+	*h = (int)conn.surface->targetH;
 }
 
 extern "C" void UnityDisplayManager_DisplayRenderingBuffers(void* nativeDisplay, void** colorBuffer, void** depthBuffer)
 {
-	DisplayConnection* conn = [[DisplayManager Instance] display:(UIScreen*)nativeDisplay];
+	DisplayConnection* conn = [DisplayManager Instance][(__bridge UIScreen*)nativeDisplay];
 	EnsureDisplayIsInited(conn);
 
-	if(colorBuffer) *colorBuffer = conn->surface.unityColorBuffer;
-	if(depthBuffer) *depthBuffer = conn->surface.unityDepthBuffer;
+	if(colorBuffer) *colorBuffer = conn.surface->unityColorBuffer;
+	if(depthBuffer) *depthBuffer = conn.surface->unityDepthBuffer;
 }
 
 extern "C" void UnityDisplayManager_SetRenderingResolution(void* nativeDisplay, int w, int h)
 {
-	DisplayConnection* conn = [[DisplayManager Instance] display:(UIScreen*)nativeDisplay];
+	UIScreen*           screen  = (__bridge UIScreen*)nativeDisplay;
+	DisplayConnection*  conn    = [DisplayManager Instance][screen];
 	EnsureDisplayIsInited(conn);
 
-	if((UIScreen*)nativeDisplay == [UIScreen mainScreen])
+	if(screen == [UIScreen mainScreen])
 		UnityRequestRenderingResolution(w,h);
 	else
 		[conn requestRenderingResolution:CGSizeMake(w,h)];
@@ -428,14 +469,29 @@ extern "C" void UnityDisplayManager_SetRenderingResolution(void* nativeDisplay, 
 
 extern "C" void UnityDisplayManager_ShouldShowWindowOnDisplay(void* nativeDisplay, bool show)
 {
-	DisplayConnection* conn = [[DisplayManager Instance] display:(UIScreen*)nativeDisplay];
-	if(conn != [DisplayManager Instance].mainDisplay)
+	UIScreen*           screen  = (__bridge UIScreen*)nativeDisplay;
+	DisplayConnection*  conn    = [DisplayManager Instance][screen];
+	EnsureDisplayIsInited(conn);
+
+	if(screen != [UIScreen mainScreen])
 		[conn shouldShowWindow:show];
+}
+
+extern "C" EAGLContext* UnityGetMainScreenContextGLES()
+{
+	return GetMainDisplay().surfaceGLES->context;
+}
+extern "C" EAGLContext* UnityGetContextEAGL(int)
+{
+	return GetMainDisplay().surfaceGLES->context;
 }
 
 extern "C" float UnityScreenScaleFactor(UIScreen* screen)
 {
 #if defined(__IPHONE_8_0)
+	// iPhone 6+ pretends to be a x3 device, while its physical screen is x2.6 something. So we
+	// query nativeScale to get the true device resolution to avoid unnecessarily large frame
+	// buffers and downscaling.
 	if([screen respondsToSelector:@selector(nativeScale)])
 		return screen.nativeScale;
 #endif

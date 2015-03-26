@@ -8,44 +8,37 @@
 
 extern "C" bool AllocateRenderBufferStorageFromEAGLLayer(void* eaglContext, void* eaglLayer)
 {
-    return [(EAGLContext*)eaglContext renderbufferStorage:GL_RENDERBUFFER fromDrawable:(CAEAGLLayer*)eaglLayer];
+	return [(__bridge EAGLContext*)eaglContext renderbufferStorage:GL_RENDERBUFFER fromDrawable:(__bridge CAEAGLLayer*)eaglLayer];
 }
 extern "C" void DeallocateRenderBufferStorageFromEAGLLayer(void* eaglContext)
 {
-    [(EAGLContext*)eaglContext renderbufferStorage:GL_RENDERBUFFER fromDrawable:nil];
+	[(__bridge EAGLContext*)eaglContext renderbufferStorage:GL_RENDERBUFFER fromDrawable:nil];
 }
 
-EAGLContext* CreateContext(EAGLContext* parent)
+extern "C" EAGLContext* UnityCreateContextEAGL(EAGLContext* parent, int api)
 {
-    EAGLContext* ret = nil;
+	const int		targetApi	= parent ? parent.API : api;
+	EAGLSharegroup*	group		= parent ? parent.sharegroup : nil;
 
-    if(parent)
-    {
-        ret = [[EAGLContext alloc] initWithAPI:[parent API] sharegroup:[parent sharegroup]];
-    }
-    else
-    {
-    	const int startApi = _ios70orNewer ? kEAGLRenderingAPIOpenGLES3 : kEAGLRenderingAPIOpenGLES2;
-        for(int api = startApi ; api >= kEAGLRenderingAPIOpenGLES2 && !ret ; --api)
-        {
-            if (UnityIsRenderingAPISupported(api))
-                ret = [[EAGLContext alloc] initWithAPI:(EAGLRenderingAPI)api];
-        }
-    }
-
-    return ret;
+	return [[EAGLContext alloc] initWithAPI:(EAGLRenderingAPI)targetApi sharegroup:group];
 }
+
+extern "C" void UnityMakeCurrentContextEAGL(EAGLContext* context)
+{
+	[EAGLContext setCurrentContext:context];
+}
+
 
 EAGLContextSetCurrentAutoRestore::EAGLContextSetCurrentAutoRestore(EAGLContext* cur_)
   : old([EAGLContext currentContext]),
-    cur(cur_)
+	cur(cur_)
 {
-    if (old != cur)
-        [EAGLContext setCurrentContext:cur];
+	if (old != cur)
+		[EAGLContext setCurrentContext:cur];
 }
 
 EAGLContextSetCurrentAutoRestore::~EAGLContextSetCurrentAutoRestore()
 {
-    if (old != cur)
-        [EAGLContext setCurrentContext:old];
+	if (old != cur)
+		[EAGLContext setCurrentContext:old];
 }

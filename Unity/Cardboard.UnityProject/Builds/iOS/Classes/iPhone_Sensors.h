@@ -1,6 +1,4 @@
-#ifndef _TRAMPOLINE_IPHONE_SENSORS_H_
-#define _TRAMPOLINE_IPHONE_SENSORS_H_
-
+#pragma once
 
 enum LocationServiceStatus
 {
@@ -26,5 +24,3 @@ public:
 	static LocationServiceStatus GetHeadingStatus ();
 	static bool IsHeadingAvailable ();
 };
-
-#endif // _TRAMPOLINE_IPHONE_SENSORS_H_

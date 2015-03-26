@@ -1,3 +1,4 @@
+#pragma once
 
 // Enabling this will force app to do a hard crash instead of a nice exit when UnhandledException
 // is thrown. This will force iOS to generate a standard crash report, that can be submitted to
@@ -19,7 +20,7 @@
 
 #if ENABLE_CRASH_REPORT_SUBMISSION && !ENABLE_CUSTOM_CRASH_REPORTER
 	#undef ENABLE_CUSTOM_CRASH_REPORTER
-	#define ENABLE_CUSTOM_CRASH_REPORTER 1
+#define ENABLE_CUSTOM_CRASH_REPORTER 0
 #endif
 
 

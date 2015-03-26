@@ -1,8 +1,5 @@
-#ifndef _TRAMPOLINE_UNITYAPPCONTROLLER_H_
-#define _TRAMPOLINE_UNITYAPPCONTROLLER_H_
+#pragma once
 
-
-#import <UIKit/UIKit.h>
 #import <QuartzCore/CADisplayLink.h>
 
 #include "PluginBase/RenderPluginDelegate.h"
@@ -21,6 +18,11 @@
 
 	DisplayConnection*	_mainDisplay;
 
+	// we will cache view controllers for fixed orientation
+	// auto-rotation view contoller goes to index=0
+	UIViewController*		_viewControllerForOrientation[5];
+	UIInterfaceOrientation	_curOrientation;
+
 
 	id<RenderPluginDelegate>	_renderDelegate;
 }
@@ -30,17 +32,13 @@
 
 // this one is called at the very end of didFinishLaunchingWithOptions:
 // after views have been created but before initing engine itself
+// override it to register plugins, tweak UI etc
 - (void)preStartUnity;
+
 // this one is called at first applicationDidBecomeActive
 // NB: it will be started with delay 0, so it will run on next run loop iteration
 // this is done to make sure that activity indicator animation starts before blocking loading
 - (void)startUnity:(UIApplication*)application;
-
-// in general this method just works, so override it only if you have very special reorientation logic
-// do not forget to call [UnityView willRotate] and [UnityView didRotate] inside
-- (void)onForcedOrientation:(ScreenOrientation)orient;
-
-- (void)checkOrientationRequest;
 
 // this is a part of UIApplicationDelegate protocol starting with ios5
 // setter will be generated empty
@@ -53,7 +51,9 @@
 @property (readonly, copy, nonatomic) UIViewController*		rootViewController;
 @property (readonly, copy, nonatomic) DisplayConnection*	mainDisplay;
 
-@property (nonatomic, retain) id renderDelegate;
+@property (readonly, nonatomic) UIInterfaceOrientation		interfaceOrientation;
+
+@property (nonatomic, retain) id							renderDelegate;
 
 @end
 
@@ -79,14 +79,24 @@ inline UnityAppController*	GetAppController()
 	return (UnityAppController*)[UIApplication sharedApplication].delegate;
 }
 
-void AppController_RenderPluginMethod(SEL method);
-void AppController_RenderPluginMethodWithArg(SEL method, id arg);
+#define APP_CONTROLLER_RENDER_PLUGIN_METHOD(method)							\
+do {																		\
+	id<RenderPluginDelegate> delegate = GetAppController().renderDelegate;	\
+	if([delegate respondsToSelector:@selector(method)])						\
+		[delegate method];													\
+} while(0)
+
+#define APP_CONTROLLER_RENDER_PLUGIN_METHOD_ARG(method, arg)				\
+do {																		\
+	id<RenderPluginDelegate> delegate = GetAppController().renderDelegate;	\
+	if([delegate respondsToSelector:@selector(method:)])					\
+		[delegate method:arg];												\
+} while(0)
+
+
 
 // these are simple wrappers about ios api, added for convenience
 void AppController_SendNotification(NSString* name);
 void AppController_SendNotificationWithArg(NSString* name, id arg);
 
-void AppController_SendMainViewControllerNotification(NSString* name);
-
-
-#endif // _TRAMPOLINE_UNITYAPPCONTROLLER_H_
+void AppController_SendUnityViewControllerNotification(NSString* name);

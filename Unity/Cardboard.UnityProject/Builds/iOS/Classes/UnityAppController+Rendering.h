@@ -1,3 +1,5 @@
+#pragma once
+
 #include "UnityAppController.h"
 
 
@@ -7,5 +9,8 @@
 - (void)repaintDisplayLink;
 
 - (void)repaint;
+
+- (void)selectRenderingAPI;
+@property (readonly, nonatomic) UnityRenderingAPI	renderingAPI;
 
 @end

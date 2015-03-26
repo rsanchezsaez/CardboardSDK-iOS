@@ -1,18 +1,15 @@
-#ifndef _TRAMPOLINE_UI_SPLASHSCREEN_H_
-#define _TRAMPOLINE_UI_SPLASHSCREEN_H_
+#pragma once
 
-#import <UIKit/UIKit.h>
+#include "UnityViewControllerBase.h"
 
 
 @interface SplashScreen : UIImageView { }
 + (SplashScreen*)Instance;
 @end
 
-@interface SplashScreenController : UIViewController {}
+@interface SplashScreenController : UnityViewControllerBase	{}
 + (SplashScreenController*)Instance;
 @end
 
-void    ShowSplashScreen(UIWindow* window);
-void    HideSplashScreen();
-
-#endif // _TRAMPOLINE_UI_SPLASHSCREEN_H_
+void	ShowSplashScreen(UIWindow* window);
+void	HideSplashScreen();

@@ -2,136 +2,34 @@
 #include <sys/types.h>
 #include <sys/sysctl.h>
 
+#include <AdSupport/ASIdentifierManager.h>
+
 #if UNITY_PRE_IOS7_TARGET
 	#include <sys/socket.h>
 	#include <net/if.h>
 	#include <net/if_dl.h>
 	#include <CommonCrypto/CommonDigest.h>
 
-	static void _InitDeviceIDPreIOS7();
+	static const char* _GetDeviceIDPreIOS7();
 #endif
 
 #include "DisplayManager.h"
 
-
-static NSString*	_DeviceID			= nil;
-static NSString*	_ADID				= nil;
-static bool			_AdTrackingEnabled	= false;
-static NSString*	_VendorID			= nil;
-
-static NSString*	_DeviceName			= nil;
-static NSString*	_SystemName			= nil;
-static NSString*	_SystemVersion		= nil;
-
-static NSString*	_DeviceModel		= nil;
-static int			_DeviceGeneration	= deviceUnknown;
-static float		_DeviceDPI			= -1.0f;
-
-
-static void QueryDeviceID();
-static void QueryAdID();
-static void QueryAdTracking();
-static void QueryVendorID();
-
-static void QueryDeviceName();
-static void QuerySystemName();
-static void QuerySystemVersion();
-
-static void QueryDeviceModel();
-static void QueryDeviceGeneration();
-static void EstimateDeviceDPI();
-
-
-//
-// unity interface
-//
-
-extern "C" const char*	UnityDeviceUniqueIdentifier()
-{
-	QueryDeviceID();
-	return [_DeviceID UTF8String];
-}
-extern "C" const char*	UnityVendorIdentifier()
-{
-	QueryVendorID();
-	return [_VendorID UTF8String];
-}
-extern "C" const char*	UnityAdvertisingIdentifier()
-{
-	QueryAdID();
-	return [_ADID UTF8String];
-}
-extern "C" bool 		UnityAdvertisingTrackingEnabled()
-{
-	QueryAdTracking();
-	return _AdTrackingEnabled;
-}
-extern "C" const char*	UnityDeviceName()
-{
-	QueryDeviceName();
-	return [_DeviceName UTF8String];
-}
-extern "C" const char*	UnitySystemName()
-{
-	QuerySystemName();
-	return [_SystemName UTF8String];
-}
-extern "C" const char*	UnitySystemVersion()
-{
-	QuerySystemVersion();
-	return [_SystemVersion UTF8String];
-}
-extern "C" const char*	UnityDeviceModel()
-{
-	QueryDeviceModel();
-	return [_DeviceModel UTF8String];
-}
-extern "C" int			UnityDeviceGeneration()
-{
-	QueryDeviceGeneration();
-	return _DeviceGeneration;
-}
-extern "C" float		UnityDeviceDPI()
-{
-	EstimateDeviceDPI();
-	return _DeviceDPI;
-}
-
-
-//------------------------------------------------------------------------------
-//
-//
-
-static void QueryDeviceID()
-{
-	if(_DeviceID == nil)
-	{
-	#if UNITY_PRE_IOS7_TARGET
-		if(!_ios70orNewer)
-			_InitDeviceIDPreIOS7();
-	#endif
-
-		// first check vendor id
-		if(_DeviceID == nil)
-		{
-			QueryVendorID();
-			_DeviceID = _VendorID;
-		}
-	}
-}
+// ad/vendor ids
 
 static id QueryASIdentifierManager()
 {
 	NSBundle* bundle = [NSBundle bundleWithPath:@"/System/Library/Frameworks/AdSupport.framework"];
-	if(bundle)
+	if (bundle)
 	{
 		[bundle load];
 		Class retClass = [bundle classNamed:@"ASIdentifierManager"];
-		if(		retClass
-			&&	[retClass respondsToSelector:@selector(sharedManager)]
-			&&	[retClass instancesRespondToSelector:@selector(advertisingIdentifier)]
-			&&	[retClass instancesRespondToSelector:@selector(isAdvertisingTrackingEnabled)]
-		  )
+		if (
+			retClass
+			&& [retClass respondsToSelector:@selector(sharedManager)]
+			&& [retClass instancesRespondToSelector:@selector(advertisingIdentifier)]
+			&& [retClass instancesRespondToSelector:@selector(isAdvertisingTrackingEnabled)]
+		)
 		{
 			return [retClass performSelector:@selector(sharedManager)];
 		}
@@ -140,56 +38,75 @@ static id QueryASIdentifierManager()
 	return nil;
 }
 
-static void QueryAdID()
+extern "C" const char* UnityAdvertisingIdentifier()
 {
+	static const char* _ADID = NULL;
+	static const NSString* _ADIDNSString = nil;
+
 	// ad id can be reset during app lifetime
 	id manager = QueryASIdentifierManager();
-	if(manager)
+	if (manager)
 	{
-		[_ADID release];
-		_ADID = (NSString*)[[[manager performSelector:@selector(advertisingIdentifier)] UUIDString] retain];
+		NSString* adid = [[manager performSelector:@selector(advertisingIdentifier)] UUIDString];
+		// Do stuff to avoid UTF8String leaks. We still leak if ADID changes, but that shouldn't happen too often.
+		if (![_ADIDNSString isEqualToString:adid])
+		{
+			_ADIDNSString = adid;
+			free((void*)_ADID);
+			_ADID = AllocCString(adid);
+		}
 	}
+
+	return _ADID;
 }
 
-static void QueryAdTracking()
+extern "C" int UnityAdvertisingTrackingEnabled()
 {
+	bool _AdTrackingEnabled = false;
+
 	// ad tracking can be changed during app lifetime
 	id manager = QueryASIdentifierManager();
 	if(manager)
 		_AdTrackingEnabled = [manager performSelector:@selector(isAdvertisingTrackingEnabled)];
+
+	return _AdTrackingEnabled ? 1 : 0;
 }
 
-static void QueryVendorID()
+extern "C" const char* UnityVendorIdentifier()
 {
-	if(_VendorID == nil && [UIDevice instancesRespondToSelector:@selector(identifierForVendor)])
-		_VendorID = (NSString*)[[[[UIDevice currentDevice] performSelector:@selector(identifierForVendor)] UUIDString] retain];
+	static const char*	_VendorID			= NULL;
+
+	if(_VendorID == NULL)
+		_VendorID = AllocCString([[UIDevice currentDevice].identifierForVendor UUIDString]);
+
+	return _VendorID;
 }
 
-static NSString* QueryDeviceStringProperty(SEL prop)
-{
-	return [UIDevice instancesRespondToSelector:prop] ? [[[UIDevice currentDevice] performSelector:prop] retain] : nil;
-}
 
+// UIDevice properties
 
-static void QueryDeviceName()
-{
-	if(_DeviceName == nil)
-		_DeviceName = QueryDeviceStringProperty(@selector(name));
-}
-static void QuerySystemName()
-{
-	if(_SystemName == nil)
-		_SystemName = QueryDeviceStringProperty(@selector(systemName));
-}
-static void QuerySystemVersion()
-{
-	if(_SystemVersion == nil)
-		_SystemVersion = QueryDeviceStringProperty(@selector(systemVersion));
-}
+#define QUERY_UIDEVICE_PROPERTY(FUNC, PROP)											\
+	extern "C" const char* FUNC()													\
+	{																				\
+		static const char* value = NULL;											\
+		if (value == NULL && [UIDevice instancesRespondToSelector:@selector(PROP)])	\
+			value = AllocCString([UIDevice currentDevice].PROP);					\
+		return value;																\
+	}
 
-static void QueryDeviceModel()
+QUERY_UIDEVICE_PROPERTY(UnityDeviceName, name)
+QUERY_UIDEVICE_PROPERTY(UnitySystemName, systemName)
+QUERY_UIDEVICE_PROPERTY(UnitySystemVersion, systemVersion)
+
+#undef QUERY_UIDEVICE_PROPERTY
+
+// hw info
+
+extern "C" const char* UnityDeviceModel()
 {
-	if(_DeviceModel == nil)
+	static const char* _DeviceModel = NULL;
+
+	if(_DeviceModel == NULL)
 	{
 		size_t size;
 		::sysctlbyname("hw.machine", NULL, &size, NULL, 0);
@@ -198,13 +115,47 @@ static void QueryDeviceModel()
 		::sysctlbyname("hw.machine", model, &size, NULL, 0);
 		model[size] = 0;
 
-		_DeviceModel = [[NSString stringWithUTF8String:model] retain];
+		_DeviceModel = AllocCString([NSString stringWithUTF8String:model]);
 		::free(model);
 	}
+
+	return _DeviceModel;
 }
 
-static void QueryDeviceGeneration()
+extern "C" int UnityDeviceCPUCount()
 {
+	static int _DeviceCPUCount = -1;
+
+	if(_DeviceCPUCount <= 0)
+	{
+		// maybe would be better to use HW_AVAILCPU
+		int		ctlName[]	= {CTL_HW, HW_NCPU};
+		size_t	dataLen		= sizeof(_DeviceCPUCount);
+
+		::sysctl(ctlName, 2, &_DeviceCPUCount, &dataLen, NULL, 0);
+	}
+	return _DeviceCPUCount;
+}
+
+// misc
+extern "C" const char* UnitySystemLanguage()
+{
+	static const char* _SystemLanguage = NULL;
+
+	if(_SystemLanguage == NULL)
+	{
+		NSArray* lang = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"];
+		if(lang.count > 0)
+			_SystemLanguage = AllocCString(lang[0]);
+	}
+
+	return _SystemLanguage;
+}
+
+extern "C" int UnityDeviceGeneration()
+{
+	static int _DeviceGeneration = deviceUnknown;
+
 	if(_DeviceGeneration == deviceUnknown)
 	{
 		const char* model = UnityDeviceModel();
@@ -227,18 +178,10 @@ static void QueryDeviceGeneration()
 			_DeviceGeneration = deviceiPhone6;
 		else if (!strncmp(model, "iPhone7,1",9))
 			_DeviceGeneration = deviceiPhone6Plus;
-		else if (!strcmp(model, "iPod1,1"))
-			_DeviceGeneration = deviceiPodTouch1Gen;
-		else if (!strcmp(model, "iPod2,1"))
-			_DeviceGeneration = deviceiPodTouch2Gen;
-		else if (!strcmp(model, "iPod3,1"))
-			_DeviceGeneration = deviceiPodTouch3Gen;
 		else if (!strcmp(model, "iPod4,1"))
 			_DeviceGeneration = deviceiPodTouch4Gen;
 		else if (!strncmp(model, "iPod5,",6))
 			_DeviceGeneration = deviceiPodTouch5Gen;
-		else if (!strcmp(model, "iPad1,1"))
-			_DeviceGeneration = deviceiPad1Gen;
 		else if (!strncmp(model, "iPad2,", 6))
 		{
 			int rev = atoi(model+6);
@@ -256,7 +199,7 @@ static void QueryDeviceGeneration()
 			int rev = atoi(model+6);
 			if(rev >= 7)	_DeviceGeneration = deviceiPadMini3Gen;
 			if(rev >= 4)	_DeviceGeneration = deviceiPadMini2Gen; // iPad4,4
-			else			_DeviceGeneration = deviceiPad5Gen;
+			else			_DeviceGeneration = deviceiPadAir1;
 		}
 		else if (!strncmp(model, "iPad5,", 6))
 		{
@@ -277,17 +220,18 @@ static void QueryDeviceGeneration()
 				_DeviceGeneration = deviceUnknown;
 		}
 	}
+	return _DeviceGeneration;
 }
 
-static void EstimateDeviceDPI()
+extern "C" float UnityDeviceDPI()
 {
+	static float _DeviceDPI	= -1.0f;
+
 	if (_DeviceDPI < 0.0f)
 	{
 		switch (UnityDeviceGeneration())
 		{
 			// iPhone
-			case deviceiPhone:
-			case deviceiPhone3G:
 			case deviceiPhone3GS:
 				_DeviceDPI = 163.0f; break;
 			case deviceiPhone4:
@@ -301,12 +245,11 @@ static void EstimateDeviceDPI()
 				_DeviceDPI = 401.0f; break;
 
 			// iPad
-			case deviceiPad1Gen:
 			case deviceiPad2Gen:
 				_DeviceDPI = 132.0f; break;
 			case deviceiPad3Gen:
-			case deviceiPad4Gen:		// iPad retina
-			case deviceiPad5Gen:		// iPad air
+			case deviceiPad4Gen:        // iPad retina
+			case deviceiPadAir1:
 			case deviceiPadAir2:
 				_DeviceDPI = 264.0f; break;
 
@@ -318,10 +261,6 @@ static void EstimateDeviceDPI()
 				_DeviceDPI = 326.0f; break;
 
 			// iPod
-			case deviceiPodTouch1Gen:
-			case deviceiPodTouch2Gen:
-			case deviceiPodTouch3Gen:
-				_DeviceDPI = 163.0f; break;
 			case deviceiPodTouch4Gen:
 			case deviceiPodTouch5Gen:
 				_DeviceDPI = 326.0f; break;
@@ -335,69 +274,34 @@ static void EstimateDeviceDPI()
 				_DeviceDPI = 326.0f; break;
 		}
 	}
+
+	return _DeviceDPI;
 }
 
 
-//
-// some higher-level helpers
-//
 
-extern "C" void QueryTargetResolution(int* targetW, int* targetH)
+// device id with fallback for pre-ios7
+
+extern "C" const char* UnityDeviceUniqueIdentifier()
 {
-	enum
+	static const char* _DeviceID = NULL;
+
+	if(_DeviceID == NULL)
 	{
-		kTargetResolutionNative = 0,
-		kTargetResolutionAutoPerformance = 3,
-		kTargetResolutionAutoQuality = 4,
-		kTargetResolution320p = 5,
-		kTargetResolution640p = 6,
-		kTargetResolution768p = 7
-	};
+	#if UNITY_PRE_IOS7_TARGET
+		if(!_ios70orNewer)
+			_DeviceID = _GetDeviceIDPreIOS7();
+	#endif
 
-
-	int targetRes = UnityGetTargetResolution();
-
-	float resMult = 1.0f;
-	if(targetRes == kTargetResolutionAutoPerformance)
-	{
-		switch(UnityDeviceGeneration())
-		{
-			case deviceiPhone4:		resMult = 0.6f;		break;
-			case deviceiPad1Gen:	resMult = 0.5f;		break;
-			default:				resMult = 0.75f;	break;
-		}
+		// first check vendor id
+		if(_DeviceID == NULL)
+			_DeviceID = UnityVendorIdentifier();
 	}
-
-	if(targetRes == kTargetResolutionAutoQuality)
-	{
-		switch(UnityDeviceGeneration())
-		{
-			case deviceiPhone4:		resMult = 0.8f;		break;
-			case deviceiPad1Gen:	resMult = 0.75f;	break;
-			default:				resMult = 1.0f;		break;
-		}
-	}
-
-	switch(targetRes)
-	{
-		case kTargetResolution320p:	*targetW = 320;	*targetH = 480;		break;
-		case kTargetResolution640p:	*targetW = 640;	*targetH = 960;		break;
-		case kTargetResolution768p:	*targetW = 768;	*targetH = 1024;	break;
-
-		default:
-			*targetW = GetMainDisplay()->screenSize.width * resMult;
-			*targetH = GetMainDisplay()->screenSize.height * resMult;
-			break;
-	}
+	return _DeviceID;
 }
-
-
-//
-// gritty stuff
-//
 
 #if UNITY_PRE_IOS7_TARGET
-	static void _InitDeviceIDPreIOS7()
+	static const char* _GetDeviceIDPreIOS7()
 	{
 		static const int MD5_DIGEST_LENGTH = 16;
 
@@ -425,6 +329,56 @@ extern "C" void QueryTargetResolution(int* targetW, int* targetH)
 		for(int i = 0 ; i < MD5_DIGEST_LENGTH ; ++i)
 			::sprintf(uid_str + 2*i, "%02x", hash_buf[i]);
 
-		_DeviceID = [[NSString stringWithUTF8String:uid_str] retain];
+		return strdup(uid_str);
 	}
 #endif
+
+
+// target resolution selector for "auto" values
+
+extern "C" void QueryTargetResolution(int* targetW, int* targetH)
+{
+	enum
+	{
+		kTargetResolutionNative = 0,
+		kTargetResolutionAutoPerformance = 3,
+		kTargetResolutionAutoQuality = 4,
+		kTargetResolution320p = 5,
+		kTargetResolution640p = 6,
+		kTargetResolution768p = 7
+	};
+
+
+	int targetRes = UnityGetTargetResolution();
+
+	float resMult = 1.0f;
+	if(targetRes == kTargetResolutionAutoPerformance)
+	{
+		switch(UnityDeviceGeneration())
+		{
+			case deviceiPhone4:		resMult = 0.6f;		break;
+			default:				resMult = 0.75f;	break;
+		}
+	}
+
+	if(targetRes == kTargetResolutionAutoQuality)
+	{
+		switch(UnityDeviceGeneration())
+		{
+			case deviceiPhone4:		resMult = 0.8f;		break;
+			default:				resMult = 1.0f;		break;
+		}
+	}
+
+	switch(targetRes)
+	{
+		case kTargetResolution320p:	*targetW = 320;	*targetH = 480;		break;
+		case kTargetResolution640p:	*targetW = 640;	*targetH = 960;		break;
+		case kTargetResolution768p:	*targetW = 768;	*targetH = 1024;	break;
+
+		default:
+			*targetW = GetMainDisplay().screenSize.width * resMult;
+			*targetH = GetMainDisplay().screenSize.height * resMult;
+			break;
+	}
+}

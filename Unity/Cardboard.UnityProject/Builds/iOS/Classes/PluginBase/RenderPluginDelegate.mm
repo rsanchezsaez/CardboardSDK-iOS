@@ -2,7 +2,7 @@
 
 @implementation RenderPluginDelegate
 
-- (void)mainDisplayInited:(struct UnityRenderingSurface*)surface
+- (void)mainDisplayInited:(struct UnityDisplaySurfaceBase*)surface
 {
 	mainDisplaySurface = surface;
 
@@ -12,68 +12,73 @@
 @end
 
 
+#define CALL_METHOD_ON_ARRAY(method)					\
+do{														\
+	for(id<RenderPluginDelegate> del in delegateArray)	\
+	{													\
+		if([del respondsToSelector:@selector(method)])	\
+			[del method];								\
+	}													\
+} while(0)
+
+#define CALL_METHOD_ON_ARRAY_ARG(method, arg)			\
+do{														\
+	for(id<RenderPluginDelegate> del in delegateArray)	\
+	{													\
+		if([del respondsToSelector:@selector(method:)])	\
+			[del method:arg];							\
+	}													\
+} while(0)
+
+
 @implementation RenderPluginArrayDelegate
 
 @synthesize delegateArray;
 
-- (void)callSelectorOnArray:(SEL)sel
-{
-	[delegateArray enumerateObjectsUsingBlock:^(id object, NSUInteger idx, BOOL* stop) {
-		NSAssert([[object class] conformsToProtocol:@protocol(RenderPluginDelegate)], @"only render delegates can be added to RenderPluginArrayDelegate");
-		if([object respondsToSelector:sel])
-			[object performSelector:sel];
-	}];
-}
-- (void)callSelectorOnArray:(SEL)sel withArg:(id)arg
-{
-	[delegateArray enumerateObjectsUsingBlock:^(id object, NSUInteger idx, BOOL* stop) {
-		NSAssert([[object class] conformsToProtocol:@protocol(RenderPluginDelegate)], @"only render delegates can be added to RenderPluginArrayDelegate");
-		if([object respondsToSelector:sel])
-			[object performSelector:sel withObject:arg];
-	}];
-}
-
-
-- (void)mainDisplayInited:(struct UnityRenderingSurface*)surface
+- (void)mainDisplayInited:(struct UnityDisplaySurfaceBase*)surface
 {
 	[super mainDisplayInited:surface];
-	[self callSelectorOnArray:@selector(mainDisplayInited:) withArg:(id)surface];
+	CALL_METHOD_ON_ARRAY_ARG(mainDisplayInited, surface);
 }
 
 - (void)onBeforeMainDisplaySurfaceRecreate:(struct RenderingSurfaceParams*)params
 {
-	[self callSelectorOnArray:@selector(onBeforeMainDisplaySurfaceRecreate:) withArg:(id)params];
+	CALL_METHOD_ON_ARRAY_ARG(onBeforeMainDisplaySurfaceRecreate, params);
 }
 - (void)onAfterMainDisplaySurfaceRecreate;
 {
-	[self callSelectorOnArray:@selector(onAfterMainDisplaySurfaceRecreate)];
-}
-
-- (void)onOrientationChange:(ScreenOrientation)newOrientation
-{
-	[self callSelectorOnArray:@selector(onOrientationChange:) withArg:(id)newOrientation];
+	CALL_METHOD_ON_ARRAY(onAfterMainDisplaySurfaceRecreate);
 }
 
 - (void)onFrameResolved;
 {
-	[self callSelectorOnArray:@selector(onFrameResolved)];
+	CALL_METHOD_ON_ARRAY(onFrameResolved);
 }
 
-- (void)onDidBecomeActive
+
+- (void)didBecomeActive:(NSNotification*)notification
 {
-	[self callSelectorOnArray:@selector(onDidBecomeActive)];
+	CALL_METHOD_ON_ARRAY_ARG(didBecomeActive, notification);
 }
-- (void)onWillResignActive;
+- (void)willResignActive:(NSNotification*)notification
 {
-	[self callSelectorOnArray:@selector(onWillResignActive)];
+	CALL_METHOD_ON_ARRAY_ARG(willResignActive, notification);
 }
-- (void)onDidReceiveMemoryWarning
+- (void)didEnterBackground:(NSNotification*)notification
 {
-	[self callSelectorOnArray:@selector(onDidReceiveMemoryWarning)];
+	CALL_METHOD_ON_ARRAY_ARG(didEnterBackground, notification);
 }
-- (void)onWillTerminate
+- (void)willEnterForeground:(NSNotification*)notification
 {
-	[self callSelectorOnArray:@selector(onWillTerminate)];
+	CALL_METHOD_ON_ARRAY_ARG(willEnterForeground, notification);
+}
+- (void)willTerminate:(NSNotification*)notification
+{
+	CALL_METHOD_ON_ARRAY_ARG(willTerminate, notification);
 }
 
 @end
+
+
+#undef CALL_METHOD_ON_ARRAY
+#undef CALL_METHOD_ON_ARRAY_ARG

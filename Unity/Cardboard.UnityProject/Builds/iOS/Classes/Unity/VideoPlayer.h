@@ -1,5 +1,4 @@
-#ifndef _TRAMPOLINE_UNITY_VIDEOPLAYER_H_
-#define _TRAMPOLINE_UNITY_VIDEOPLAYER_H_
+#pragma once
 
 #import <CoreMedia/CMTime.h>
 
@@ -17,9 +16,9 @@
 
 @interface VideoPlayer : NSObject
 {
-    id<VideoPlayerDelegate> delegate;
+	id<VideoPlayerDelegate> delegate;
 }
-@property (nonatomic, assign) id delegate;
+@property (nonatomic, retain) id delegate;
 
 + (BOOL)CanPlayToTexture:(NSURL*)url;
 
@@ -31,7 +30,7 @@
 - (BOOL)playToTexture;
 - (BOOL)isPlaying;
 
-- (int)curFrameTexture;
+- (intptr_t)curFrameTexture;
 
 - (void)pause;
 - (void)resume;
@@ -46,7 +45,3 @@
 - (float)durationSeconds;
 - (CGSize)videoSize;
 @end
-
-
-
-#endif // _TRAMPOLINE_UNITY_VIDEOPLAYER_H_
