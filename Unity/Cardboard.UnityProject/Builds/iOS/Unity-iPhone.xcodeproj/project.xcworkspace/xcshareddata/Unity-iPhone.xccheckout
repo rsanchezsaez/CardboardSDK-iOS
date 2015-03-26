@@ -14,7 +14,7 @@
 		<string>github.com:rsanchezsaez/CardboardSDK-iOS.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>Unity/Cardboard.UnityProject/Builds/iOS 5/Unity-iPhone.xcodeproj</string>
+	<string>Unity/Cardboard.UnityProject/Builds/iOS/Unity-iPhone.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>EDFFEE58A17C1EBE75F750230E9F223862BB84E3</key>
