@@ -34,52 +34,19 @@ public class StereoController : MonoBehaviour {
   [Range(0,1)]
   public float stereoMultiplier = 1.0f;
 
-  // The stereo cameras by default use the actual optical FOV of the Cardboard device,
-  // because otherwise the match between head motion and scene motion is broken, which
-  // impacts the virtual reality effect.  However, in some cases it is desirable to
-  // adjust the FOV anyway, for special effects or artistic reasons.  But in no case
-  // should the FOV be allowed to remain very different from the true optical FOV for
-  // very long, or users will experience discomfort.
-  //
-  // This value determines how much to match the mono camera's field of view.  This is
-  // a fraction: 0 means no matching, 1 means full matching, and values in between are
-  // compromises.  Reasons for not matching 100% would include preserving some VR-ness,
-  // and that due to the lens distortion the edges of the view are not as easily seen as
-  // when the phone is not in VR-mode.
-  //
-  // Another use for this variable is to preserve scene composition against differences
-  // in the optical FOV of various Cardboard models.  In all cases, this value simply
-  // lets the mono camera have some control over the scene in VR mode, like it does in
-  // non-VR mode.
+  // Tell the eyes to move forward to roughly match the mono camera's field
+  // of view.  This is a fraction: 0 means no matching, 1 means full matching,
+  // and values in between are compromises.  A centerOfInterest object is
+  // necessary to do this, so it must also be non-null in order for this setting
+  // to have any effect.
   [Tooltip("How much to adjust the stereo field of view to match this camera.")]
   [Range(0,1)]
   public float matchMonoFOV = 0;
 
-  // Determines the method by which the stereo cameras' FOVs are matched to the mono
-  // camera's FOV (assuming matchMonoFOV is not 0).  The default is to move the stereo
-  // cameras (matchByZoom = 0), with the option to instead do a simple camera zoom
-  // (matchByZoom = 1).  In-between values yield a mix of the two behaviors.
-  //
-  // It is not recommended to use simple zooming for typical scene composition, as it
-  // conflicts with the VR need to match the user's head motion with the corresponding
-  // scene motion.  This should be reserved for special effects such as when the player
-  // views the scene through a telescope or other magnifier (and thus the player knows
-  // that VR is going to be affected), or similar situations.
-  //
-  // Note that matching by moving the eyes requires that the centerOfInterest object
-  // be non-null, or there will be no effect.
-  [Tooltip("Whether to adjust FOV by moving the eyes (0) or simply zooming (1).")]
-  [Range(0,1)]
-  public float matchByZoom = 0;
-
-  // Matching the mono camera's field of view in stereo by moving the eyes requires
-  // a designated "center of interest".  This is either a point in space (an empty
-  // gameobject) you place in the scene as a sort of "3D cursor", or an actual scene
-  // entity which the player is likely to be focussed on.
-  //
-  // The FOV adjustment is done by moving the eyes toward or away from the COI
-  // so that it appears to have the same size on screen as it would in the mono
-  // camera.  This is disabled if the COI is null.
+  // Matching the mono camera's field of view in stereo is done by moving the eyes
+  // forward towards the center of interest, so that the COI appears the same size
+  // onscreen in or out of VR Mode.  If COI is null, the effect is disabled, which
+  // means the mono camera's FOV will be ignored by the eyes.
   [Tooltip("Object or point where field of view matching is done.")]
   public Transform centerOfInterest;
 
@@ -239,17 +206,15 @@ public class StereoController : MonoBehaviour {
 
     // Turn off the mono camera so it doesn't waste time rendering.
     // Note: mono camera is left on from beginning of frame till now
-    // in order that other game logic (e.g. Camera.main) continues
+    // in order that other game logic (e.g. Camera.mainCamera) continues
     // to work as expected.
     GetComponent<Camera>().enabled = false;
+    renderedStereo = true;
 
     // Render the eyes under our control.
     foreach (var eye in Eyes) {
       eye.Render();
     }
-
-    // Remember to reenable
-    renderedStereo = true;
   }
 
   IEnumerator EndOfFrame() {

@@ -37,7 +37,7 @@ public class CardboardGUIWindow : MonoBehaviour {
   private MeshRenderer meshRenderer;
 
   void Reset() {
-    rect = new Rect(0,0,1,1);  // Make window show the full GUI screen.
+    rect = new Rect(0,0,1,1);
   }
 
   [Tooltip("The portion of the OnGUI screen to show in this window. " +

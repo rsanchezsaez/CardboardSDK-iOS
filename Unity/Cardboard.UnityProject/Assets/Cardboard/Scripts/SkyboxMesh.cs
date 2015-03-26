@@ -35,10 +35,8 @@ public class SkyboxMesh : MonoBehaviour {
     Cube,
   }
 
-  public Shape shape = Shape.Sphere;
   public int segments = 32;
-  public int layer = 0;
-
+  public Shape shape = Shape.Sphere;
   private GameObject skybox;
 
   void Awake() {
@@ -52,7 +50,6 @@ public class SkyboxMesh : MonoBehaviour {
     skybox = new GameObject(skymat.name + "SkyMesh");
     skybox.transform.parent = transform;
     skybox.transform.localPosition = Vector3.zero;
-    skybox.layer = layer;
 
     var filter = skybox.AddComponent<MeshFilter>();
     filter.mesh = _CreateSkyboxMesh();

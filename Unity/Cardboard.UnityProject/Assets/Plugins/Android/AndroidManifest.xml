@@ -34,7 +34,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="com.google.intent.category.CARDBOARD" />
             </intent-filter>
-            <meta-data android:name="unityplayer.UnityActivity" android:value="true" />
         </activity>
     </application>
 

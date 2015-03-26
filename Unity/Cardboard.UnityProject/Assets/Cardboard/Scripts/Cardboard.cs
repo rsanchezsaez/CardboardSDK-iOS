@@ -345,25 +345,19 @@ public class Cardboard : MonoBehaviour {
 
 #endif
 
-#if IOS_DEVICE
-	  Debug.Log("Creating new cardboard screen texture");
-	  StereoScreen = new RenderTexture(Screen.width, Screen.height, 16,
-	                                 RenderTextureFormat.RGB565);
-	  StereoScreen.Create();
-#else
-      if (config.canApplyDistortionCorrection()) {
+      //if (config.canApplyDistortionCorrection()) {
+		if (true) {
           Debug.Log("Creating new cardboard screen texture");
           StereoScreen = new RenderTexture(Screen.width, Screen.height, 16,
                                            RenderTextureFormat.RGB565);
           StereoScreen.Create();
-          InitFromUnity(StereoScreen.GetNativeTextureID());
+          //InitFromUnity(StereoScreen.GetNativeTextureID());
       } else {
           if (!Application.isEditor) {
             Debug.LogWarning("Lens distortion-correction disabled. Causes: ["
                              + config.getDistortionCorrectionDiagnostic() + "]");
           }
       }
-#endif
 
       InCardboard = newInCardboard = false;
 #if UNITY_EDITOR

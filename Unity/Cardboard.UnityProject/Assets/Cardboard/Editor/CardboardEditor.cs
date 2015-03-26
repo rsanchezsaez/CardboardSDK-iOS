@@ -33,9 +33,6 @@ public class CardboardEditor : Editor {
   GUIContent vrModeEnabledLabel = new GUIContent("VR Mode Enabled",
     "Explicitly set whether VR mode is enabled.  Clears the Auto Enable VR setting.");
 
-  GUIContent backButtonExitsAppLabel = new GUIContent("Back Button Exits App",
-    "Whether tapping the back button exits the app.");
-
   public override void OnInspectorGUI() {
     GUI.changed = false;
 
@@ -48,25 +45,16 @@ public class CardboardEditor : Editor {
         cardboard.TapIsTrigger = newTapIsTrigger;
     }
 
-    bool newEnableAlignmentMarkder =
+    cardboard.EnableAlignmentMarker =
       EditorGUILayout.Toggle(alignmentMarkerLabel, cardboard.EnableAlignmentMarker);
-    if (newEnableAlignmentMarkder != cardboard.EnableAlignmentMarker) {
-      cardboard.EnableAlignmentMarker = newEnableAlignmentMarkder;
-    }
 
-    bool newEnableSettingsButton =
+    cardboard.EnableSettingsButton =
       EditorGUILayout.Toggle(settingsButtonLabel, cardboard.EnableSettingsButton);
-    if (newEnableSettingsButton != cardboard.EnableSettingsButton) {
-      cardboard.EnableSettingsButton = newEnableSettingsButton;
-    }
 
     bool newVRModeEnabled = EditorGUILayout.Toggle(vrModeEnabledLabel, cardboard.VRModeEnabled);
     if (newVRModeEnabled != cardboard.VRModeEnabled) {
       cardboard.VRModeEnabled = newVRModeEnabled;
     }
-
-    cardboard.BackButtonExitsApp =
-      EditorGUILayout.Toggle(backButtonExitsAppLabel, cardboard.BackButtonExitsApp);
 
     if (GUI.changed) {
       EditorUtility.SetDirty(cardboard);

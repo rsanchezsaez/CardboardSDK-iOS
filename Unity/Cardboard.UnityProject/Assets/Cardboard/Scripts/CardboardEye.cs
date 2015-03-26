@@ -25,9 +25,6 @@ public class CardboardEye : MonoBehaviour {
   // Whether this is the left eye or the right eye.
   public Cardboard.Eye eye;
 
-  [Tooltip("Culling mask layers that this eye should toggle relative to the parent camera.")]
-  public LayerMask toggleCullingMask = 0;
-
   // The stereo controller in charge of this eye (and whose mono camera
   // we will copy settings from).
   private StereoController controller;
@@ -62,24 +59,6 @@ public class CardboardEye : MonoBehaviour {
     controller = ctlr;
   }
 
-  private void FixProjection(ref Matrix4x4 proj, float near, float far, float ipdScale) {
-    // Adjust for non-fullscreen camera.  Cardboard SDK assumes fullscreen,
-    // so the aspect ratio might not match.
-    float aspectFix = camera.rect.height / camera.rect.width / 2;
-    proj[0, 0] *= aspectFix;
-
-    // Adjust for IPD scale.  This changes the vergence of the two frustums.
-    Vector2 dir = transform.localPosition; // ignore Z
-    dir = dir.normalized * ipdScale;
-    proj[0, 2] *= Mathf.Abs(dir.x);
-    proj[1, 2] *= Mathf.Abs(dir.y);
-
-    // Cardboard had to pass "nominal" values of near/far to the SDK, which
-    // we fix here to match our mono camera's specific values.
-    proj[2, 2] = (near + far) / (near - far);
-    proj[2, 3] = 2 * near * far / (near - far);
-  }
-
   public void Render() {
     // Shouldn't happen because of the check in Start(), but just in case...
     if (controller == null) {
@@ -92,14 +71,6 @@ public class CardboardEye : MonoBehaviour {
 
     CopyCameraAndMakeSideBySide(controller, proj[0,2], proj[1,2]);
 
-    // Zoom the stereo cameras if requested.
-    float lerp = Mathf.Clamp01(controller.matchByZoom) * Mathf.Clamp01(controller.matchMonoFOV);
-    // Lerping the reciprocal of proj(1,1) so zooming is linear in the frustum width, not the depth.
-    float monoProj11 = monoCamera.projectionMatrix[1, 1];
-    float zoom = 1 / Mathf.Lerp(1 / proj[1, 1], 1 / monoProj11, lerp) / proj[1, 1];
-    proj[0, 0] *= zoom;
-    proj[1, 1] *= zoom;
-
     // Calculate stereo adjustments based on the center of interest.
     float ipdScale;
     float eyeOffset;
@@ -111,9 +82,24 @@ public class CardboardEye : MonoBehaviour {
                               eyeOffset * Vector3.forward;
 
     // Set up the eye's projection.
+
+    // Adjust for non-fullscreen camera.  Cardboard SDK assumes fullscreen,
+    // so the aspect ratio might not match.
+    proj[0, 0] *= camera.rect.height / camera.rect.width / 2;
+
+    // Adjust for IPD scale.  This changes the vergence of the two frustums.
+    Vector2 dir = transform.localPosition; // ignore Z
+    dir = dir.normalized * ipdScale;
+    proj[0, 2] *= Mathf.Abs(dir.x);
+    proj[1, 2] *= Mathf.Abs(dir.y);
+
+    // Cardboard had to pass "nominal" values of near/far to the SDK, which
+    // we fix here to match our mono camera's specific values.
     float near = monoCamera.nearClipPlane;
     float far = monoCamera.farClipPlane;
-    FixProjection(ref proj, near, far, ipdScale);
+    proj[2, 2] = (near + far) / (near - far);
+    proj[2, 3] = 2 * near * far / (near - far);
+
     camera.projectionMatrix = proj;
 
     if (Application.isEditor) {
@@ -121,57 +107,7 @@ public class CardboardEye : MonoBehaviour {
       camera.fieldOfView = 2 * Mathf.Atan(1 / proj[1, 1]) * Mathf.Rad2Deg;
     }
 
-    if (!Cardboard.SDK.nativeDistortionCorrection) {
-      Matrix4x4 realProj = Cardboard.SDK.UndistortedProjection(eye);
-      FixProjection(ref realProj, near, far, ipdScale);
-      // Parts of the projection matrices that we need to convert texture coordinates between
-      // distorted and undistorted frustums.  Include the transform between texture space [0..1]
-      // and NDC [-1..1] (that's what the -1 and the /2 are for).  Also note that the zoom
-      // factor is removed, because that will interfere with the distortion calculation.
-      Vector4 projvec = new Vector4(proj[0, 0] / zoom, proj[1, 1] / zoom,
-                                    proj[0, 2] - 1, proj[1, 2] - 1) / 2;
-      Vector4 unprojvec = new Vector4(realProj[0, 0], realProj[1, 1],
-                                      realProj[0, 2] - 1, realProj[1, 2] - 1) / 2;
-      Shader.SetGlobalVector("_Projection", projvec);
-      Shader.SetGlobalVector("_Unprojection", unprojvec);
-      CardboardProfile p = Cardboard.SDK.Profile;
-      Shader.SetGlobalVector("_Undistortion",
-                             new Vector4(p.device.inverse.k1, p.device.inverse.k2));
-      Shader.SetGlobalVector("_Distortion",
-                             new Vector4(p.device.distortion.k1, p.device.distortion.k2));
-    }
-
     RenderTexture stereoScreen = controller.StereoScreen;
-    int screenWidth = stereoScreen ? stereoScreen.width : Screen.width;
-    int screenHeight = stereoScreen ? stereoScreen.height : Screen.height;
-
-    if (stereoScreen == null) {
-      // We are rendering straight to the screen.  Use the reported rect that is visible
-      // through the device's lenses.
-      Rect view = Cardboard.SDK.EyeRect(eye);
-      Rect rect = camera.rect;
-      if (eye == Cardboard.Eye.Right) {
-        rect.x -= 0.5f;
-      }
-      rect.width *= 2 * view.width;
-      rect.x = view.x + 2 * rect.x * view.width;
-      rect.height *= view.height;
-      rect.y = view.y + rect.y * view.height;
-      if (Application.isEditor) {
-        // The Game window's aspect ratio may not match the fake device parameters.
-        float realAspect = (float)screenWidth / screenHeight;
-        float fakeAspect = Cardboard.SDK.Profile.screen.width / Cardboard.SDK.Profile.screen.height;
-        float aspectComparison = fakeAspect / realAspect;
-        if (aspectComparison < 1) {
-          rect.width *= aspectComparison;
-          rect.x *= aspectComparison;
-          rect.x += (1 - aspectComparison) / 2;
-        } else {
-          rect.height /= aspectComparison;
-        }
-      }
-      camera.rect = rect;
-    }
 
     // Use the "fast" or "slow" method.  Fast means the camera draws right into one half of
     // the stereo screen.  Slow means it draws first to a side buffer, and then the buffer
@@ -197,19 +133,15 @@ public class CardboardEye : MonoBehaviour {
       RenderTexture oldTarget = RenderTexture.active;
       RenderTexture.active = stereoScreen;
       GL.PushMatrix();
-      GL.LoadPixelMatrix(0, screenWidth, screenHeight, 0);
-      // Camera rects are in screen coordinates (bottom left is origin), but DrawTexture takes a
-      // rect in GUI coordinates (top left is origin).
-      Rect blitRect = pixRect;
-      blitRect.y = screenHeight - pixRect.height - pixRect.y;
-      // Blit!
-      Graphics.DrawTexture(blitRect, camera.targetTexture);
+      GL.LoadPixelMatrix(0, stereoScreen ? stereoScreen.width : Screen.width,
+                         stereoScreen ? stereoScreen.height : Screen.height, 0);
+      Graphics.DrawTexture(pixRect, camera.targetTexture);
       // Clean up.
       GL.PopMatrix();
       RenderTexture.active = oldTarget;
       RenderTexture.ReleaseTemporary(camera.targetTexture);
+      camera.targetTexture = null;
     }
-    camera.targetTexture = null;
   }
 
   // Helper to copy camera settings from the controller's mono camera.
@@ -223,14 +155,13 @@ public class CardboardEye : MonoBehaviour {
 
     // Sync the camera properties.
     camera.CopyFrom(controller.GetComponent<Camera>());
-    camera.cullingMask ^= toggleCullingMask.value;
 
     // Reset transform, which was clobbered by the CopyFrom() call.
     // Since we are a child of the mono camera, we inherit its
     // transform already.
     // Use nominal IPD for the editor.  During play, OnPreCull() will
     // compute a real value.
-    float ipd = CardboardProfile.Default.device.lenses.separation * controller.stereoMultiplier;
+    float ipd = Cardboard.NOMINAL_IPD * controller.stereoMultiplier;
     transform.localPosition = (eye == Cardboard.Eye.Left ? -ipd/2 : ipd/2) * Vector3.right;
     transform.localRotation = Quaternion.identity;
     transform.localScale = Vector3.one;

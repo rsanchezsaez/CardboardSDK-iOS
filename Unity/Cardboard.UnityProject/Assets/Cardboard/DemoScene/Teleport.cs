@@ -47,8 +47,5 @@ public class Teleport : MonoBehaviour {
     if (GUI.Button(new Rect(50, 50, 200, 50), "Reset")) {
       transform.localPosition = startingPosition;
     }
-    if (GUI.Button(new Rect(50, 110, 200, 50), "Recenter")) {
-      Cardboard.SDK.Recenter();
-    }
   }
 }
