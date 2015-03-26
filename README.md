@@ -45,7 +45,7 @@ This method is useful if you want to rebuild the *Unity Xcode project* after upd
 - Magnetic trigger not working
 - Distortion correction not working
 
-### Todo
+### General Todo
 
 - Update native code and Unity project to *CardboardSDK v0.5.2*. 
 - Fix Unity issues
@@ -76,9 +76,9 @@ In `HeadTracker.mm`, you can set `#define HEAD_TRACKER_MODE` to either
 `HEAD_TRACKER_MODE_CORE_MOTION`, or
 ` HEAD_TRACKER_MODE_CORE_MOTION_EKF`.
 
-### Issues
+### General Issues
 
-- Reading the Cardboard configuration from NFC has not been implemented, as there's no public NFC API available on iOS 8. Hopefully Apple will provide one on iOS 9 (only the iPhone 6/6+ or higher have NFC).
+- Reading the Cardboard configuration from NFC has not been implemented, as there's no public *NFC API* available on *iOS 8*. Hopefully Apple will provide one on *iOS 9* (only the *iPhone 6/6+* or higher have an NFC sensor).
 
 
 ### License & Contributors
