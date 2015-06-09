@@ -1,6 +1,12 @@
 CardboardSDK-iOS
 ===============
 
+*June 2015 update*
+
+Google has added iOS support to their [Unity SDK](https://www.google.com/get/cardboard/developers/). Even though their official Unity plugin bundles a pre-compiled iOS Cardboard binary, there doesn't seem to be an easy way to use it in a standalone fashion.
+
+---
+
 iOS port of  [Google's CardboardSDK](https://github.com/rsanchezsaez/cardboard-java).
 
 *Treasure* example fully running with magnetic trigger detection. Successfully tested on an iPhone 6 running iOS 8 and on a iPhone 5 running iOS 7.
