@@ -119,9 +119,9 @@
 
 @dynamic view;
 
-- (id)init
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    self = [super init];
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (!self) { return nil; }
     
     // Do not allow the display to go into sleep

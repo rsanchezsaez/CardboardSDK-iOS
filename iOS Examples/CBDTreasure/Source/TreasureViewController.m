@@ -694,9 +694,9 @@ float randomFloat()
 
 @implementation TreasureViewController
 
-- (instancetype)init
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    self = [super init];
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (!self) {return nil; }
     
     self.stereoRendererDelegate = self;
