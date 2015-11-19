@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		35B1886119ABF053005A9930 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35B1886019ABF053005A9930 /* CoreMotion.framework */; };
 		35B1886319ABF059005A9930 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35B1886219ABF059005A9930 /* GLKit.framework */; };
-		BC763B391A66BBBC00463823 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC763B381A66BBBC00463823 /* Images.xcassets */; };
 		BC763B3D1A6828DA00463823 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC763B3C1A6828DA00463823 /* AudioToolbox.framework */; };
 		BC9FA04B1A9275660054276F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BC9FA0401A9275660054276F /* AppDelegate.m */; };
 		BC9FA04C1A9275660054276F /* grid_fragment.shader in Resources */ = {isa = PBXBuildFile; fileRef = BC9FA0421A9275660054276F /* grid_fragment.shader */; };
@@ -48,7 +47,6 @@
 		35B1886219ABF059005A9930 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		BC6733371A5D90C700C6D79B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BC6733381A5D90C700C6D79B /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		BC763B381A66BBBC00463823 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		BC763B3C1A6828DA00463823 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		BC9FA03F1A9275660054276F /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BC9FA0401A9275660054276F /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -143,7 +141,6 @@
 			children = (
 				BC9FA03E1A9275660054276F /* Source */,
 				BC6733361A5D90C700C6D79B /* Supporting Files */,
-				BC763B381A66BBBC00463823 /* Images.xcassets */,
 			);
 			name = CBDTreasure;
 			sourceTree = SOURCE_ROOT;
@@ -302,7 +299,7 @@
 		35B1882C19ABEF58005A9930 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0600;
+				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = "";
 				TargetAttributes = {
 					35B1883319ABEF58005A9930 = {
@@ -338,7 +335,6 @@
 				BC9FA04E1A9275660054276F /* light_vertex.shader in Resources */,
 				BC9FA0501A9275660054276F /* passthrough_fragment.shader in Resources */,
 				BC9FA04D1A9275660054276F /* highlight_fragment.shader in Resources */,
-				BC763B391A66BBBC00463823 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -399,6 +395,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -467,6 +464,7 @@
 				INFOPLIST_FILE = "Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.cardboarsdk.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = CBDTreasure;
 			};
 			name = Debug;
@@ -481,6 +479,7 @@
 				INFOPLIST_FILE = "Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.cardboarsdk.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = CBDTreasure;
 			};
 			name = Release;
