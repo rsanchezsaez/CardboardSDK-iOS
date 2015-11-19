@@ -176,11 +176,15 @@ void HeadTracker::stopTracking()
 
 bool HeadTracker::isReady()
 {
-    bool isTrackerReady = (_sampleCount > kInitialSamplesToSkip);
-  #if HEAD_TRACKER_MODE == HEAD_TRACKER_MODE_EKF || HEAD_TRACKER_MODE == HEAD_TRACKER_MODE_CORE_MOTION_EKF
-    isTrackerReady = isTrackerReady && _tracker->isReady();
-  #endif
-    return isTrackerReady;
+    #if TARGET_IPHONE_SIMULATOR
+        return true;
+    #else
+        bool isTrackerReady = (_sampleCount > kInitialSamplesToSkip);
+        #if HEAD_TRACKER_MODE == HEAD_TRACKER_MODE_EKF || HEAD_TRACKER_MODE == HEAD_TRACKER_MODE_CORE_MOTION_EKF
+            isTrackerReady = isTrackerReady && _tracker->isReady();
+        #endif
+        return isTrackerReady;
+    #endif
 }
 
 GLKMatrix4 HeadTracker::lastHeadView()
