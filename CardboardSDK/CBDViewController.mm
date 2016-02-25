@@ -519,7 +519,6 @@
     
     GLCheckForError();
     
-    glEnable(GL_SCISSOR_TEST);
     leftEye->viewport()->setGLViewport();
     leftEye->viewport()->setGLScissor();
     
@@ -529,6 +528,7 @@
     [self.stereoRendererDelegate drawEyeWithEye:_leftEyeWrapper];
     
     GLCheckForError();
+    glEnable(GL_SCISSOR_TEST);
     
     if (rightEye == nullptr) { return; }
     
