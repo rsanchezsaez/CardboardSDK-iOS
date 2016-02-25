@@ -159,7 +159,7 @@
     _magnetSensor->start();
 
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(magneticTriggerPressed:)
+                                             selector:@selector(triggerPressed:)
                                                  name:CardboardSDK::CBDTriggerPressedNotification
                                                object:nil];
 
@@ -272,10 +272,12 @@
     _headTracker->setNeckModelEnabled(neckModelEnabled);
 }
 
-- (void)magneticTriggerPressed:(NSNotification *)notification
+- (void)triggerPressed:(NSNotification *)notification
 {
-    if ([self.stereoRendererDelegate respondsToSelector:@selector(magneticTriggerPressed)])
+    if ([self.stereoRendererDelegate respondsToSelector:@selector(triggerPressed)])
     {
+        [self.stereoRendererDelegate triggerPressed];
+    } else if([self.stereoRendererDelegate respondsToSelector:@selector(magneticTriggerPressed)]) {
         [self.stereoRendererDelegate magneticTriggerPressed];
     }
 }

@@ -36,7 +36,8 @@ typedef NS_ENUM(NSInteger, CBDEyeType)
 
 @optional
 
-- (void)magneticTriggerPressed;
+- (void)triggerPressed;
+- (void)magneticTriggerPressed __attribute__((deprecated));
 
 @end
 
