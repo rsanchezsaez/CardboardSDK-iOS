@@ -754,7 +754,7 @@ float randomFloat()
     [self.treasureRenderer finishFrameWithViewportRect:viewPort];
 }
 
-- (void)magneticTriggerPressed
+- (void)triggerPressed
 {
     if ([self.treasureRenderer isLookingAtCube])
     {

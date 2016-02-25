@@ -157,8 +157,10 @@
     _headTracker->startTracking([UIApplication sharedApplication].statusBarOrientation);
     _magnetSensor->start();
 
+    _useTouchTrigger = YES;
+
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(magneticTriggerPressed:)
+                                             selector:@selector(triggerPressed:)
                                                  name:CardboardSDK::CBDTriggerPressedNotification
                                                object:nil];
 
@@ -271,12 +273,21 @@
     _headTracker->setNeckModelEnabled(neckModelEnabled);
 }
 
-- (void)magneticTriggerPressed:(NSNotification *)notification
+- (void)triggerPressed:(NSNotification *)notification
 {
-    if ([self.stereoRendererDelegate respondsToSelector:@selector(magneticTriggerPressed)])
+    if ([self.stereoRendererDelegate respondsToSelector:@selector(triggerPressed)])
     {
-        [self.stereoRendererDelegate magneticTriggerPressed];
+        [self.stereoRendererDelegate triggerPressed];
     }
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    if (self.useTouchTrigger) {
+        [[NSNotificationCenter defaultCenter]
+          postNotificationName:CardboardSDK::CBDTriggerPressedNotification
+                        object:nil];
+	}
 }
 
 - (void)glkViewController:(GLKViewController *)controller willPause:(BOOL)pause
