@@ -14,6 +14,7 @@
 #include "HeadTransform.h"
 #include "HeadMountedDisplay.h"
 #include "MagnetSensor.h"
+#include "TouchSensor.h"
 #include "ScreenParams.h"
 #include "Viewport.h"
 
