@@ -283,7 +283,7 @@
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    if(self.useTouchTrigger) {
+    if (self.useTouchTrigger) {
         [[NSNotificationCenter defaultCenter]
           postNotificationName:CardboardSDK::CBDTriggerPressedNotification
                         object:nil];
