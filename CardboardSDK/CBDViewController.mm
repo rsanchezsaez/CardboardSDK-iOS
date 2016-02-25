@@ -14,7 +14,6 @@
 #include "HeadTransform.h"
 #include "HeadMountedDisplay.h"
 #include "MagnetSensor.h"
-#include "TouchSensor.h"
 #include "ScreenParams.h"
 #include "Viewport.h"
 
@@ -158,6 +157,8 @@
     _headTracker->startTracking([UIApplication sharedApplication].statusBarOrientation);
     _magnetSensor->start();
 
+    _useTouchTrigger = YES;
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(triggerPressed:)
                                                  name:CardboardSDK::CBDTriggerPressedNotification
@@ -277,9 +278,16 @@
     if ([self.stereoRendererDelegate respondsToSelector:@selector(triggerPressed)])
     {
         [self.stereoRendererDelegate triggerPressed];
-    } else if([self.stereoRendererDelegate respondsToSelector:@selector(magneticTriggerPressed)]) {
-        [self.stereoRendererDelegate magneticTriggerPressed];
     }
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    if(self.useTouchTrigger) {
+        [[NSNotificationCenter defaultCenter]
+          postNotificationName:CardboardSDK::CBDTriggerPressedNotification
+                        object:nil];
+	}
 }
 
 - (void)glkViewController:(GLKViewController *)controller willPause:(BOOL)pause

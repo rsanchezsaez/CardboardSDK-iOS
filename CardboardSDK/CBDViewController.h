@@ -37,7 +37,6 @@ typedef NS_ENUM(NSInteger, CBDEyeType)
 @optional
 
 - (void)triggerPressed;
-- (void)magneticTriggerPressed __attribute__((deprecated));
 
 @end
 
@@ -54,6 +53,7 @@ typedef NS_ENUM(NSInteger, CBDEyeType)
 @property (nonatomic) BOOL chromaticAberrationCorrectionEnabled;
 @property (nonatomic) BOOL restoreGLStateEnabled;
 @property (nonatomic) BOOL neckModelEnabled;
+@property (nonatomic) BOOL useTouchTrigger;
 
 - (void)getFrameParameters:(float *)frameParemeters zNear:(float)zNear zFar:(float)zFar;
 
