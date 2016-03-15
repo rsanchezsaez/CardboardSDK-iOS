@@ -33,7 +33,6 @@
 		BC9FA0971A9276AC0054276F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BC6733381A5D90C700C6D79B /* main.m */; };
 		DD1359211C938AD2003EDA5D /* scene.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DD1359201C938AD2003EDA5D /* scene.scnassets */; };
 		DD1359221C938E25003EDA5D /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35B1886019ABF053005A9930 /* CoreMotion.framework */; };
-		DD1359241C93CA92003EDA5D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DD1359231C93CA92003EDA5D /* Images.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -91,7 +90,6 @@
 		BC9FA0811A92759C0054276F /* GLHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLHelpers.m; sourceTree = "<group>"; };
 		BCCBC5821A5D93170093F31A /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		DD1359201C938AD2003EDA5D /* scene.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = scene.scnassets; sourceTree = "<group>"; };
-		DD1359231C93CA92003EDA5D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = CBDSceneKit/Images.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,7 +127,6 @@
 			isa = PBXGroup;
 			children = (
 				BC9FA03E1A9275660054276F /* Source */,
-				DD1359231C93CA92003EDA5D /* Images.xcassets */,
 				BC6733361A5D90C700C6D79B /* Supporting Files */,
 			);
 			name = CBDSceneKit;
@@ -307,7 +304,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				DD1359211C938AD2003EDA5D /* scene.scnassets in Resources */,
-				DD1359241C93CA92003EDA5D /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
