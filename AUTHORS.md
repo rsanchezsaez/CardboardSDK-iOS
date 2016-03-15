@@ -8,6 +8,7 @@
 - [Peter Tribe](https://github.com/raasun/)
 - [Ricardo Sánchez-Sáez](https://www.twitter.com/rsanchezsaez)
 - [Sam Hare](http://www.samhare.net/)
+- [Guy Davis](https://github.com/GuyDavis90/)
 
 ##### Thanks
 - [Alfonso Muñoz-Pomer Fuentes](https://github.com/alfonsomunozpomer)
