@@ -78,6 +78,10 @@
 
 - (void)prepareNewFrameWithHeadViewMatrix:(GLKMatrix4)headViewMatrix
 {
+    // NOTE: Disabling the Scissor Test here due to the issue Scissor Test is causing on some devices
+    // Parts of the screen are left uncleared without this.
+    // It is enabled again after returning from this function so no need to re-enable here.
+    glDisable(GL_SCISSOR_TEST);
     // NOTE: We do the glClear here because of SpriteKit being used as a texture
     // If you move this to the start of drawEyeWithEye you will see the broken scissor
     // that will clear the left side of the screen when the right eye is drawn
