@@ -12,12 +12,12 @@
 
 @interface SceneKitViewController() <CBDStereoRendererDelegate>
 {
-    SCNScene *scene;
+    SCNScene *_scene;
     
-    SCNNode *cameraNode;
-    SCNNode *cameraControlNode;
+    SCNNode *_cameraNode;
+    SCNNode *_cameraControlNode;
     
-    SCNRenderer *renderer;
+    SCNRenderer *_renderer;
 }
 
 @end
@@ -43,20 +43,20 @@
     
     glClearColor(0.25f, 0.25f, 0.25f, 1.0f);
     
-    scene = [SCNScene sceneNamed:@"scene.scnassets/scene.dae"];
+    _scene = [SCNScene sceneNamed:@"scene.scnassets/scene.dae"];
     
     // cameraControlNode is the parent of the Camera node, we can use this to position/rotate the camera without affecting the head tracking
-    cameraControlNode = [scene.rootNode childNodeWithName:@"CameraControl" recursively:true];
+    _cameraControlNode = [_scene.rootNode childNodeWithName:@"CameraControl" recursively:YES];
     // cameraNode is the node that actually controls the head tracking applied to the camera
-    cameraNode = [scene.rootNode childNodeWithName:@"Camera" recursively:true];
+    _cameraNode = [_scene.rootNode childNodeWithName:@"Camera" recursively:YES];
     
     // SpriteKitCube is a cube in the scene which we will apply the SKScene as a texture (nothing in the scene but that's irrelevant)
-    SCNNode *spriteKitCube = [scene.rootNode childNodeWithName:@"SpriteKitCube" recursively:true];
+    SCNNode *spriteKitCube = [_scene.rootNode childNodeWithName:@"SpriteKitCube" recursively:YES];
     spriteKitCube.geometry.firstMaterial.diffuse.contents = [[SKScene alloc] initWithSize:CGSizeMake(100.0f, 100.0f)];
     
-    renderer = [SCNRenderer rendererWithContext:glView.context options:nil];
-    renderer.scene = scene;
-    renderer.pointOfView = cameraNode;
+    _renderer = [SCNRenderer rendererWithContext:glView.context options:nil];
+    _renderer.scene = _scene;
+    _renderer.pointOfView = _cameraNode;
     
     // Example of moving the CameraControlNode while not affecting the head tracking
     // The position and rotation of this node is where the camera would be looking if it was straight ahead
@@ -64,7 +64,7 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         SCNAction *cameraMoveAction = [SCNAction moveTo:SCNVector3Make(-4.5f, -4.5f, 0.0f) duration:10.0f];
         cameraMoveAction.timingMode = SCNActionTimingModeEaseInEaseOut;
-        [cameraControlNode runAction:cameraMoveAction];
+        [_cameraControlNode runAction:cameraMoveAction];
     });
 }
 
@@ -90,10 +90,10 @@
     GLKMatrix4 lookAt = GLKMatrix4MakeLookAt(0.0f, 0.0f, 0.0f,
                                              0.0f, 1.0f, 0.0f,
                                              0.0f, 0.0f, 1.0f);    
-    cameraNode.transform = SCNMatrix4Invert(SCNMatrix4FromGLKMatrix4(GLKMatrix4Multiply([eye eyeViewMatrix], lookAt)));
-    [cameraNode.camera setProjectionTransform:SCNMatrix4FromGLKMatrix4([eye perspectiveMatrixWithZNear:0.1f zFar:100.0f])];
+    _cameraNode.transform = SCNMatrix4Invert(SCNMatrix4FromGLKMatrix4(GLKMatrix4Multiply([eye eyeViewMatrix], lookAt)));
+    [_cameraNode.camera setProjectionTransform:SCNMatrix4FromGLKMatrix4([eye perspectiveMatrixWithZNear:0.1f zFar:100.0f])];
     
-    [renderer renderAtTime:0];
+    [_renderer renderAtTime:0];
 }
 
 - (void)finishFrameWithViewportRect:(CGRect)viewPort
