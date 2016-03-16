@@ -1,0 +1,479 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		35B1886319ABF059005A9930 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35B1886219ABF059005A9930 /* GLKit.framework */; };
+		BC9FA04B1A9275660054276F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BC9FA0401A9275660054276F /* AppDelegate.m */; };
+		BC9FA0521A9275660054276F /* SceneKitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC9FA04A1A9275660054276F /* SceneKitViewController.m */; };
+		BC9FA0821A92759C0054276F /* CardboardDeviceParams.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC9FA0561A92759C0054276F /* CardboardDeviceParams.mm */; };
+		BC9FA0831A92759C0054276F /* CardboardUnity.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC9FA0581A92759C0054276F /* CardboardUnity.mm */; };
+		BC9FA0841A92759C0054276F /* Distortion.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC9FA05A1A92759C0054276F /* Distortion.mm */; };
+		BC9FA0851A92759C0054276F /* DistortionRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC9FA05C1A92759C0054276F /* DistortionRenderer.mm */; };
+		BC9FA0861A92759C0054276F /* Eye.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC9FA05E1A92759C0054276F /* Eye.mm */; };
+		BC9FA0871A92759C0054276F /* FieldOfView.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC9FA0601A92759C0054276F /* FieldOfView.mm */; };
+		BC9FA0881A92759C0054276F /* GLStateBackup.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC9FA0621A92759C0054276F /* GLStateBackup.mm */; };
+		BC9FA0891A92759C0054276F /* HeadMountedDisplay.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC9FA0641A92759C0054276F /* HeadMountedDisplay.mm */; };
+		BC9FA08A1A92759C0054276F /* HeadTransform.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC9FA0661A92759C0054276F /* HeadTransform.mm */; };
+		BC9FA08B1A92759C0054276F /* ScreenParams.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC9FA0681A92759C0054276F /* ScreenParams.mm */; };
+		BC9FA08C1A92759C0054276F /* HeadTracker.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC9FA06B1A92759C0054276F /* HeadTracker.mm */; };
+		BC9FA08D1A92759C0054276F /* Matrix3x3d.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC9FA06E1A92759C0054276F /* Matrix3x3d.mm */; };
+		BC9FA08E1A92759C0054276F /* OrientationEKF.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC9FA0701A92759C0054276F /* OrientationEKF.mm */; };
+		BC9FA08F1A92759C0054276F /* SO3Util.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC9FA0721A92759C0054276F /* SO3Util.mm */; };
+		BC9FA0901A92759C0054276F /* Vector3d.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC9FA0741A92759C0054276F /* Vector3d.mm */; };
+		BC9FA0911A92759C0054276F /* MagnetSensor.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC9FA0761A92759C0054276F /* MagnetSensor.mm */; };
+		BC9FA0921A92759C0054276F /* Viewport.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC9FA0781A92759C0054276F /* Viewport.mm */; };
+		BC9FA0931A92759C0054276F /* CBDStereoGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = BC9FA07B1A92759C0054276F /* CBDStereoGLView.m */; };
+		BC9FA0941A92759C0054276F /* CBDViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BC9FA07D1A92759C0054276F /* CBDViewController.mm */; };
+		BC9FA0951A92759C0054276F /* GLHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = BC9FA0811A92759C0054276F /* GLHelpers.m */; };
+		BC9FA0971A9276AC0054276F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BC6733381A5D90C700C6D79B /* main.m */; };
+		DD1359211C938AD2003EDA5D /* scene.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DD1359201C938AD2003EDA5D /* scene.scnassets */; };
+		DD1359221C938E25003EDA5D /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35B1886019ABF053005A9930 /* CoreMotion.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		35B1883419ABEF58005A9930 /* CBDSceneKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CBDSceneKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		35B1886019ABF053005A9930 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		35B1886219ABF059005A9930 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		BC6733371A5D90C700C6D79B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BC6733381A5D90C700C6D79B /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		BC763B3C1A6828DA00463823 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		BC9FA03F1A9275660054276F /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		BC9FA0401A9275660054276F /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		BC9FA0491A9275660054276F /* SceneKitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneKitViewController.h; sourceTree = "<group>"; };
+		BC9FA04A1A9275660054276F /* SceneKitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SceneKitViewController.m; sourceTree = "<group>"; };
+		BC9FA0551A92759C0054276F /* CardboardDeviceParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardboardDeviceParams.h; sourceTree = "<group>"; };
+		BC9FA0561A92759C0054276F /* CardboardDeviceParams.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CardboardDeviceParams.mm; sourceTree = "<group>"; };
+		BC9FA0571A92759C0054276F /* CardboardUnity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardboardUnity.h; sourceTree = "<group>"; };
+		BC9FA0581A92759C0054276F /* CardboardUnity.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CardboardUnity.mm; sourceTree = "<group>"; };
+		BC9FA0591A92759C0054276F /* Distortion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Distortion.h; sourceTree = "<group>"; };
+		BC9FA05A1A92759C0054276F /* Distortion.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Distortion.mm; sourceTree = "<group>"; };
+		BC9FA05B1A92759C0054276F /* DistortionRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DistortionRenderer.h; sourceTree = "<group>"; };
+		BC9FA05C1A92759C0054276F /* DistortionRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DistortionRenderer.mm; sourceTree = "<group>"; };
+		BC9FA05D1A92759C0054276F /* Eye.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Eye.h; sourceTree = "<group>"; };
+		BC9FA05E1A92759C0054276F /* Eye.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Eye.mm; sourceTree = "<group>"; };
+		BC9FA05F1A92759C0054276F /* FieldOfView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FieldOfView.h; sourceTree = "<group>"; };
+		BC9FA0601A92759C0054276F /* FieldOfView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FieldOfView.mm; sourceTree = "<group>"; };
+		BC9FA0611A92759C0054276F /* GLStateBackup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLStateBackup.h; sourceTree = "<group>"; };
+		BC9FA0621A92759C0054276F /* GLStateBackup.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GLStateBackup.mm; sourceTree = "<group>"; };
+		BC9FA0631A92759C0054276F /* HeadMountedDisplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeadMountedDisplay.h; sourceTree = "<group>"; };
+		BC9FA0641A92759C0054276F /* HeadMountedDisplay.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HeadMountedDisplay.mm; sourceTree = "<group>"; };
+		BC9FA0651A92759C0054276F /* HeadTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeadTransform.h; sourceTree = "<group>"; };
+		BC9FA0661A92759C0054276F /* HeadTransform.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HeadTransform.mm; sourceTree = "<group>"; };
+		BC9FA0671A92759C0054276F /* ScreenParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenParams.h; sourceTree = "<group>"; };
+		BC9FA0681A92759C0054276F /* ScreenParams.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ScreenParams.mm; sourceTree = "<group>"; };
+		BC9FA06A1A92759C0054276F /* HeadTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeadTracker.h; sourceTree = "<group>"; };
+		BC9FA06B1A92759C0054276F /* HeadTracker.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HeadTracker.mm; sourceTree = "<group>"; };
+		BC9FA06D1A92759C0054276F /* Matrix3x3d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Matrix3x3d.h; sourceTree = "<group>"; };
+		BC9FA06E1A92759C0054276F /* Matrix3x3d.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Matrix3x3d.mm; sourceTree = "<group>"; };
+		BC9FA06F1A92759C0054276F /* OrientationEKF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrientationEKF.h; sourceTree = "<group>"; };
+		BC9FA0701A92759C0054276F /* OrientationEKF.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OrientationEKF.mm; sourceTree = "<group>"; };
+		BC9FA0711A92759C0054276F /* SO3Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SO3Util.h; sourceTree = "<group>"; };
+		BC9FA0721A92759C0054276F /* SO3Util.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SO3Util.mm; sourceTree = "<group>"; };
+		BC9FA0731A92759C0054276F /* Vector3d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vector3d.h; sourceTree = "<group>"; };
+		BC9FA0741A92759C0054276F /* Vector3d.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Vector3d.mm; sourceTree = "<group>"; };
+		BC9FA0751A92759C0054276F /* MagnetSensor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MagnetSensor.h; sourceTree = "<group>"; };
+		BC9FA0761A92759C0054276F /* MagnetSensor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MagnetSensor.mm; sourceTree = "<group>"; };
+		BC9FA0771A92759C0054276F /* Viewport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Viewport.h; sourceTree = "<group>"; };
+		BC9FA0781A92759C0054276F /* Viewport.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Viewport.mm; sourceTree = "<group>"; };
+		BC9FA0791A92759C0054276F /* CardboardSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardboardSDK.h; sourceTree = "<group>"; };
+		BC9FA07A1A92759C0054276F /* CBDStereoGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBDStereoGLView.h; sourceTree = "<group>"; };
+		BC9FA07B1A92759C0054276F /* CBDStereoGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBDStereoGLView.m; sourceTree = "<group>"; };
+		BC9FA07C1A92759C0054276F /* CBDViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBDViewController.h; sourceTree = "<group>"; };
+		BC9FA07D1A92759C0054276F /* CBDViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CBDViewController.mm; sourceTree = "<group>"; };
+		BC9FA07F1A92759C0054276F /* DebugUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugUtils.h; sourceTree = "<group>"; };
+		BC9FA0801A92759C0054276F /* GLHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLHelpers.h; sourceTree = "<group>"; };
+		BC9FA0811A92759C0054276F /* GLHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLHelpers.m; sourceTree = "<group>"; };
+		BCCBC5821A5D93170093F31A /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
+		DD1359201C938AD2003EDA5D /* scene.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = scene.scnassets; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		35B1883119ABEF58005A9930 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DD1359221C938E25003EDA5D /* CoreMotion.framework in Frameworks */,
+				35B1886319ABF059005A9930 /* GLKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		35B1882B19ABEF58005A9930 = {
+			isa = PBXGroup;
+			children = (
+				BC9FA0531A92759C0054276F /* CardboardSDK */,
+				35B1883619ABEF58005A9930 /* CBDSceneKit */,
+				BCCBC5811A5D92450093F31A /* Frameworks */,
+				35B1883519ABEF58005A9930 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		35B1883519ABEF58005A9930 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				35B1883419ABEF58005A9930 /* CBDSceneKit.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		35B1883619ABEF58005A9930 /* CBDSceneKit */ = {
+			isa = PBXGroup;
+			children = (
+				BC9FA03E1A9275660054276F /* Source */,
+				BC6733361A5D90C700C6D79B /* Supporting Files */,
+			);
+			name = CBDSceneKit;
+			sourceTree = SOURCE_ROOT;
+		};
+		BC6733361A5D90C700C6D79B /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				BCCBC5821A5D93170093F31A /* LaunchScreen.xib */,
+				BC6733371A5D90C700C6D79B /* Info.plist */,
+				BC6733381A5D90C700C6D79B /* main.m */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		BC9FA03E1A9275660054276F /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				DD1359201C938AD2003EDA5D /* scene.scnassets */,
+				BC9FA03F1A9275660054276F /* AppDelegate.h */,
+				BC9FA0401A9275660054276F /* AppDelegate.m */,
+				BC9FA0491A9275660054276F /* SceneKitViewController.h */,
+				BC9FA04A1A9275660054276F /* SceneKitViewController.m */,
+			);
+			path = Source;
+			sourceTree = SOURCE_ROOT;
+		};
+		BC9FA0531A92759C0054276F /* CardboardSDK */ = {
+			isa = PBXGroup;
+			children = (
+				BC9FA0541A92759C0054276F /* Cardboard */,
+				BC9FA0791A92759C0054276F /* CardboardSDK.h */,
+				BC9FA07A1A92759C0054276F /* CBDStereoGLView.h */,
+				BC9FA07B1A92759C0054276F /* CBDStereoGLView.m */,
+				BC9FA07C1A92759C0054276F /* CBDViewController.h */,
+				BC9FA07D1A92759C0054276F /* CBDViewController.mm */,
+				BC9FA07E1A92759C0054276F /* Misc */,
+			);
+			name = CardboardSDK;
+			path = ../../CardboardSDK;
+			sourceTree = "<group>";
+		};
+		BC9FA0541A92759C0054276F /* Cardboard */ = {
+			isa = PBXGroup;
+			children = (
+				BC9FA0551A92759C0054276F /* CardboardDeviceParams.h */,
+				BC9FA0561A92759C0054276F /* CardboardDeviceParams.mm */,
+				BC9FA0571A92759C0054276F /* CardboardUnity.h */,
+				BC9FA0581A92759C0054276F /* CardboardUnity.mm */,
+				BC9FA0591A92759C0054276F /* Distortion.h */,
+				BC9FA05A1A92759C0054276F /* Distortion.mm */,
+				BC9FA05B1A92759C0054276F /* DistortionRenderer.h */,
+				BC9FA05C1A92759C0054276F /* DistortionRenderer.mm */,
+				BC9FA05D1A92759C0054276F /* Eye.h */,
+				BC9FA05E1A92759C0054276F /* Eye.mm */,
+				BC9FA05F1A92759C0054276F /* FieldOfView.h */,
+				BC9FA0601A92759C0054276F /* FieldOfView.mm */,
+				BC9FA0611A92759C0054276F /* GLStateBackup.h */,
+				BC9FA0621A92759C0054276F /* GLStateBackup.mm */,
+				BC9FA0631A92759C0054276F /* HeadMountedDisplay.h */,
+				BC9FA0641A92759C0054276F /* HeadMountedDisplay.mm */,
+				BC9FA0651A92759C0054276F /* HeadTransform.h */,
+				BC9FA0661A92759C0054276F /* HeadTransform.mm */,
+				BC9FA0671A92759C0054276F /* ScreenParams.h */,
+				BC9FA0681A92759C0054276F /* ScreenParams.mm */,
+				BC9FA0691A92759C0054276F /* Sensors */,
+				BC9FA0771A92759C0054276F /* Viewport.h */,
+				BC9FA0781A92759C0054276F /* Viewport.mm */,
+			);
+			path = Cardboard;
+			sourceTree = "<group>";
+		};
+		BC9FA0691A92759C0054276F /* Sensors */ = {
+			isa = PBXGroup;
+			children = (
+				BC9FA06A1A92759C0054276F /* HeadTracker.h */,
+				BC9FA06B1A92759C0054276F /* HeadTracker.mm */,
+				BC9FA06C1A92759C0054276F /* Internal */,
+				BC9FA0751A92759C0054276F /* MagnetSensor.h */,
+				BC9FA0761A92759C0054276F /* MagnetSensor.mm */,
+			);
+			path = Sensors;
+			sourceTree = "<group>";
+		};
+		BC9FA06C1A92759C0054276F /* Internal */ = {
+			isa = PBXGroup;
+			children = (
+				BC9FA06D1A92759C0054276F /* Matrix3x3d.h */,
+				BC9FA06E1A92759C0054276F /* Matrix3x3d.mm */,
+				BC9FA06F1A92759C0054276F /* OrientationEKF.h */,
+				BC9FA0701A92759C0054276F /* OrientationEKF.mm */,
+				BC9FA0711A92759C0054276F /* SO3Util.h */,
+				BC9FA0721A92759C0054276F /* SO3Util.mm */,
+				BC9FA0731A92759C0054276F /* Vector3d.h */,
+				BC9FA0741A92759C0054276F /* Vector3d.mm */,
+			);
+			path = Internal;
+			sourceTree = "<group>";
+		};
+		BC9FA07E1A92759C0054276F /* Misc */ = {
+			isa = PBXGroup;
+			children = (
+				BC9FA07F1A92759C0054276F /* DebugUtils.h */,
+				BC9FA0801A92759C0054276F /* GLHelpers.h */,
+				BC9FA0811A92759C0054276F /* GLHelpers.m */,
+			);
+			path = Misc;
+			sourceTree = "<group>";
+		};
+		BCCBC5811A5D92450093F31A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BC763B3C1A6828DA00463823 /* AudioToolbox.framework */,
+				35B1886219ABF059005A9930 /* GLKit.framework */,
+				35B1886019ABF053005A9930 /* CoreMotion.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		35B1883319ABEF58005A9930 /* CBDSceneKit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 35B1885419ABEF58005A9930 /* Build configuration list for PBXNativeTarget "CBDSceneKit" */;
+			buildPhases = (
+				35B1883019ABEF58005A9930 /* Sources */,
+				35B1883119ABEF58005A9930 /* Frameworks */,
+				35B1883219ABEF58005A9930 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CBDSceneKit;
+			productName = "CardboardVR-iOS";
+			productReference = 35B1883419ABEF58005A9930 /* CBDSceneKit.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		35B1882C19ABEF58005A9930 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0710;
+				ORGANIZATIONNAME = "";
+				TargetAttributes = {
+					35B1883319ABEF58005A9930 = {
+						CreatedOnToolsVersion = 6.0;
+					};
+				};
+			};
+			buildConfigurationList = 35B1882F19ABEF58005A9930 /* Build configuration list for PBXProject "CBDSceneKit" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 35B1882B19ABEF58005A9930;
+			productRefGroup = 35B1883519ABEF58005A9930 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				35B1883319ABEF58005A9930 /* CBDSceneKit */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		35B1883219ABEF58005A9930 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DD1359211C938AD2003EDA5D /* scene.scnassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		35B1883019ABEF58005A9930 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BC9FA0901A92759C0054276F /* Vector3d.mm in Sources */,
+				BC9FA08E1A92759C0054276F /* OrientationEKF.mm in Sources */,
+				BC9FA08A1A92759C0054276F /* HeadTransform.mm in Sources */,
+				BC9FA0931A92759C0054276F /* CBDStereoGLView.m in Sources */,
+				BC9FA0951A92759C0054276F /* GLHelpers.m in Sources */,
+				BC9FA0831A92759C0054276F /* CardboardUnity.mm in Sources */,
+				BC9FA08F1A92759C0054276F /* SO3Util.mm in Sources */,
+				BC9FA0921A92759C0054276F /* Viewport.mm in Sources */,
+				BC9FA0881A92759C0054276F /* GLStateBackup.mm in Sources */,
+				BC9FA0941A92759C0054276F /* CBDViewController.mm in Sources */,
+				BC9FA0521A9275660054276F /* SceneKitViewController.m in Sources */,
+				BC9FA0851A92759C0054276F /* DistortionRenderer.mm in Sources */,
+				BC9FA0911A92759C0054276F /* MagnetSensor.mm in Sources */,
+				BC9FA08C1A92759C0054276F /* HeadTracker.mm in Sources */,
+				BC9FA0841A92759C0054276F /* Distortion.mm in Sources */,
+				BC9FA04B1A9275660054276F /* AppDelegate.m in Sources */,
+				BC9FA0871A92759C0054276F /* FieldOfView.mm in Sources */,
+				BC9FA0861A92759C0054276F /* Eye.mm in Sources */,
+				BC9FA0891A92759C0054276F /* HeadMountedDisplay.mm in Sources */,
+				BC9FA08D1A92759C0054276F /* Matrix3x3d.mm in Sources */,
+				BC9FA0821A92759C0054276F /* CardboardDeviceParams.mm in Sources */,
+				BC9FA0971A9276AC0054276F /* main.m in Sources */,
+				BC9FA08B1A92759C0054276F /* ScreenParams.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		35B1885219ABEF58005A9930 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		35B1885319ABEF58005A9930 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		35B1885519ABEF58005A9930 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
+				CLANG_CXX_LIBRARY = "libstdc++";
+				GCC_INPUT_FILETYPE = automatic;
+				INFOPLIST_FILE = "Supporting Files/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.cardboarsdk.CBDSceneKit;
+				PRODUCT_NAME = CBDSceneKit;
+			};
+			name = Debug;
+		};
+		35B1885619ABEF58005A9930 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
+				CLANG_CXX_LIBRARY = "libstdc++";
+				GCC_INPUT_FILETYPE = automatic;
+				INFOPLIST_FILE = "Supporting Files/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.cardboarsdk.CBDSceneKit;
+				PRODUCT_NAME = CBDSceneKit;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		35B1882F19ABEF58005A9930 /* Build configuration list for PBXProject "CBDSceneKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				35B1885219ABEF58005A9930 /* Debug */,
+				35B1885319ABEF58005A9930 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		35B1885419ABEF58005A9930 /* Build configuration list for PBXNativeTarget "CBDSceneKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				35B1885519ABEF58005A9930 /* Debug */,
+				35B1885619ABEF58005A9930 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 35B1882C19ABEF58005A9930 /* Project object */;
+}
