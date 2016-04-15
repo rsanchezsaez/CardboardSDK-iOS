@@ -273,6 +273,11 @@
     _headTracker->setNeckModelEnabled(neckModelEnabled);
 }
 
+- (void)setVrModeEnabled:(BOOL)vrModeEnabled {
+    _projectionChanged = YES;
+    _vrModeEnabled = vrModeEnabled;
+}
+
 - (void)triggerPressed:(NSNotification *)notification
 {
     if ([self.stereoRendererDelegate respondsToSelector:@selector(triggerPressed)])
