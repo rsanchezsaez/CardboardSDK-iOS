@@ -158,6 +158,9 @@
     _magnetSensor->start();
 
     _useTouchTrigger = YES;
+	
+	_offsetPan = 0;
+	_offsetTilt = 0;
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(triggerPressed:)
@@ -290,6 +293,16 @@
 	}
 }
 
+- (void)setOffsetPan:(double)pan {
+	_offsetPan = pan;
+	[self glkViewControllerUpdate:self];
+}
+
+- (void)setOffsetTilt:(double)tilt {
+	_offsetTilt = tilt;
+	[self glkViewControllerUpdate:self];
+}
+
 - (void)glkViewController:(GLKViewController *)controller willPause:(BOOL)pause
 {
     if (pause)
@@ -372,7 +385,6 @@
 {
     CardboardSDK::CardboardDeviceParams *cardboardDeviceParams = _headMountedDisplay->getCardboard();
     
-    headTransform->setHeadView(_headTracker->lastHeadView());
     float halfInterLensDistance = cardboardDeviceParams->interLensDistance() * 0.5f;
     
     // NSLog(@"%@", NSStringFromGLKMatrix4(_headTracker->lastHeadView()));
@@ -382,11 +394,18 @@
         GLKMatrix4 leftEyeTranslate = GLKMatrix4MakeTranslation(halfInterLensDistance, 0, 0);
         GLKMatrix4 rightEyeTranslate = GLKMatrix4MakeTranslation(-halfInterLensDistance, 0, 0);
         
+    	headTransform->setHeadView(_headTracker->lastHeadView());
         leftEye->setEyeView( GLKMatrix4Multiply(leftEyeTranslate, headTransform->headView()));
         rightEye->setEyeView( GLKMatrix4Multiply(rightEyeTranslate, headTransform->headView()));
     }
     else
     {
+		GLKMatrix4 rot = GLKMatrix4MakeRotation(-_offsetTilt, 1.0, 0.0, 0.0);
+		rot = GLKMatrix4Rotate(rot, _offsetPan, 0, 1.0, 0.0);
+		// Apply manual pan/tilt values in mono mode only
+		GLKMatrix4 xform = GLKMatrix4Multiply(_headTracker->lastHeadView(), rot);
+		headTransform->setHeadView(xform);
+		
         monocularEye->setEyeView(headTransform->headView());
     }
     
@@ -579,6 +598,11 @@
     std::copy(leftEyePerspective.m, leftEyePerspective.m + 16, frameParemeters + 32);
     std::copy(rightEyeView.m, rightEyeView.m + 16, frameParemeters + 48);
     std::copy(rightEyePerspective.m, rightEyePerspective.m + 16, frameParemeters + 64);
+}
+
+// return pitch, yaw, roll
+- (GLKVector3)eulerAngles {
+	return _headTransform->eulerAngles();
 }
 
 @end
