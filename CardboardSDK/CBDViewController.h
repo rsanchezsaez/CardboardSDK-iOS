@@ -57,4 +57,11 @@ typedef NS_ENUM(NSInteger, CBDEyeType)
 
 - (void)getFrameParameters:(float *)frameParemeters zNear:(float)zNear zFar:(float)zFar;
 
+// extension to allow panning in mono mode
+@property (nonatomic) double offsetPan;
+@property (nonatomic) double offsetTilt;
+
+// return pitch, yaw, roll
+- (GLKVector3)eulerAngles;
+
 @end
