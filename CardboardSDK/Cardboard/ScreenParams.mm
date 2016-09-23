@@ -25,6 +25,8 @@
 #define CBScreenIsIphone6Height() (CBScreenIsIphone() && [UIScreen mainScreen].sizeFixedToPortrait.height == 667.0)
 #define CBScreenIsIphone6PlusWidth() (CBScreenIsIphone() && [[UIScreen mainScreen] scale] == 3.0f && [UIScreen mainScreen].sizeFixedToPortrait.width == 414.0)
 #define CBScreenIsIphone6PlusHeight() (CBScreenIsIphone() && [[UIScreen mainScreen] scale] == 3.0f && [UIScreen mainScreen].sizeFixedToPortrait.height == 736.0)
+#define CBScreenIsIphone6PlusZoomedWidth() (CBScreenIsIphone() && [[UIScreen mainScreen] scale] == 3.0f && [UIScreen mainScreen].sizeFixedToPortrait.width == 375.0)
+#define CBScreenIsIphone6PlusZoomedHeight() (CBScreenIsIphone() && [[UIScreen mainScreen] scale] == 3.0f && [UIScreen mainScreen].sizeFixedToPortrait.height == 667.0)
 
 
 @interface UIScreen (CBDOrientationAware)
@@ -166,7 +168,9 @@ float ScreenParams::pixelsPerInch(UIScreen *screen)
         @[@"iPad1,1",
           @"iPad2,1", @"iPad2,2", @"iPad2,3", @"iPad2,4",
           @"iPad3,1", @"iPad3,2", @"iPad3,3", @"iPad3,4",
-          @"iPad3,5", @"iPad3,6", @"iPad4,1", @"iPad4,2"],
+          @"iPad3,5", @"iPad3,6", @"iPad4,1", @"iPad4,2",
+          @"iPad4,3", @"iPad5,3", @"iPad5,4", @"iPad6,7",
+          @"iPad6,8", @"iPad6,3", @"iPad6,4"],
     @"pointsPerInch": @132.0f},
   // iPhones, iPad Minis and simulators
   @{@"identifiers":
@@ -178,8 +182,14 @@ float ScreenParams::pixelsPerInch(UIScreen *screen)
           @"iPhone5,1", @"iPhone5,2", @"iPhone5,3", @"iPhone5,4",
           @"iPhone6,1", @"iPhone6,2",
           @"iPhone7,1", @"iPhone7,2",
+          @"iPhone8,1", @"iPhone8,2",
+          @"iPhone8,4",
+          @"iPhone9,1", @"iPhone9,3",
+          @"iPhone9,2", @"iPhone9,4",
           @"iPad2,5", @"iPad2,6", @"iPad2,7",
-          @"iPad4,4", @"iPad4,5",
+          @"iPad4,4", @"iPad4,5", @"iPad4,6",
+          @"iPad4,7", @"iPad4,8", @"iPad4,9",
+          @"iPad5,1", @"iPad5,2",
           @"i386", @"x86_64"],
     @"pointsPerInch":  @163.0f } ];
         for (NSDictionary *deviceClass in deviceClassArray)
