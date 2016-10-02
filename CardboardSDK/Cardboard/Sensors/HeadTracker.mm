@@ -15,8 +15,10 @@ namespace CardboardSDK
     
 #define HEAD_TRACKER_MODE HEAD_TRACKER_MODE_CORE_MOTION_EKF
 
-static const size_t kInitialSamplesToSkip = 10;
-
+#if !TARGET_IPHONE_SIMULATOR
+static const size_t CBDInitialSamplesToSkip = 10;
+#endif
+    
 namespace
 {
 
@@ -116,6 +118,7 @@ void HeadTracker::startTracking(UIInterfaceOrientation orientation)
     _headingCorrectionComputed = false;
     _sampleCount = 0; // used to skip bad data when core motion starts
     
+#if !TARGET_IPHONE_SIMULATOR
   #if HEAD_TRACKER_MODE == HEAD_TRACKER_MODE_EKF
     NSOperationQueue *accelerometerQueue = [[NSOperationQueue alloc] init];
     NSOperationQueue *gyroQueue = [[NSOperationQueue alloc] init];
@@ -151,7 +154,7 @@ void HeadTracker::startTracking(UIInterfaceOrientation orientation)
     _motionManager.deviceMotionUpdateInterval = 1.0/100.0;
     [_motionManager startDeviceMotionUpdatesUsingReferenceFrame:CMAttitudeReferenceFrameXArbitraryZVertical toQueue:deviceMotionQueue withHandler:^(CMDeviceMotion *motion, NSError *error) {
         ++_sampleCount;
-        if (_sampleCount <= kInitialSamplesToSkip) { return; }
+        if (_sampleCount <= CBDInitialSamplesToSkip) { return; }
         CMAcceleration acceleration = motion.gravity;
         CMRotationRate rotationRate = motion.rotationRate;
         // note core motion uses units of G while the EKF uses ms^-2
@@ -161,7 +164,7 @@ void HeadTracker::startTracking(UIInterfaceOrientation orientation)
         _lastGyroEventTimestamp = motion.timestamp;
     }];
   #endif
-    
+#endif
 }
 
 void HeadTracker::stopTracking()
@@ -176,11 +179,15 @@ void HeadTracker::stopTracking()
 
 bool HeadTracker::isReady()
 {
-    bool isTrackerReady = (_sampleCount > kInitialSamplesToSkip);
-  #if HEAD_TRACKER_MODE == HEAD_TRACKER_MODE_EKF || HEAD_TRACKER_MODE == HEAD_TRACKER_MODE_CORE_MOTION_EKF
-    isTrackerReady = isTrackerReady && _tracker->isReady();
-  #endif
-    return isTrackerReady;
+    #if TARGET_IPHONE_SIMULATOR
+        return true;
+    #else
+        bool isTrackerReady = (_sampleCount > CBDInitialSamplesToSkip);
+        #if HEAD_TRACKER_MODE == HEAD_TRACKER_MODE_EKF || HEAD_TRACKER_MODE == HEAD_TRACKER_MODE_CORE_MOTION_EKF
+            isTrackerReady = isTrackerReady && _tracker->isReady();
+        #endif
+        return isTrackerReady;
+    #endif
 }
 
 GLKMatrix4 HeadTracker::lastHeadView()

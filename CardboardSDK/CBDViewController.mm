@@ -119,11 +119,8 @@
 
 @dynamic view;
 
-- (id)init
+- (void)sharedInit
 {
-    self = [super init];
-    if (!self) { return nil; }
-    
     // Do not allow the display to go into sleep
     [UIApplication sharedApplication].idleTimerDisabled = YES;
 
@@ -160,8 +157,10 @@
     _headTracker->startTracking([UIApplication sharedApplication].statusBarOrientation);
     _magnetSensor->start();
 
+    _useTouchTrigger = YES;
+
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(magneticTriggerPressed:)
+                                             selector:@selector(triggerPressed:)
                                                  name:CardboardSDK::CBDTriggerPressedNotification
                                                object:nil];
 
@@ -169,7 +168,25 @@
                                              selector:@selector(orientationDidChange:)
                                                  name:UIApplicationDidChangeStatusBarOrientationNotification
                                                object:nil];
+}
 
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (!self) { return nil; }
+    
+    [self sharedInit];
+
+    return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (!self) { return nil; }
+    
+    [self sharedInit];
+    
     return self;
 }
 
@@ -256,12 +273,21 @@
     _headTracker->setNeckModelEnabled(neckModelEnabled);
 }
 
-- (void)magneticTriggerPressed:(NSNotification *)notification
+- (void)triggerPressed:(NSNotification *)notification
 {
-    if ([self.stereoRendererDelegate respondsToSelector:@selector(magneticTriggerPressed)])
+    if ([self.stereoRendererDelegate respondsToSelector:@selector(triggerPressed)])
     {
-        [self.stereoRendererDelegate magneticTriggerPressed];
+        [self.stereoRendererDelegate triggerPressed];
     }
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    if (self.useTouchTrigger) {
+        [[NSNotificationCenter defaultCenter]
+          postNotificationName:CardboardSDK::CBDTriggerPressedNotification
+                        object:nil];
+	}
 }
 
 - (void)glkViewController:(GLKViewController *)controller willPause:(BOOL)pause
